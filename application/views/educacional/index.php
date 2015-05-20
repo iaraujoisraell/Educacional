@@ -9,7 +9,8 @@
                 </head>
 
                 <body>
-                    <body>
+
+                    <div id="main_body">
                         <?php include 'application/views/header.php'; ?>
                         <?php include 'navigation.php'; ?>
                         <div class="main-content">
@@ -20,6 +21,8 @@
                             </div>   
                             <?php include 'application/views/footer.php'; ?>
                         </div>
-                    </body>
+                    </div>
                 </body>
+
+                <?php include 'application/views/modal_hidden.php'; ?> 
                 </html>

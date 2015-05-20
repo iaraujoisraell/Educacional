@@ -73,6 +73,8 @@ class Modal extends CI_Controller {
             $page_data['current_chamada_vestibular_id'] = $param2;
         }else if($param1 == 'pontuacao_vestibular'){
             $page_data['current_pontuacao_vestibular_id'] = $param2;
+        }else if($param1 == 'editar_curso'){
+            $page_data['current_editar_curso_id'] = $param2;
         }
 
         $page_data['page_name'] = $param1;

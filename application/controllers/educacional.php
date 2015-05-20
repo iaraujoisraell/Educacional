@@ -38,18 +38,14 @@ class educacional extends CI_Controller {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
         if ($param1 == 'create') {
-            $data['name'] = $this->input->post('name');
-            $data['birthday'] = $this->input->post('birthday');
-            $data['sex'] = $this->input->post('sex');
-            $data['address'] = $this->input->post('address');
-            $data['phone'] = $this->input->post('phone');
-            $data['email'] = $this->input->post('email');
-            $data['password'] = $this->input->post('password');
-            $this->db->insert('teacher', $data);
-            $teacher_id = mysql_insert_id();
-            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/teacher_image/' . $teacher_id . '.jpg');
-            $this->email_model->account_opening_email('teacher', $data['email']); //SEND EMAIL ACCOUNT OPENING EMAIL
-            redirect(base_url() . 'index.php?admin/teacher/', 'refresh');
+
+            $data['descricao'] = $this->input->post('descricao');
+            $data['porcentagem_minima'] = $this->input->post('minima');
+            $data['porcentagem_maxima'] = $this->input->post('maxima');
+
+            $this->db->insert('bolsas', $data);
+            $this->session->set_flashdata('flash_message', get_phrase('bolsa_cadastrada_com_sucesso'));
+            redirect(base_url() . 'index.php?educacional/bolsas/', 'refresh');
         }
         if ($param1 == 'do_update') {
             $data['name'] = $this->input->post('name');
@@ -73,9 +69,10 @@ class educacional extends CI_Controller {
                     ))->result_array();
         }
         if ($param1 == 'delete') {
-            $this->db->where('teacher_id', $param2);
-            $this->db->delete('teacher');
-            redirect(base_url() . 'index.php?admin/teacher/', 'refresh');
+            $this->db->where('bolsas_id', $param2);
+            $this->db->delete('bolsas');
+            $this->session->set_flashdata('flash_message', get_phrase('bolsa_deletada_com_sucesso'));
+            redirect(base_url() . 'index.php?educacional/bolsas/', 'refresh');
         }
 
         $page_data['bolsas'] = $this->db->get('bolsas')->result_array();
@@ -90,18 +87,19 @@ class educacional extends CI_Controller {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
         if ($param1 == 'create') {
-            $data['name'] = $this->input->post('name');
-            $data['birthday'] = $this->input->post('birthday');
-            $data['sex'] = $this->input->post('sex');
-            $data['address'] = $this->input->post('address');
-            $data['phone'] = $this->input->post('phone');
-            $data['email'] = $this->input->post('email');
-            $data['password'] = $this->input->post('password');
-            $this->db->insert('teacher', $data);
-            $teacher_id = mysql_insert_id();
-            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/teacher_image/' . $teacher_id . '.jpg');
-            $this->email_model->account_opening_email('teacher', $data['email']); //SEND EMAIL ACCOUNT OPENING EMAIL
-            redirect(base_url() . 'index.php?admin/teacher/', 'refresh');
+            $data['cur_tx_descricao'] = $this->input->post('curso');
+            $data['cur_tx_abreviatura'] = $this->input->post('abreviatura');
+            $data['cur_tx_coordenador'] = $this->input->post('coordenador');
+            $data['cur_tx_duracao'] = $this->input->post('duracao');
+            $data['cur_nb_ativ_comp_obrigatoria'] = $this->input->post('atividades_complementares');
+            $data['cur_nb_estagio_obrigatoria'] = $this->input->post('estagio');
+            $data['cur_fl_valor'] = $this->input->post('valor');
+            $data['instituicao_id'] = $this->input->post('instituicao');
+            $data['cur_tx_habilitacao'] = $this->input->post('habilidade');
+            
+            $this->db->insert('cursos', $data);
+            $this->session->set_flashdata('flash_message', get_phrase('curso_cadastrado_com_sucesso'));
+            redirect(base_url() . 'index.php?educacional/cursos/', 'refresh');
         }
         if ($param1 == 'do_update') {
             $data['name'] = $this->input->post('name');
@@ -120,14 +118,15 @@ class educacional extends CI_Controller {
             $page_data['personal_profile'] = true;
             $page_data['current_teacher_id'] = $param2;
         } else if ($param1 == 'edit') {
-            $page_data['edit_data'] = $this->db->get_where('teacher', array(
-                        'teacher_id' => $param2
+            $page_data['edit_data'] = $this->db->get_where('cursos', array(
+                        'cursos_id' => $param2
                     ))->result_array();
         }
         if ($param1 == 'delete') {
-            $this->db->where('teacher_id', $param2);
-            $this->db->delete('teacher');
-            redirect(base_url() . 'index.php?admin/teacher/', 'refresh');
+            $this->db->where('cursos_id', $param2);
+            $this->db->delete('cursos');
+            $this->session->set_flashdata('flash_message', get_phrase('curso_deletado_com_sucesso'));
+            redirect(base_url() . 'index.php?educacional/cursos/', 'refresh');
         }
 
         $page_data['cursos'] = $this->db->get('cursos')->result_array();

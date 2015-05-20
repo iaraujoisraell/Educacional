@@ -5,11 +5,11 @@
         <ul class="nav nav-tabs nav-tabs-left">
             <li class="active">
                 <a href="#list" data-toggle="tab"><i class="icon-align-justify"></i> 
-                    <?php echo get_phrase('lista_bolsas'); ?>
+                    <?php echo get_phrase('lista_cursos'); ?>
                 </a></li>
             <li>
                 <a href="#add" data-toggle="tab"><i class="icon-plus"></i>
-                    <?php echo get_phrase('add_bolsas'); ?>
+                    <?php echo get_phrase('novo curso'); ?>
                 </a></li>
         </ul>
         <!------CONTROL TABS END------->
@@ -23,7 +23,7 @@
                     <div class=" action-nav-button" style="width:300px;">
                         <a href="#" title="Users">
                             <img src="<?php echo base_url(); ?>template/images/icons_menu/vestibular.png" />
-                            <span>Total <?php echo count($bolsas); ?> Bolsas</span>
+                            <span>Total <?php echo count($cursos); ?> Cursos</span>
                         </a>
                     </div>
                 </div>
@@ -34,53 +34,33 @@
                                 <thead>
                                     <tr>
                                         <th><div>ID</div></th>
-                                <th width="80"><div><?php echo get_phrase('ano'); ?></div></th>
-                                <th><div><?php echo get_phrase('semestre'); ?></div></th>
-                                <th><div><?php echo get_phrase('data_realização'); ?></div></th>
-                                <th><div><?php echo get_phrase('tipo'); ?></div></th>
-                                <th><div><?php echo get_phrase('status'); ?></div></th>
-                                <th><div><?php echo get_phrase('options'); ?></div></th>
+                                <th width="80"><div><?php echo get_phrase('Abrev.'); ?></div></th>
+                                <th><div><?php echo get_phrase('Curso'); ?></div></th>
+                                <th><div><?php echo get_phrase('Habilitacao'); ?></div></th>
+                                <th><div><?php echo get_phrase('Coordenador'); ?></div></th>
+                                <th><div><?php echo get_phrase('Valor'); ?></div></th>
+                                <th><div><?php echo get_phrase('op��es'); ?></div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     $count = 1;
-                                    foreach ($vestibular as $row):
+                                    foreach ($cursos as $row):  
                                         ?>
                                         <tr>
                                             <td><?php echo $count++; ?></td>
-                                            <td><?php echo $row['vest_nb_ano']; ?></td>
-                                            <td><?php
-                                                if ($row['vest_tx_semestre'] == '1') {
-                                                    echo "I Semestre";
-                                                } else if ($row['vest_tx_semestre'] == '2') {
-                                                    echo "II Semestre";
-                                                }
-                                                ?></td>
-                                            <td><?php echo date('d/m/Y', strtotime($row['vest_dt_realizacao'])); ?></td>
-                                            <td><?php
-                                                if ($row['vest_nb_tipo'] == 1) {
-                                                    echo "Macro";
-                                                } else if ($row['vest_nb_tipo'] == '2') {
-                                                    echo "Agendado";
-                                                }
-                                                ?></td>
-                                            <td><?php
-                                                if ($row['vest_dt_realizacao'] >= date('Y-m-d')) {
-                                                    echo "Aberto";
-                                                } else {
-                                                    echo "Fechado";
-                                                }
-                                                ?></td>
+                                            <td><?php echo $row['cur_tx_abreviatura']; ?></td>
+                                            <td><?php echo $row['cur_tx_descricao']; ?></td>
+                                            <td><?php echo $row['cur_tx_habilitacao']; ?></td>
+                                            <td><?php echo $row['cur_tx_coordenador']; ?></td>
+                                            <td><?php echo $row['cur_fl_valor']; ?></td>
+                                            
                                             <td align="center">
-                                                <a data-toggle="modal" href="#modal-form" onclick="modal('teacher_profile',<?php echo $row['teacher_id']; ?>)"
-                                                   class="btn btn-default btn-small">
-                                                    <i class="icon-user"></i> <?php echo get_phrase('profile'); ?>
-                                                </a>
-                                                <a data-toggle="modal" href="#modal-form" onclick="modal('edit_vestibular',<?php echo $row['vestibular_id']; ?>)"	class="btn btn-gray btn-small">
+                                                
+                                                <a data-toggle="modal" href="#modal-form" onclick="modal('editar_curso',<?php echo $row['cursos_id']; ?>)"	class="btn btn-gray btn-small">
                                                     <i class="icon-wrench"></i> <?php echo get_phrase('editar'); ?>
                                                 </a>
-                                                <a data-toggle="modal" href="#modal-delete" onclick="modal_delete('<?php echo base_url(); ?>index.php?admin/vestibular/delete/<?php echo $row['vestibular_id']; ?>')"
+                                                <a data-toggle="modal" href="#modal-delete" onclick="modal_delete('<?php echo base_url(); ?>index.php?educacional/cursos/delete/<?php echo $row['cursos_id']; ?>')"
                                                    class="btn btn-red btn-small">
                                                     <i class="icon-trash"></i> <?php echo get_phrase('deletar'); ?>
                                                 </a>
@@ -98,52 +78,47 @@
             <!----CREATION FORM STARTS---->
             <div class="tab-pane box" id="add" style="padding: 5px">
                 <div class="box-content">
-                    <?php echo form_open('admin/teacher/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
-                    <form method="post" action="<?php echo base_url(); ?>index.php?admin/teacher/create/" class="form-horizontal validatable" enctype="multipart/form-data">
+                    <?php echo form_open('educacional/cursos/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
+                    <form method="post" action="<?php echo base_url(); ?>index.php?educacional/cursos/create/" class="form-horizontal validatable" enctype="multipart/form-data">
                         <div class="padded">
                             <table width="100%" border="0" class="responsive">
                                 <tbody>
                                     <tr>
                                         <td width="25%">
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('ano'); ?></label>
+                                                <label class="control-label"><?php echo get_phrase('Nome do Curso'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" class="validate[required]" name="name"/>
+                                                    <input type="text" class="validate[required]" name="curso"/>
                                                 </div>
                                             </div>
-
+                                            
                                         </td>
                                         <td>
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('semestre'); ?></label>
+                                                <label class="control-label"><?php echo get_phrase('Nome Abrev. do Curso'); ?></label>
                                                 <div class="controls">
-                                                    <select>
-                                                        <option value="I">I Semestre</option>
-                                                        <option value="II">II Semestre</option>
-                                                    </select>
+                                                    <input type="text" class="validate[required]" name="abreviatura"/>
                                                 </div>
                                             </div>
                                         </td>
+                                        
                                     </tr>
 
                                     <tr>
+                                        
                                         <td width="25%">
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('data_vestibular'); ?></label>
+                                                <label class="control-label"><?php echo get_phrase('habilitacao_do_curso'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" class="validate[required]" name="data_vestibular"/>
+                                                    <input type="text"  name="habilidade"/>
                                                 </div>
                                             </div>
-
                                         </td>
                                         <td>
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('tipo'); ?></label>
+                                                <label class="control-label"><?php echo get_phrase('horas_de_estagio_obrigatorio'); ?></label>
                                                 <div class="controls">
-                                                    <select>
-                                                        <option value="0">Macro</option>
-                                                        <option value="1">Agendado</option>
-                                                    </select>
+                                                    <input type="text"  name="estagio"/>
                                                 </div>
                                             </div>
                                         </td>
@@ -153,18 +128,17 @@
                                     <tr>
                                         <td width="25%">
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('hora_inicio_prova'); ?></label>
+                                                <label class="control-label"><?php echo get_phrase('horas_de_atividade_complementares_obrigatorio'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" class="validate[required]" name="data_vestibular"/>
+                                                    <input type="text"  name="atividades_complementares"/>
                                                 </div>
                                             </div>
-
                                         </td>
-                                        <td>
+                                        <td >
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('hora_termino_prova'); ?></label>
+                                                <label class="control-label"><?php echo get_phrase('duracao_do_curso_(semestre(s))'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" class="validate[required]" name="data_vestibular"/>
+                                                  <input type="text" class="validate[required]" name="duracao"/>
                                                 </div>
                                             </div>
                                         </td>
@@ -172,42 +146,35 @@
 
 
                                     <tr>
-                                        <td width="25%">
-                                            <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('data_abertura_inscrições_vestibular'); ?></label>
-                                                <div class="controls">
-                                                    <input type="text" class="validate[required]" name="data_vestibular"/>
-                                                </div>
-                                            </div>
-
-                                        </td>
                                         <td>
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('data_encerramento_incrições_vestibular'); ?></label>
+                                                <label class="control-label"><?php echo get_phrase('coordenador(a)'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" class="validate[required]" name="data_vestibular"/>
+                                                    <input type="text" class="validate[required]" name="coordenador"/>
                                                 </div>
                                             </div>
                                         </td>
-                                    </tr>
-
-
-                                    <tr>
                                         <td width="25%">
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('data_divulgação_resultado'); ?></label>
+                                                <label class="control-label"><?php echo get_phrase('valor_do_curso'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" class="validate[required]" name="data_vestibular"/>
+                                                    <input type="text" class="validate[required]" name="valor"/>
+                                                    <input type="hidden" value="1"  name="instituicao"/>
                                                 </div>
                                             </div>
+
                                         </td>
+                                       
                                     </tr>
+
+
+                                    
                                 </tbody>
                             </table>
 
                         </div>
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-gray"><?php echo get_phrase('add_vestibular'); ?></button>
+                            <button type="submit" class="btn btn-gray"><?php echo get_phrase('criar_curso'); ?></button>
                         </div>
                     </form>                
                 </div>                

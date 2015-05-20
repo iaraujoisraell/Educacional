@@ -34,7 +34,9 @@
     }
 
     function modal_delete(param1)
+
     {
+        
         document.getElementById('delete_link').href = param1;
     }
 
