@@ -83,7 +83,7 @@ class educacional extends CI_Controller {
         $this->load->view('../views/educacional/index', $page_data);
     }
 
-     function cursos($param1 = '', $param2 = '', $param3 = '') {
+    function cursos($param1 = '', $param2 = '', $param3 = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
         if ($param1 == 'create') {
@@ -96,7 +96,7 @@ class educacional extends CI_Controller {
             $data['cur_fl_valor'] = $this->input->post('valor');
             $data['instituicao_id'] = $this->input->post('instituicao');
             $data['cur_tx_habilitacao'] = $this->input->post('habilidade');
-            
+
             $this->db->insert('cursos', $data);
             $this->session->set_flashdata('flash_message', get_phrase('curso_cadastrado_com_sucesso'));
             redirect(base_url() . 'index.php?educacional/cursos/', 'refresh');
@@ -110,14 +110,17 @@ class educacional extends CI_Controller {
             $data['email'] = $this->input->post('email');
             $data['password'] = $this->input->post('password');
 
-            $this->db->where('teacher_id', $param2);
-            $this->db->update('teacher', $data);
-            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/teacher_image/' . $param2 . '.jpg');
+            $this->db->where('cursos_id', $param2);
+            $this->db->update('cursos', $data);
+            
             redirect(base_url() . 'index.php?admin/teacher/', 'refresh');
         } else if ($param1 == 'personal_profile') {
+            
             $page_data['personal_profile'] = true;
             $page_data['current_teacher_id'] = $param2;
+            
         } else if ($param1 == 'edit') {
+            
             $page_data['edit_data'] = $this->db->get_where('cursos', array(
                         'cursos_id' => $param2
                     ))->result_array();
@@ -136,5 +139,7 @@ class educacional extends CI_Controller {
         $page_data['page_title'] = get_phrase('<a href="index.php?admin/dashboard">Painel Geral</a> > <a href="index.php?admin/educacional">Painel_educacional </a><b>></b> <a href="">Gerenciar_cursos</a>');
         $this->load->view('../views/educacional/index', $page_data);
     }
+
 }
+
 ?>
