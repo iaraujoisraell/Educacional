@@ -4,6 +4,19 @@
     
 }
 
+.input{
+    color:#444;
+    font-size: 12px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    padding:2px;
+    margin-top: 2px;
+    border: #78a4d1 solid 1px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border-radius:5px;
+}
+
 .google_map{
 	width: 350px;
 	height: 300px;
@@ -11823,12 +11836,12 @@ table.dataTable tr.even {
 	background-size:100%;
 }
 .paging_full_numbers a.paginate_button:hover {
-	background:#eaeaea;cC1jb2xvcj0iI2VhZWFlYSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+	background:#eaeaea;
 	background-size:100%;
 }
 .paging_full_numbers a.paginate_active,.paging_full_numbers a.paginate_button:active {
 	border:1px solid #EAEDF1;
-	color#aaa;
+	color: #aaa;
 }
 .paging_full_numbers a.paginate_button_disabled {
 	background:#EAEDF1;

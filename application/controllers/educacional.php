@@ -93,7 +93,8 @@ class educacional extends CI_Controller {
             $data['cur_tx_duracao'] = $this->input->post('duracao');
             $data['cur_nb_ativ_comp_obrigatoria'] = $this->input->post('atividades_complementares');
             $data['cur_nb_estagio_obrigatoria'] = $this->input->post('estagio');
-            $data['cur_fl_valor'] = $this->input->post('valor');
+            $Valor_maskara = str_replace(',','.',str_replace('.','',$this->input->post('valor')));
+            $data['cur_fl_valor'] = $Valor_maskara;
             $data['instituicao_id'] = $this->input->post('instituicao');
             $data['cur_tx_habilitacao'] = $this->input->post('habilidade');
 
@@ -102,18 +103,21 @@ class educacional extends CI_Controller {
             redirect(base_url() . 'index.php?educacional/cursos/', 'refresh');
         }
         if ($param1 == 'do_update') {
-            $data['name'] = $this->input->post('name');
-            $data['birthday'] = $this->input->post('birthday');
-            $data['sex'] = $this->input->post('sex');
-            $data['address'] = $this->input->post('address');
-            $data['phone'] = $this->input->post('phone');
-            $data['email'] = $this->input->post('email');
-            $data['password'] = $this->input->post('password');
+            $data['cur_tx_descricao'] = $this->input->post('curso');
+            $data['cur_tx_abreviatura'] = $this->input->post('abreviatura');
+            $data['cur_tx_coordenador'] = $this->input->post('coordenador');
+            $data['cur_tx_duracao'] = $this->input->post('duracao');
+            $data['cur_nb_ativ_comp_obrigatoria'] = $this->input->post('atividades_complementares');
+            $data['cur_nb_estagio_obrigatoria'] = $this->input->post('estagio');
+            $Valor_maskara = str_replace(',','.',str_replace('.','',$this->input->post('valor')));
+            $data['cur_fl_valor'] = $Valor_maskara;
+            $data['instituicao_id'] = $this->input->post('instituicao');
+            $data['cur_tx_habilitacao'] = $this->input->post('habilidade');
 
             $this->db->where('cursos_id', $param2);
             $this->db->update('cursos', $data);
             
-            redirect(base_url() . 'index.php?admin/teacher/', 'refresh');
+            redirect(base_url() . 'index.php?educacional/cursos/', 'refresh');
         } else if ($param1 == 'personal_profile') {
             
             $page_data['personal_profile'] = true;

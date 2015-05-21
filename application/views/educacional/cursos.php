@@ -36,10 +36,10 @@
                                         <th><div>ID</div></th>
                                 <th width="80"><div><?php echo get_phrase('Abrev.'); ?></div></th>
                                 <th><div><?php echo get_phrase('Curso'); ?></div></th>
-                                <th><div><?php echo get_phrase('Habilitacao'); ?></div></th>
+                                <th><div><?php echo get_phrase('Duração'); ?></div></th>
                                 <th><div><?php echo get_phrase('Coordenador'); ?></div></th>
                                 <th><div><?php echo get_phrase('Valor'); ?></div></th>
-                                <th><div><?php echo get_phrase('op��es'); ?></div></th>
+                                <th><div><?php echo get_phrase('Opções'); ?></div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -49,11 +49,11 @@
                                         ?>
                                         <tr>
                                             <td><?php echo $count++; ?></td>
-                                            <td><?php echo $row['cur_tx_abreviatura']; ?></td>
-                                            <td><?php echo $row['cur_tx_descricao']; ?></td>
-                                            <td><?php echo $row['cur_tx_habilitacao']; ?></td>
-                                            <td><?php echo $row['cur_tx_coordenador']; ?></td>
-                                            <td><?php echo $row['cur_fl_valor']; ?></td>
+                                            <td ><font style="text-transform: uppercase;border-radius:5px;"><?php echo $row['cur_tx_abreviatura']; ?></font></td>
+                                            <td><font style="text-transform: uppercase;border-radius:5px;"><?php echo $row['cur_tx_descricao']; ?></font></td>
+                                            <td><font style="text-transform: uppercase;border-radius:5px;"><?php echo $row['cur_tx_duracao']; ?></font></td>
+                                            <td><font style="text-transform: uppercase;border-radius:5px;"><?php echo $row['cur_tx_coordenador']; ?></font></td>
+                                            <td><?php echo 'R$ '.number_format($row['cur_fl_valor'], 2, ',', ''); ?></td>
                                             
                                             <td align="center">
                                                 
@@ -88,7 +88,7 @@
                                             <div class="control-group">
                                                 <label class="control-label"><?php echo get_phrase('Nome do Curso'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" class="validate[required]" name="curso"/>
+                                                    <input type="text" class="validate[required]" style="text-transform: uppercase;border-radius:5px;" name="curso"/>
                                                 </div>
                                             </div>
                                             
@@ -97,7 +97,7 @@
                                             <div class="control-group">
                                                 <label class="control-label"><?php echo get_phrase('Nome Abrev. do Curso'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" class="validate[required]" name="abreviatura"/>
+                                                    <input type="text" class="validate[required]" style="text-transform: uppercase;border-radius:5px;" name="abreviatura"/>
                                                 </div>
                                             </div>
                                         </td>
@@ -110,7 +110,7 @@
                                             <div class="control-group">
                                                 <label class="control-label"><?php echo get_phrase('habilitacao_do_curso'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text"  name="habilidade"/>
+                                                    <input type="text" style="text-transform: uppercase;border-radius:5px;" name="habilidade"/>
                                                 </div>
                                             </div>
                                         </td>
@@ -118,7 +118,7 @@
                                             <div class="control-group">
                                                 <label class="control-label"><?php echo get_phrase('horas_de_estagio_obrigatorio'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text"  name="estagio"/>
+                                                    <input type="text" style="text-transform: uppercase;border-radius:5px;" name="estagio"/>
                                                 </div>
                                             </div>
                                         </td>
@@ -130,15 +130,15 @@
                                             <div class="control-group">
                                                 <label class="control-label"><?php echo get_phrase('horas_de_atividade_complementares_obrigatorio'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text"  name="atividades_complementares"/>
+                                                    <input type="text" style="text-transform: uppercase;border-radius:5px;" name="atividades_complementares"/>
                                                 </div>
                                             </div>
                                         </td>
                                         <td >
                                             <div class="control-group">
                                                 <label class="control-label"><?php echo get_phrase('duracao_do_curso_(semestre(s))'); ?></label>
-                                                <div class="controls">
-                                                  <input type="text" class="validate[required]" name="duracao"/>
+                                                <div class="controls">                                                  
+                                                  <input type="text" style="text-transform: uppercase;border-radius:5px;" class="validate[required]" name="duracao"/>
                                                 </div>
                                             </div>
                                         </td>
@@ -150,7 +150,7 @@
                                             <div class="control-group">
                                                 <label class="control-label"><?php echo get_phrase('coordenador(a)'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" class="validate[required]" name="coordenador"/>
+                                                    <input type="text" style="text-transform: uppercase;border-radius:5px;" class="validate[required]" name="coordenador"/>
                                                 </div>
                                             </div>
                                         </td>
@@ -158,7 +158,7 @@
                                             <div class="control-group">
                                                 <label class="control-label"><?php echo get_phrase('valor_do_curso'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" class="validate[required]" name="valor"/>
+                                                    <input type="text" placeholder="R$ 0.000,00" style="text-transform: uppercase;border-radius:5px;" onKeyPress="return(MascaraMoeda1(this, '.', ',', event))" class="validate[required]" name="valor"/>
                                                     <input type="hidden" value="1"  name="instituicao"/>
                                                 </div>
                                             </div>
