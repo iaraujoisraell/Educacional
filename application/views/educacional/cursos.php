@@ -49,10 +49,10 @@
                                         ?>
                                         <tr>
                                             <td><?php echo $count++; ?></td>
-                                            <td ><font style="text-transform: uppercase;border-radius:5px;"><?php echo $row['cur_tx_abreviatura']; ?></font></td>
-                                            <td><font style="text-transform: uppercase;border-radius:5px;"><?php echo $row['cur_tx_descricao']; ?></font></td>
-                                            <td><font style="text-transform: uppercase;border-radius:5px;"><?php echo $row['cur_tx_duracao']; ?></font></td>
-                                            <td><font style="text-transform: uppercase;border-radius:5px;"><?php echo $row['cur_tx_coordenador']; ?></font></td>
+                                            <td id="tdupper"><?php echo $row['cur_tx_abreviatura']; ?></font></td>
+                                            <td id="tdupper"><?php echo $row['cur_tx_descricao']; ?></font></td>
+                                            <td id="tdupper"><?php echo $row['cur_tx_duracao']; ?></font></td>
+                                            <td id="tdupper"><?php echo $row['cur_tx_coordenador']; ?></font></td>
                                             <td><?php echo 'R$ '.number_format($row['cur_fl_valor'], 2, ',', ''); ?></td>
                                             
                                             <td align="center">
