@@ -70,8 +70,8 @@ class Crud_model extends CI_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
-    
-        function get_candidato_pontuacao_info($chamada_vestibular_id) {
+
+    function get_candidato_pontuacao_info($chamada_vestibular_id) {
 
         $this->db->select("*");
         $this->db->where('vestibular_id', $chamada_vestibular_id);
@@ -83,7 +83,6 @@ class Crud_model extends CI_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
-    
 
     function get_resultado_chamada_info($chamada_vestibular_id, $candidatoChamada) {
 
@@ -91,6 +90,17 @@ class Crud_model extends CI_Model {
         $this->db->where('vest_nb_codigo', $chamada_vestibular_id);
         $this->db->where('can_nb_codigo', $candidatoChamada);
         $this->db->from('chamada_vestibular');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    /* EDUCACIONAL  - CADASTRO DE MATRIZ */
+
+    function get_matriz_paginacao() {
+        $this->db->select("*");
+        $this->db->from('matriz');
+        $this->db->join('cursos', 'cursos.cursos_id = matriz.cursos_id');
+        $this->db->order_by("mat_tx_ano");
         $query = $this->db->get();
         return $query->result_array();
     }

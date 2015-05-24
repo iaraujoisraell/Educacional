@@ -11,6 +11,32 @@
  *
  * Date: 2013-2-4
  */
+
+/*
+ * Função para validar campo só com número, caixa Alta, Baixa
+ */
+ function mascara(o,f){
+                v_obj=o
+                v_fun=f
+                setTimeout("execmascara()",1)
+            }
+
+            function execmascara(){
+                v_obj.value=v_fun(v_obj.value)
+            }
+
+            function soNumeros(v){
+                return v.replace(/\D/g,"")
+            }
+
+            function caixaAlta(v) {
+                return v.toUpperCase()
+            }
+
+            function caixaBaixa(v) {
+                return v.toLowerCase()
+            }
+
 function MascaraMoeda1(objTextBox, SeparadorMilesimo, SeparadorDecimal, e) {
     var sep = 0;
     var key = '';
