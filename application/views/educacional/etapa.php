@@ -5,11 +5,11 @@
         <ul class="nav nav-tabs nav-tabs-left">
             <li class="active">
                 <a href="#list" data-toggle="tab"><i class="icon-align-justify"></i> 
-                    <?php echo get_phrase('lista_cursos'); ?>
+                    <?php echo get_phrase('lista_etapa'); ?>
                 </a></li>
             <li>
                 <a href="#add" data-toggle="tab"><i class="icon-plus"></i>
-                    <?php echo get_phrase('novo curso'); ?>
+                    <?php echo get_phrase('nova_etapa'); ?>
                 </a></li>
         </ul>
         <!------CONTROL TABS END------->
@@ -22,8 +22,8 @@
                 <div class="action-nav-normal">
                     <div class=" action-nav-button" style="width:300px;">
                         <a href="#" title="Users">
-                            <img src="<?php echo base_url(); ?>template/images/icons_menu/vestibular.png" />
-                            <span>Total <?php echo count($cursos); ?> Cursos</span>
+                            <img src="<?php echo base_url(); ?>template/images/icons_menu/periodo_letivo.png" />
+                            <span>Total <?php echo count($periodo); ?> Periodo Letivo</span>
                         </a>
                     </div>
                 </div>
@@ -34,33 +34,31 @@
                                 <thead>
                                     <tr>
                                         <th><div>ID</div></th>
-                                <th width="80"><div><?php echo get_phrase('Abrev.'); ?></div></th>
-                                <th><div><?php echo get_phrase('Curso'); ?></div></th>
-                                <th><div><?php echo get_phrase('Duração'); ?></div></th>
-                                <th><div><?php echo get_phrase('Coordenador'); ?></div></th>
-                                <th><div><?php echo get_phrase('Valor'); ?></div></th>
+                                <th><div><?php echo get_phrase('peridodo_letivo.'); ?></div></th>
+                                <th><div><?php echo get_phrase('dias_letivo'); ?></div></th>
+                                <th><div><?php echo get_phrase('ano'); ?></div></th>
+                                <th><div><?php echo get_phrase('semestre'); ?></div></th>
                                 <th><div><?php echo get_phrase('Opções'); ?></div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     $count = 1;
-                                    foreach ($cursos as $row):  
+                                    foreach ($periodo as $row):
                                         ?>
                                         <tr>
                                             <td><?php echo $count++; ?></td>
-                                            <td><?php echo ucfirst($row['cur_tx_abreviatura']); ?></font></td>
-                                            <td><?php echo ucfirst($row['cur_tx_descricao']); ?></font></td>
-                                            <td><?php echo ucfirst($row['cur_tx_duracao']); ?></font></td>
-                                            <td><?php echo ucfirst($row['cur_tx_coordenador']); ?></font></td>
-                                            <td><?php echo 'R$ '.number_format($row['cur_fl_valor'], 2, ',', ''); ?></td>
-                                            
+                                            <td><?php echo ucfirst($row['periodo_letivo']); ?></font></td>
+                                            <td><?php echo $row['dias_letivos']; ?></font></td>
+                                            <td><?php echo $row['ano']; ?></font></td>
+                                            <td><?php echo $row['semestre'] . "- Semestre" ?></font></td>
+
                                             <td align="center">
-                                                
+
                                                 <a data-toggle="modal" href="#modal-form" onclick="modal('editar_curso',<?php echo $row['cursos_id']; ?>)"	class="btn btn-gray btn-small">
                                                     <i class="icon-wrench"></i> <?php echo get_phrase('editar'); ?>
                                                 </a>
-                                                <a data-toggle="modal" href="#modal-delete" onclick="modal_delete('<?php echo base_url(); ?>index.php?educacional/cursos/delete/<?php echo $row['cursos_id']; ?>')"
+                                                <a data-toggle="modal" href="#modal-delete" onclick="modal_delete('<?php echo base_url(); ?>index.php?educacional/periodo/delete/<?php echo $row['periodo_letivo_id']; ?>')"
                                                    class="btn btn-red btn-small">
                                                     <i class="icon-trash"></i> <?php echo get_phrase('deletar'); ?>
                                                 </a>
@@ -86,39 +84,39 @@
                                     <tr>
                                         <td width="25%">
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('Nome do Curso'); ?></label>
+                                                <label class="control-label"><?php echo get_phrase('periodo_letivo'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" class="validate[required]" style="text-transform: uppercase;border-radius:5px;" name="curso"/>
+                                                    <input type="text" class="validate[required]" name="curso"/>
                                                 </div>
                                             </div>
-                                            
+
                                         </td>
                                         <td>
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('Nome Abrev. do Curso'); ?></label>
+                                                <label class="control-label"><?php echo get_phrase('descrição'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" class="validate[required]" style="text-transform: uppercase;border-radius:5px;" name="abreviatura"/>
+                                                    <input type="text" class="validate[required]" name="abreviatura"/>
                                                 </div>
                                             </div>
                                         </td>
-                                        
+
                                     </tr>
 
                                     <tr>
-                                        
+
                                         <td width="25%">
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('habilitacao_do_curso'); ?></label>
+                                                <label class="control-label"><?php echo get_phrase('dias_letivo'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" style="text-transform: uppercase;border-radius:5px;" name="habilidade"/>
+                                                    <input type="text" name="habilidade"/>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('horas_de_estagio_obrigatorio'); ?></label>
+                                                <label class="control-label"><?php echo get_phrase('data_inicio'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" style="text-transform: uppercase;border-radius:5px;" name="estagio"/>
+                                                    <input type="text" name="estagio"/>
                                                 </div>
                                             </div>
                                         </td>
@@ -128,17 +126,20 @@
                                     <tr>
                                         <td width="25%">
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('horas_de_atividade_complementares_obrigatorio'); ?></label>
+                                                <label class="control-label"><?php echo get_phrase('data_previsão_termino'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" style="text-transform: uppercase;border-radius:5px;" name="atividades_complementares"/>
+                                                    <input type="text" name="atividades_complementares"/>
                                                 </div>
                                             </div>
                                         </td>
                                         <td >
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('duracao_do_curso_(semestre(s))'); ?></label>
+                                                <label class="control-label"><?php echo get_phrase('situação_período'); ?></label>
                                                 <div class="controls">                                                  
-                                                  <input type="text" style="text-transform: uppercase;border-radius:5px;" class="validate[required]" name="duracao"/>
+                                                    <select>
+                                                        <option value="0">Período Encerrado</option>
+                                                        <option value="1">Período Aberto</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </td>
@@ -148,9 +149,9 @@
                                     <tr>
                                         <td>
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('coordenador(a)'); ?></label>
+                                                <label class="control-label"><?php echo get_phrase('ano'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" style="text-transform: uppercase;border-radius:5px;" class="validate[required]" name="coordenador"/>
+                                                    <input type="text" class="validate[required]" name="coordenador"/>
                                                 </div>
                                             </div>
                                         </td>
@@ -164,11 +165,11 @@
                                             </div>
 
                                         </td>
-                                       
+
                                     </tr>
 
 
-                                    
+
                                 </tbody>
                             </table>
 
