@@ -66,10 +66,13 @@
                                                 </a>
                                                  */
                                                 ?>
+                                                <a  href="index.php?educacional/matriz_pdf/carrega_matriz/<?php echo $row['matriz_id']; ?>" target="_new"	class="btn btn-black btn-small">
+                                                    <i class="icon-print"></i> <?php echo get_phrase('imprimir'); ?>
+                                                </a>
                                                 <a  href="index.php?educacional/matriz_disciplina/carrega_matriz/<?php echo $row['matriz_id']; ?>" 	class="btn btn-gray btn-small">
                                                     <i class="icon-wrench"></i> <?php echo get_phrase('editar'); ?>
                                                 </a>
-                                                <a data-toggle="modal" href="#modal-delete" onclick="modal_delete('<?php echo base_url(); ?>index.php?educacional/cursos/delete/<?php echo $row['cursos_id']; ?>')"
+                                                <a data-toggle="modal" href="#modal-delete" onclick="modal_delete('<?php echo base_url(); ?>index.php?educacional/matriz/delete/<?php echo $row['matriz_id']; ?>')"
                                                    class="btn btn-red btn-small">
                                                     <i class="icon-trash"></i> <?php echo get_phrase('deletar'); ?>
                                                 </a>
@@ -114,7 +117,7 @@
                                                 <div class="controls">
                                                     <select class="validate[required]" name="semestre">
                                                         <option value="I" >I SEMESTRE</option>
-                                                        <option value="II" >I SEMESTRE</option>
+                                                        <option value="II" >II SEMESTRE</option>
                                                         </select>
                                                  </div>
                                             </div>

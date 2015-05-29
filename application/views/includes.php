@@ -9,6 +9,6 @@
         
         <?php
 		//////////LOADING SYSTEM SETTINGS FOR ALL PAGES AND ACCOUNTS/////////
-		
+		$page_title     = 'Educacional';
 		$system_name	=	$this->db->get_where('settings' , array('type'=>'system_name'))->row()->description;
 		$system_title	=	$this->db->get_where('settings' , array('type'=>'system_title'))->row()->description;

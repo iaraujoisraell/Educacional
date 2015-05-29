@@ -5,11 +5,11 @@
 		<ul class="nav nav-tabs nav-tabs-left">
 			<li class="active">
             	<a href="#list" data-toggle="tab"><i class="icon-align-justify"></i> 
-					<?php echo get_phrase('teacher_list');?>
+					<?php echo get_phrase('professores');?>
                     	</a></li>
 			<li>
             	<a href="#add" data-toggle="tab"><i class="icon-plus"></i>
-					<?php echo get_phrase('add_teacher');?>
+					<?php echo get_phrase('novo_professor(a)');?>
                     	</a></li>
 		</ul>
     	<!------CONTROL TABS END------->
@@ -23,7 +23,7 @@
                         <div class=" action-nav-button" style="width:300px;">
                           <a href="#" title="Users">
                             <img src="<?php echo base_url();?>template/images/icons/teacher.png" />
-                            <span>Total <?php echo count($teachers);?> teachers</span>
+                            <span>Total <?php echo count($teachers);?> professores</span>
                           </a>
                         </div>
                     </div>
@@ -34,10 +34,10 @@
                                 <thead>
                                     <tr>
                                         <th><div>ID</div></th>
-                                        <th width="80"><div><?php echo get_phrase('photo');?></div></th>
-                                        <th><div><?php echo get_phrase('teacher_name');?></div></th>
+                                        <th width="80"><div><?php echo get_phrase('Foto');?></div></th>
+                                        <th><div><?php echo get_phrase('Nome');?></div></th>
                                         <th><div><?php echo get_phrase('email');?></div></th>
-                                        <th><div><?php echo get_phrase('options');?></div></th>
+                                        <th><div><?php echo get_phrase('opções');?></div></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -48,10 +48,14 @@
                                         <td><?php echo $row['name'];?></td>
                                         <td><?php echo $row['email'];?></td>
                                         <td align="center">
+                                            <a data-toggle="modal" href="#modal-form" onclick="modal('edit_teacher',<?php echo $row['teacher_id'];?>)"	class="btn btn-green btn-small">
+                                                    <i class="icon-paste"></i> <?php echo get_phrase('disciplinas');?>
+                                            </a>
                                             <a data-toggle="modal" href="#modal-form" onclick="modal('teacher_profile',<?php echo $row['teacher_id'];?>)"
                                                  class="btn btn-default btn-small">
                                                     <i class="icon-user"></i> <?php echo get_phrase('profile');?>
                                             </a>
+                                            
                                             <a data-toggle="modal" href="#modal-form" onclick="modal('edit_teacher',<?php echo $row['teacher_id'];?>)"	class="btn btn-gray btn-small">
                                                     <i class="icon-wrench"></i> <?php echo get_phrase('edit');?>
                                             </a>
@@ -136,7 +140,7 @@
                             </div>
                         </div>
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-gray"><?php echo get_phrase('add_teacher');?></button>
+                            <button type="submit" class="btn btn-gray"><?php echo get_phrase('criar_professor');?></button>
                         </div>
                     </form>                
                 </div>                
