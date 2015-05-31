@@ -286,15 +286,25 @@ class educacional extends CI_Controller {
             redirect(base_url(), 'refresh');
         if ($param1 == 'create') {
 
-            $data['descricao'] = $this->input->post('descricao');
-            $data['porcentagem_minima'] = $this->input->post('minima');
-            $data['porcentagem_maxima'] = $this->input->post('maxima');
+            $data['periodo_letivo'] = $this->input->post('periodo_letivo');
+            $data['periodo_letivo_descricao'] = $this->input->post('descricao');
+            $data['dias_letivos'] = $this->input->post('dias_letivos');
+            $newDataInicio = date("Y-m-d", strtotime($this->input->post('data_inicio')));
+            $data['data_inicio'] = $newDataInicio;
+            $newDataPrev = date("Y-m-d", strtotime($this->input->post('data_prev_terminio')));
+            $data['data_prev_termino'] = $newDataPrev;
+            $newDataTermino = date("Y-m-d", strtotime($this->input->post('data_termino')));
+            $data['data_termino'] = $newDataTermino;
+            $data['periodo_encerrado'] = $this->input->post('situacao');
+            $data['ano'] = $this->input->post('ano');
+            $data['semestre'] = $this->input->post('semestre');
 
-            $this->db->insert('bolsas', $data);
-            $this->session->set_flashdata('flash_message', get_phrase('bolsa_cadastrada_com_sucesso'));
-            redirect(base_url() . 'index.php?educacional/bolsas/', 'refresh');
+            $this->db->insert('periodo_letivo', $data);
+            $this->session->set_flashdata('flash_message', get_phrase('periodo_cadastrado_com_sucesso'));
+            redirect(base_url() . 'index.php?educacional/periodo/', 'refresh');
         }
         if ($param1 == 'do_update') {
+            
             $data['name'] = $this->input->post('name');
             $data['birthday'] = $this->input->post('birthday');
             $data['sex'] = $this->input->post('sex');
@@ -311,8 +321,8 @@ class educacional extends CI_Controller {
             $page_data['personal_profile'] = true;
             $page_data['current_teacher_id'] = $param2;
         } else if ($param1 == 'edit') {
-            $page_data['edit_data'] = $this->db->get_where('teacher', array(
-                        'teacher_id' => $param2
+            $page_data['edit_data'] = $this->db->get_where('periodo_letivo', array(
+                        'perido_letivo_id' => $param2
                     ))->result_array();
         }
         if ($param1 == 'delete') {
@@ -379,9 +389,7 @@ class educacional extends CI_Controller {
         $this->load->view('../views/educacional/index', $page_data);
     }
 
-    
-    
-        function turma($param1 = '', $param2 = '', $param3 = '') {
+    function turma($param1 = '', $param2 = '', $param3 = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
         if ($param1 == 'create') {
@@ -429,11 +437,7 @@ class educacional extends CI_Controller {
         $page_data['page_title'] = get_phrase('<a href="index.php?admin/dashboard">Painel Geral</a> > <a href="index.php?admin/educacional">Painel_educacional </a><b>></b> <a href="">Gerenciar Turma</a>');
         $this->load->view('../views/educacional/index', $page_data);
     }
-    
-    
-    
-    
-    
+
 }
 
 ?>

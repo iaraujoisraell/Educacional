@@ -36,8 +36,10 @@
                                         <th><div>ID</div></th>
                                 <th><div><?php echo get_phrase('peridodo_letivo.'); ?></div></th>
                                 <th><div><?php echo get_phrase('dias_letivo'); ?></div></th>
+                                <th><div><?php echo get_phrase('data_início'); ?></div></th>
                                 <th><div><?php echo get_phrase('ano'); ?></div></th>
                                 <th><div><?php echo get_phrase('semestre'); ?></div></th>
+                                <th><div><?php echo get_phrase('situação'); ?></div></th>
                                 <th><div><?php echo get_phrase('Opções'); ?></div></th>
                                 </tr>
                                 </thead>
@@ -50,12 +52,18 @@
                                             <td><?php echo $count++; ?></td>
                                             <td><?php echo ucfirst($row['periodo_letivo']); ?></font></td>
                                             <td><?php echo $row['dias_letivos']; ?></font></td>
+                                            <td><?php echo date("d/m/Y", strtotime($row['data_inicio'])); ?></font></td>
                                             <td><?php echo $row['ano']; ?></font></td>
                                             <td><?php echo $row['semestre'] . "- Semestre" ?></font></td>
+                                            <td><?php if ($row['periodo_encerrado'] == "0") {
+                                            ?><div class="btn btn-green btn-small">Período Encerrado</div> 
+                                                    <?php
+                                                } else if ($row['periodo_encerrado'] == "1") {
+                                                    ?><div class="btn btn-blue btn-small">Período Aberto</div> <?php }
+                                                ?></td>
 
                                             <td align="center">
-
-                                                <a data-toggle="modal" href="#modal-form" onclick="modal('editar_curso',<?php echo $row['cursos_id']; ?>)"	class="btn btn-gray btn-small">
+                                                <a data-toggle="modal" href="#modal-form" onclick="modal('editar_periodo',<?php echo $row['periodo_letivo_id']; ?>)"class="btn btn-gray btn-small">
                                                     <i class="icon-wrench"></i> <?php echo get_phrase('editar'); ?>
                                                 </a>
                                                 <a data-toggle="modal" href="#modal-delete" onclick="modal_delete('<?php echo base_url(); ?>index.php?educacional/periodo/delete/<?php echo $row['periodo_letivo_id']; ?>')"
@@ -74,19 +82,19 @@
             <!----TABLE LISTING ENDS--->
 
             <!----CREATION FORM STARTS---->
-            <div class="tab-pane box" id="add" style="padding: 5px">
+            <div class="tab-pane box" id="add">
                 <div class="box-content">
-                    <?php echo form_open('educacional/cursos/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
+                    <?php echo form_open('educacional/periodo/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
                     <form method="post" action="<?php echo base_url(); ?>index.php?educacional/cursos/create/" class="form-horizontal validatable" enctype="multipart/form-data">
                         <div class="padded">
-                            <table width="100%" border="0" class="responsive">
+                            <table width="100%" class="responsive">
                                 <tbody>
                                     <tr>
-                                        <td width="25%">
+                                        <td width="35%">
                                             <div class="control-group">
                                                 <label class="control-label"><?php echo get_phrase('periodo_letivo'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" class="validate[required]" name="curso"/>
+                                                    <input type="text" class="validate[required]" name="periodo_letivo"/>
                                                 </div>
                                             </div>
 
@@ -95,7 +103,7 @@
                                             <div class="control-group">
                                                 <label class="control-label"><?php echo get_phrase('descrição'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" class="validate[required]" name="abreviatura"/>
+                                                    <input type="text" class="validate[required]" name="descricao"/>
                                                 </div>
                                             </div>
                                         </td>
@@ -108,7 +116,7 @@
                                             <div class="control-group">
                                                 <label class="control-label"><?php echo get_phrase('dias_letivo'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" name="habilidade"/>
+                                                    <input type="text" name="dias_letivos"/>
                                                 </div>
                                             </div>
                                         </td>
@@ -116,7 +124,7 @@
                                             <div class="control-group">
                                                 <label class="control-label"><?php echo get_phrase('data_inicio'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" name="estagio"/>
+                                                    <input type="text" class="datepicker fill-up validate[required]" name="data_inicio"/>
                                                 </div>
                                             </div>
                                         </td>
@@ -128,18 +136,15 @@
                                             <div class="control-group">
                                                 <label class="control-label"><?php echo get_phrase('data_previsão_termino'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" name="atividades_complementares"/>
+                                                    <input type="text" class="datepicker fill-up" name="data_prev_terminio"/>
                                                 </div>
                                             </div>
                                         </td>
                                         <td >
                                             <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('situação_período'); ?></label>
-                                                <div class="controls">                                                  
-                                                    <select>
-                                                        <option value="0">Período Encerrado</option>
-                                                        <option value="1">Período Aberto</option>
-                                                    </select>
+                                                <label class="control-label"><?php echo get_phrase('data_término'); ?></label>
+                                                <div class="controls">
+                                                    <input type="text" class="datepicker fill-up" name="data_termino"/>
                                                 </div>
                                             </div>
                                         </td>
@@ -147,35 +152,44 @@
 
 
                                     <tr>
+                                        <td >
+                                            <div class="control-group">
+                                                <label class="control-label"><?php echo get_phrase('situação_período'); ?></label>
+                                                <div class="controls">                                                  
+                                                    <select name="situacao">
+                                                        <option value="0">Período Encerrado</option>
+                                                        <option value="1">Período Aberto</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
                                         <td>
                                             <div class="control-group">
                                                 <label class="control-label"><?php echo get_phrase('ano'); ?></label>
                                                 <div class="controls">
-                                                    <input type="text" class="validate[required]" name="coordenador"/>
+                                                    <input type="text" class="validate[required]" name="ano"/>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td width="25%">
-                                            <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('valor_do_curso'); ?></label>
-                                                <div class="controls">
-                                                    <input type="text" placeholder="R$ 0.000,00" style="text-transform: uppercase;border-radius:5px;" onKeyPress="return(MascaraMoeda1(this, '.', ',', event))" class="validate[required]" name="valor"/>
-                                                    <input type="hidden" value="1"  name="instituicao"/>
-                                                </div>
-                                            </div>
-
-                                        </td>
-
                                     </tr>
 
 
-
+                                    <tr>
+                                        <td width="25%">
+                                            <div class="control-group">
+                                                <label class="control-label"><?php echo get_phrase('semestre'); ?></label>
+                                                <div class="controls">
+                                                    <input type="text" class="validate[required]" name="semestre"/>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
 
                         </div>
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-gray"><?php echo get_phrase('criar_curso'); ?></button>
+                            <button type="submit" class="btn btn-gray"><?php echo get_phrase('criar_período_letivo'); ?></button>
                         </div>
                     </form>                
                 </div>                
