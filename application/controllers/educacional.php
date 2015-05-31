@@ -297,8 +297,6 @@ class educacional extends CI_Controller {
         $page_data['page_title'] = get_phrase('<a href="index.php?admin/dashboard">Home</a> > <a href="index.php?admin/educacional">Educacional </a><b>></b> <a href="index.php?educacional/matriz">Gerenciar_matriz_curricular</a><b> > </b> <a href="">Disciplinas</a>');
         $this->load->view('../views/educacional/index', $page_data);
     }
-    
-    
 
     function periodo($param1 = '', $param2 = '', $param3 = '') {
         if ($this->session->userdata('admin_login') != 1)
@@ -323,19 +321,24 @@ class educacional extends CI_Controller {
             redirect(base_url() . 'index.php?educacional/periodo/', 'refresh');
         }
         if ($param1 == 'do_update') {
-            
-            $data['name'] = $this->input->post('name');
-            $data['birthday'] = $this->input->post('birthday');
-            $data['sex'] = $this->input->post('sex');
-            $data['address'] = $this->input->post('address');
-            $data['phone'] = $this->input->post('phone');
-            $data['email'] = $this->input->post('email');
-            $data['password'] = $this->input->post('password');
 
-            $this->db->where('teacher_id', $param2);
-            $this->db->update('teacher', $data);
-            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/teacher_image/' . $param2 . '.jpg');
-            redirect(base_url() . 'index.php?admin/teacher/', 'refresh');
+            $data['periodo_letivo'] = $this->input->post('periodo_letivo');
+            $data['periodo_letivo_descricao'] = $this->input->post('descricao');
+            $data['dias_letivos'] = $this->input->post('dias_letivos');
+            $newDataInicio = date("Y-m-d", strtotime($this->input->post('data_inicio')));
+            $data['data_inicio'] = $newDataInicio;
+            $newDataPrev = date("Y-m-d", strtotime($this->input->post('data_prev_terminio')));
+            $data['data_prev_termino'] = $newDataPrev;
+            $newDataTermino = date("Y-m-d", strtotime($this->input->post('data_termino')));
+            $data['data_termino'] = $newDataTermino;
+            $data['periodo_encerrado'] = $this->input->post('situacao');
+            $data['ano'] = $this->input->post('ano');
+            $data['semestre'] = $this->input->post('semestre');
+
+            $this->db->where('periodo_letivo_id', $param2);
+            $this->db->update('periodo_letivo', $data);
+            $this->session->set_flashdata('flash_message', get_phrase('periodo_alterado_com_sucesso'));
+            redirect(base_url() . 'index.php?educacional/periodo/', 'refresh');
         } else if ($param1 == 'personal_profile') {
             $page_data['personal_profile'] = true;
             $page_data['current_teacher_id'] = $param2;
@@ -408,76 +411,22 @@ class educacional extends CI_Controller {
         $this->load->view('../views/educacional/index', $page_data);
     }
 
-
-    
     function professor($param1 = '', $param2 = '', $param3 = '') {
-    if ($this->session->userdata('admin_login') != 1)
-        redirect(base_url(), 'refresh');
-    if ($param1 == 'create') {
-        $data['name'] = $this->input->post('name');
-        $data['birthday'] = $this->input->post('birthday');
-        $data['sex'] = $this->input->post('sex');
-        $data['address'] = $this->input->post('address');
-        $data['phone'] = $this->input->post('phone');
-        $data['email'] = $this->input->post('email');
-        $data['password'] = $this->input->post('password');
-        $this->db->insert('professor', $data);
-        $teacher_id = mysql_insert_id();
-        move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/professor_image/' . $teacher_id . '.jpg');
-        $this->email_model->account_opening_email('professor', $data['email']); //SEND EMAIL ACCOUNT OPENING EMAIL
-        redirect(base_url() . 'index.php?admin/professor/', 'refresh');
-    }
-    if ($param1 == 'do_update') {
-        $data['name'] = $this->input->post('name');
-        $data['birthday'] = $this->input->post('birthday');
-        $data['sex'] = $this->input->post('sex');
-        $data['address'] = $this->input->post('address');
-        $data['phone'] = $this->input->post('phone');
-        $data['email'] = $this->input->post('email');
-        $data['password'] = $this->input->post('password');
-
-        $this->db->where('professor_id', $param2);
-        $this->db->update('professor', $data);
-        move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/professor_image/' . $param2 . '.jpg');
-        redirect(base_url() . 'index.php?educacional/professor/', 'refresh');
-    } else if ($param1 == 'personal_profile') {
-        $page_data['personal_profile'] = true;
-        $page_data['current_professor_id'] = $param2;
-    } else if ($param1 == 'edit') {
-        $page_data['edit_data'] = $this->db->get_where('professor', array(
-                    'professor_id' => $param2
-                ))->result_array();
-    }
-    if ($param1 == 'delete') {
-        $this->db->where('professor_id', $param2);
-        $this->db->delete('professor');
-        redirect(base_url() . 'index.php?educacional/professor/', 'refresh');
-    }
-    $page_data['teachers'] = $this->db->get('professor')->result_array();
-//SELECT ABAIXO PARA MONTAR O MENU ACESSO, DEVE SER INCLUIDO EM TODOS OS MENUS
-    $page_data['acesso'] = $this->db->get('acessos')->result_array();
-    $page_data['page_name'] = 'professor';
-    $page_data['page_title'] = get_phrase('<a href="index.php?admin/dashboard">Home</a> > <a href="index.php?admin/educacional">educacional </a><b>></b> <a href="">professor(a)</a>'); 
-    $this->load->view('index', $page_data);
-
-
-    
-    
-     //   function turma($param1 = '', $param2 = '', $param3 = '') {
-
-    function turma($param1 = '', $param2 = '', $param3 = '') {
-
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
         if ($param1 == 'create') {
-
-            $data['descricao'] = $this->input->post('descricao');
-            $data['porcentagem_minima'] = $this->input->post('minima');
-            $data['porcentagem_maxima'] = $this->input->post('maxima');
-
-            $this->db->insert('bolsas', $data);
-            $this->session->set_flashdata('flash_message', get_phrase('bolsa_cadastrada_com_sucesso'));
-            redirect(base_url() . 'index.php?educacional/bolsas/', 'refresh');
+            $data['name'] = $this->input->post('name');
+            $data['birthday'] = $this->input->post('birthday');
+            $data['sex'] = $this->input->post('sex');
+            $data['address'] = $this->input->post('address');
+            $data['phone'] = $this->input->post('phone');
+            $data['email'] = $this->input->post('email');
+            $data['password'] = $this->input->post('password');
+            $this->db->insert('professor', $data);
+            $teacher_id = mysql_insert_id();
+            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/professor_image/' . $teacher_id . '.jpg');
+            $this->email_model->account_opening_email('professor', $data['email']); //SEND EMAIL ACCOUNT OPENING EMAIL
+            redirect(base_url() . 'index.php?admin/professor/', 'refresh');
         }
         if ($param1 == 'do_update') {
             $data['name'] = $this->input->post('name');
@@ -488,40 +437,85 @@ class educacional extends CI_Controller {
             $data['email'] = $this->input->post('email');
             $data['password'] = $this->input->post('password');
 
-            $this->db->where('teacher_id', $param2);
-            $this->db->update('teacher', $data);
-            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/teacher_image/' . $param2 . '.jpg');
-            redirect(base_url() . 'index.php?admin/teacher/', 'refresh');
+            $this->db->where('professor_id', $param2);
+            $this->db->update('professor', $data);
+            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/professor_image/' . $param2 . '.jpg');
+            redirect(base_url() . 'index.php?educacional/professor/', 'refresh');
         } else if ($param1 == 'personal_profile') {
             $page_data['personal_profile'] = true;
-            $page_data['current_teacher_id'] = $param2;
+            $page_data['current_professor_id'] = $param2;
         } else if ($param1 == 'edit') {
-            $page_data['edit_data'] = $this->db->get_where('teacher', array(
-                        'teacher_id' => $param2
+            $page_data['edit_data'] = $this->db->get_where('professor', array(
+                        'professor_id' => $param2
                     ))->result_array();
         }
         if ($param1 == 'delete') {
-            $this->db->where('periodo_letivo_id', $param2);
-            $this->db->delete('periodo_letivo');
-            $this->session->set_flashdata('flash_message', get_phrase('periodo_letivo_deletado_com_sucesso'));
-            redirect(base_url() . 'index.php?educacional/periodo/', 'refresh');
+            $this->db->where('professor_id', $param2);
+            $this->db->delete('professor');
+            redirect(base_url() . 'index.php?educacional/professor/', 'refresh');
+        }
+        $page_data['teachers'] = $this->db->get('professor')->result_array();
+//SELECT ABAIXO PARA MONTAR O MENU ACESSO, DEVE SER INCLUIDO EM TODOS OS MENUS
+        $page_data['acesso'] = $this->db->get('acessos')->result_array();
+        $page_data['page_name'] = 'professor';
+        $page_data['page_title'] = get_phrase('<a href="index.php?admin/dashboard">Home</a> > <a href="index.php?admin/educacional">educacional </a><b>></b> <a href="">professor(a)</a>');
+        $this->load->view('index', $page_data);
+
+        //   function turma($param1 = '', $param2 = '', $param3 = '') {
+
+        function turma($param1 = '', $param2 = '', $param3 = '') {
+
+            if ($this->session->userdata('admin_login') != 1)
+                redirect(base_url(), 'refresh');
+            if ($param1 == 'create') {
+
+                $data['descricao'] = $this->input->post('descricao');
+                $data['porcentagem_minima'] = $this->input->post('minima');
+                $data['porcentagem_maxima'] = $this->input->post('maxima');
+
+                $this->db->insert('bolsas', $data);
+                $this->session->set_flashdata('flash_message', get_phrase('bolsa_cadastrada_com_sucesso'));
+                redirect(base_url() . 'index.php?educacional/bolsas/', 'refresh');
+            }
+            if ($param1 == 'do_update') {
+                $data['name'] = $this->input->post('name');
+                $data['birthday'] = $this->input->post('birthday');
+                $data['sex'] = $this->input->post('sex');
+                $data['address'] = $this->input->post('address');
+                $data['phone'] = $this->input->post('phone');
+                $data['email'] = $this->input->post('email');
+                $data['password'] = $this->input->post('password');
+
+                $this->db->where('teacher_id', $param2);
+                $this->db->update('teacher', $data);
+                move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/teacher_image/' . $param2 . '.jpg');
+                redirect(base_url() . 'index.php?admin/teacher/', 'refresh');
+            } else if ($param1 == 'personal_profile') {
+                $page_data['personal_profile'] = true;
+                $page_data['current_teacher_id'] = $param2;
+            } else if ($param1 == 'edit') {
+                $page_data['edit_data'] = $this->db->get_where('teacher', array(
+                            'teacher_id' => $param2
+                        ))->result_array();
+            }
+            if ($param1 == 'delete') {
+                $this->db->where('periodo_letivo_id', $param2);
+                $this->db->delete('periodo_letivo');
+                $this->session->set_flashdata('flash_message', get_phrase('periodo_letivo_deletado_com_sucesso'));
+                redirect(base_url() . 'index.php?educacional/periodo/', 'refresh');
+            }
+
+            $page_data['turma'] = $this->db->get('turma')->result_array();
+            //SELECT ABAIXO PARA MONTAR O MENU ACESSO, DEVE SER INCLUIDO EM TODOS OS MENUS
+            $page_data['acesso'] = $this->db->get('acessos')->result_array();
+            $page_data['page_name'] = 'turma';
+            $page_data['page_title'] = get_phrase('<a href="index.php?admin/dashboard">Painel Geral</a> > <a href="index.php?admin/educacional">Painel_educacional </a><b>></b> <a href="">Gerenciar Turma</a>');
+            $this->load->view('../views/educacional/index', $page_data);
         }
 
-        $page_data['turma'] = $this->db->get('turma')->result_array();
-        //SELECT ABAIXO PARA MONTAR O MENU ACESSO, DEVE SER INCLUIDO EM TODOS OS MENUS
-        $page_data['acesso'] = $this->db->get('acessos')->result_array();
-        $page_data['page_name'] = 'turma';
-        $page_data['page_title'] = get_phrase('<a href="index.php?admin/dashboard">Painel Geral</a> > <a href="index.php?admin/educacional">Painel_educacional </a><b>></b> <a href="">Gerenciar Turma</a>');
-        $this->load->view('../views/educacional/index', $page_data);
     }
 
-    
-    
-    
-
-}
-
-function professor_disciplina($param1 = '', $param2 = '', $param3 = '', $param4 = '') {
+    function professor_disciplina($param1 = '', $param2 = '', $param3 = '', $param4 = '') {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
 
@@ -574,9 +568,8 @@ function professor_disciplina($param1 = '', $param2 = '', $param3 = '', $param4 
             $page_data['edit_data'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
             $page_data['edit_data'] = $this->db->get_where('matriz_disciplina', array('matriz_disciplina_id' => $param2
                     ))->result_array();
-            
         } else if ($param1 == 'carrega_disciplina') {
-             $page_data['professor'] = $this->db->get_where('teacher', array('teacher_id' => $param2
+            $page_data['professor'] = $this->db->get_where('teacher', array('teacher_id' => $param2
                     ))->result_array();
 
             $page_data['disciplina'] = $this->db->select("*");
@@ -603,5 +596,7 @@ function professor_disciplina($param1 = '', $param2 = '', $param3 = '', $param4 
         $page_data['page_title'] = get_phrase('<a href="index.php?admin/dashboard">Home</a> > <a href="index.php?admin/educacional">Educacional </a><b>></b> <a href="index.php?educacional/matriz">Gerenciar_matriz_curricular</a><b> > </b> <a href="">Disciplinas</a>');
         $this->load->view('../views/educacional/index', $page_data);
     }
+
 }
+
 ?>
