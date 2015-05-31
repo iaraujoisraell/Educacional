@@ -1,56 +1,59 @@
-<div class="tab-pane box active" id="edit" style="padding: 5px">
+<div class="tab-pane box active" id="edit">
     <div class="box-content">
         <?php foreach ($edit_data as $row): ?>
-            <?php echo form_open('educacional/cursos/do_update/' . $row['cursos_id'], array('class' => 'form-horizontal validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
+            <?php echo form_open('educacional/periodo/do_update/' . $row['perido_letivo_id'], array('class' => 'form-horizontal validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
             <div class="padded">
                 <div class="control-group">
-                    <label class="control-label"><?php echo get_phrase('Nome do Curso'); ?></label>
+                    <label class="control-label"><?php echo get_phrase('periodo_letivo'); ?></label>
                     <div class="controls">
-                        <input type="text" class="validate[required]" value="<?php echo $row['cur_tx_descricao']; ?>" style="text-transform: uppercase;border-radius:5px;" name="curso"/>
+                        <input type="text" class="validate[required]" value="<?php echo $row['perido_letivo']; ?>" name="periodo_letivo"/>
                     </div>
                 </div>
 
 
                 <div class="control-group">
-                    <label class="control-label"><?php echo get_phrase('Nome Abrev. do Curso'); ?></label>
+                    <label class="control-label"><?php echo get_phrase('descrição'); ?></label>
                     <div class="controls">
-                        <input type="text" class="validate[required]" value="<?php echo $row['cur_tx_abreviatura']; ?>" style="text-transform: uppercase;border-radius:5px;" name="abreviatura"/>
+                        <input type="text" class="validate[required]" value="<?php echo $row['periodo_letivo_descricao']; ?>" name="descricao"/>
                     </div>
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label"><?php echo get_phrase('habilitacao_do_curso'); ?></label>
+                    <label class="control-label"><?php echo get_phrase('dias_letivos'); ?></label>
                     <div class="controls">
-                        <input type="text" value="<?php echo $row['cur_tx_habilitacao']; ?>" style="text-transform: uppercase;border-radius:5px;" name="habilidade"/>
+                        <input type="text" value="<?php echo $row['dias_letivos']; ?>"  name="dias_letivos"/>
                     </div>
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label"><?php echo get_phrase('horas_de_estagio_obrigatorio'); ?></label>
+                    <label class="control-label"><?php echo get_phrase('data_inicio'); ?></label>
                     <div class="controls">
-                        <input type="text" value="<?php echo $row['cur_nb_estagio_obrigatoria']; ?>" style="text-transform: uppercase;border-radius:5px;" name="estagio"/>
+                        <input type="text" value="<?php echo $row['data_inicio']; ?>" name="data_inicio"/>
                     </div>
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label"><?php echo get_phrase('horas_de_atividade_complementares_obrigatorio'); ?></label>
+                    <label class="control-label"><?php echo get_phrase('data_previsão_termino'); ?></label>
                     <div class="controls">
-                        <input type="text" value="<?php echo $row['cur_nb_ativ_comp_obrigatoria']; ?>" style="text-transform: uppercase;border-radius:5px;" name="atividades_complementares"/>
+                        <input type="text" value="<?php echo $row['data_prev_termino']; ?>" name="data_prev_terminio"/>
                     </div>
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label"><?php echo get_phrase('duracao_do_curso_(semestre(s))'); ?></label>
+                    <label class="control-label"><?php echo get_phrase('data_termino'); ?></label>
                     <div class="controls">
 
-                        <input type="text" value="<?php echo $row['cur_tx_duracao']; ?>" style="text-transform: uppercase;border-radius:5px;" class="validate[required]" name="duracao"/>
+                        <input type="text" value="<?php echo $row['data_termino']; ?>" class="validate[required]" name="data_termino"/>
                     </div>
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label"><?php echo get_phrase('coordenador(a)'); ?></label>
+                    <label class="control-label"><?php echo get_phrase('situação_periodo'); ?></label>
                     <div class="controls">
-                        <input type="text" class="validate[required]" style="text-transform: uppercase;border-radius:5px;" value="<?php echo $row['cur_tx_coordenador']; ?>" name="coordenador"/>
+                        <select name="situacao">
+                            <option value="0">Período Encerrado</option>
+                            <option value="1">Período Aberto</option>
+                        </select>
                     </div>
                 </div>
 
@@ -61,8 +64,6 @@
                         <input type="hidden" value="1"  name="instituicao"/>
                     </div>
                 </div>
-
-
 
             </div>
 
