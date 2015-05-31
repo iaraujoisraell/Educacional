@@ -36,16 +36,14 @@
                                 <thead>
                                     <tr>
                                         <th><div>ID</div></th>
-                                 <th><div><?php echo get_phrase('Curso'); ?></div></th>
+                                <th><div><?php echo get_phrase('Curso'); ?></div></th>
                                 <th><div><?php echo get_phrase('Ano'); ?></div></th>
                                 <th><div><?php echo get_phrase('Semestre'); ?></div></th>
-                               
                                 <th><div><?php echo get_phrase('Opções'); ?></div></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    
                                     $count = 1;
                                     foreach ($matriz as $row):
                                         $curso_codigo = $row['cursos_id'];
@@ -57,13 +55,13 @@
                                             <td ><?php echo $row['cur_tx_descricao']; ?></td>
                                             <td><?php echo $row['mat_tx_ano']; ?></td>
                                             <td><?php echo $row['mat_tx_semestre']; ?></td>
-                                          
+
                                             <td align="center">
                                                 <?php
                                                 /*
                                                  * <a data-toggle="modal" href="#modal-form" onclick="modal('editar_matriz',<?php echo $row['matriz_id']; ?>)"	class="btn btn-gray btn-small">
-                                                    <i class="icon-wrench"></i> <?php echo get_phrase('editar'); ?>
-                                                </a>
+                                                  <i class="icon-wrench"></i> <?php echo get_phrase('editar'); ?>
+                                                  </a>
                                                  */
                                                 ?>
                                                 <a  href="index.php?educacional/matriz_pdf/carrega_matriz/<?php echo $row['matriz_id']; ?>" target="_new"	class="btn btn-black btn-small">
@@ -118,8 +116,8 @@
                                                     <select class="validate[required]" name="semestre">
                                                         <option value="I" >I SEMESTRE</option>
                                                         <option value="II" >II SEMESTRE</option>
-                                                        </select>
-                                                 </div>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </td>
 
@@ -132,12 +130,12 @@
                                                 <div class="controls">
                                                     <select class="validate[required]" name="curso">
                                                         <?php foreach ($carrega_curso as $row): ?>
-                                                        <option value="<?php echo $row['cursos_id']; ?>" >
+                                                            <option value="<?php echo $row['cursos_id']; ?>" >
                                                                 <?php echo $row['cur_tx_descricao']; ?>
                                                             </option>
                                                         <?php endforeach; ?>
                                                     </select>                                 
-                                                   
+
                                                 </div>
                                             </div>
                                         </td>

@@ -48,7 +48,8 @@
                                         <td><?php echo $row['name'];?></td>
                                         <td><?php echo $row['email'];?></td>
                                         <td align="center">
-                                            <a data-toggle="modal" href="#modal-form" onclick="modal('edit_teacher',<?php echo $row['teacher_id'];?>)"	class="btn btn-green btn-small">
+                                           
+                                            <a href="index.php?educacional/professor_disciplina/carrega_disciplina/<?php echo $row['teacher_id']; ?>"	class="btn btn-green btn-small">
                                                     <i class="icon-paste"></i> <?php echo get_phrase('disciplinas');?>
                                             </a>
                                             <a data-toggle="modal" href="#modal-form" onclick="modal('teacher_profile',<?php echo $row['teacher_id'];?>)"

@@ -208,31 +208,6 @@ class educacional extends CI_Controller {
         $this->load->view('../views/educacional/index', $page_data);
     }
 
-    function matriz_pdf($param1 = '', $param2 = '', $param3 = '') {
-        if ($this->session->userdata('admin_login') != 1)
-            redirect(base_url(), 'refresh');
-
-        if ($param1 == 'carrega_matriz') {
-
-            $page_data['matriz'] = $this->db->select("* ");
-            $page_data['matriz'] = $this->db->join('cursos', 'cursos.cursos_id = matriz.cursos_id');
-            $page_data['matriz'] = $this->db->get_where('matriz', array('matriz_id' => $param2
-                    ))->result_array();
-
-
-            $page_data['disciplina'] = $this->db->select("*");
-            $page_data['disciplina'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
-            $page_data['disciplina'] = $this->db->get_where('matriz_disciplina', array('matriz_id' => $param2
-                    ))->result_array();
-        }
-
-       
-        //$page_data['acesso'] = $this->db->get('acessos')->result_array();
-        $page_data['page_name'] = 'matriz_pdf';
-          $this->load->view('../views/educacional/matriz_pdf', $page_data);
-     
-    }
-
     /*
      * 
      */
@@ -322,6 +297,8 @@ class educacional extends CI_Controller {
         $page_data['page_title'] = get_phrase('<a href="index.php?admin/dashboard">Home</a> > <a href="index.php?admin/educacional">Educacional </a><b>></b> <a href="index.php?educacional/matriz">Gerenciar_matriz_curricular</a><b> > </b> <a href="">Disciplinas</a>');
         $this->load->view('../views/educacional/index', $page_data);
     }
+    
+    
 
     function periodo($param1 = '', $param2 = '', $param3 = '') {
         if ($this->session->userdata('admin_login') != 1)
@@ -528,5 +505,87 @@ class educacional extends CI_Controller {
     
 }
 
+function professor_disciplina($param1 = '', $param2 = '', $param3 = '', $param4 = '') {
+        if ($this->session->userdata('admin_login') != 1)
+            redirect(base_url(), 'refresh');
+
+        if ($param1 == 'create') {
+            //CADASTRA A DISCIPLINA E PEGA O ULTIMO REGISTRO
+            $data['disc_tx_descricao'] = $this->input->post('disciplina');
+            $data['disc_tx_abrev'] = $this->input->post('abreviatura');
+            $data['cursos_id'] = $this->input->post('cod_curso');
+            $this->db->insert('disciplina', $data);
+            $disciplina_id = mysql_insert_id();
+
+            //INSERE NA TABELA MATRIZ_DISCIPLINA
+            $data2['matriz_id'] = $this->input->post('cod_matriz');
+            $data2['periodo'] = $this->input->post('periodo');
+            $data2['disciplina_id'] = $disciplina_id; // $this->input->post('');
+            $data2['carga_horaria'] = $this->input->post('carga_horaria');
+            $data2['credito'] = $this->input->post('credito');
+            $this->db->insert('matriz_disciplina', $data2);
+
+            //$cod_matriz = $data2['matriz_id'];
+
+            $this->session->set_flashdata('flash_message', get_phrase('disciplina_cadastrada_com_sucesso'));
+            redirect(base_url() . 'index.php?educacional/matriz_disciplina/carrega_matriz/' . $data2['matriz_id'], 'refresh');
+        }
+        if ($param1 == 'do_update') {
+            //altera tabela Disciplina
+            $parametro_disciplina = $this->input->post('disciplina_codigo');
+            $data['disc_tx_descricao'] = $this->input->post('disciplina');
+            $data['disc_tx_abrev'] = $this->input->post('abreviatura');
+
+            $this->db->where('disciplina_id', $parametro_disciplina);
+            $this->db->update('disciplina', $data);
+
+            //altera tabela matriz_periodo
+            $parametro_matriz_id = $this->input->post('matriz_codigo');
+            $data2['periodo'] = $this->input->post('periodo');
+            $data2['carga_horaria'] = $this->input->post('carga_horaria');
+            $data2['credito'] = $this->input->post('credito');
+
+
+            $this->db->where('matriz_disciplina_id', $param2);
+            $this->db->update('matriz_disciplina', $data2);
+
+
+            $this->session->set_flashdata('flash_message', get_phrase('disciplina_alterada_com_sucesso'));
+            redirect(base_url() . 'index.php?educacional/matriz_disciplina/carrega_matriz/' . $parametro_matriz_id, 'refresh');
+        } else if ($param1 == 'edit') {
+
+            $page_data['edit_data'] = $this->db->select("*");
+            $page_data['edit_data'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
+            $page_data['edit_data'] = $this->db->get_where('matriz_disciplina', array('matriz_disciplina_id' => $param2
+                    ))->result_array();
+            
+        } else if ($param1 == 'carrega_disciplina') {
+             $page_data['professor'] = $this->db->get_where('teacher', array('teacher_id' => $param2
+                    ))->result_array();
+
+            $page_data['disciplina'] = $this->db->select("*");
+            $page_data['disciplina'] = $this->db->join('teacher', 'teacher.teacher_id = professor_turma.teacher_id');
+            $page_data['disciplina'] = $this->db->get_where('professor_turma', array('professor_turma.teacher_id' => $param2
+                    ))->result_array();
+        }
+        if ($param1 == 'delete') {
+
+            $this->db->where('matriz_disciplina_id', $param2);
+            $this->db->delete('matriz_disciplina');
+
+            $this->db->where('disciplina_id', $param3);
+            $this->db->delete('disciplina');
+
+            $this->session->set_flashdata('flash_message', get_phrase('disciplina_deletado_com_sucesso'));
+            redirect(base_url() . 'index.php?educacional/matriz_disciplina/carrega_matriz/' . $param4, 'refresh');
+        }
+
+
+        //SELECT ABAIXO PARA MONTAR O MENU ACESSO, DEVE SER INCLUIDO EM TODOS OS MENUS
+        $page_data['acesso'] = $this->db->get('acessos')->result_array();
+        $page_data['page_name'] = 'professor_disciplina';
+        $page_data['page_title'] = get_phrase('<a href="index.php?admin/dashboard">Home</a> > <a href="index.php?admin/educacional">Educacional </a><b>></b> <a href="index.php?educacional/matriz">Gerenciar_matriz_curricular</a><b> > </b> <a href="">Disciplinas</a>');
+        $this->load->view('../views/educacional/index', $page_data);
+    }
 }
 ?>
