@@ -36,8 +36,7 @@
                                         <th><div>ID</div></th>
                                 <th><div><?php echo get_phrase('descrição'); ?></div></th>
                                 <th><div><?php echo get_phrase('periodo_letivo'); ?></div></th>
-                                <th><div><?php echo get_phrase('status'); ?></div></th>
-                                <th><div><?php echo get_phrase('periodo'); ?></div></th>
+                                <th><div><?php echo get_phrase('Matriz'); ?></div></th>
                                 <th><div><?php echo get_phrase('matriz'); ?></div></th>
                                 <th><div><?php echo get_phrase('options'); ?></div></th>
 
@@ -51,10 +50,9 @@
                                         <tr>
                                             <td><?php echo $count++; ?></td>
                                             <td><?php echo $row['tur_tx_descricao']; ?></td>
-                                            <td><?php echo $row['tur_tx_descricao']; ?></td>
-                                            <td><?php echo $row['tur_tx_descricao']; ?></td>
+                                            <td><?php echo $this->crud_model->get_type_periodo_by_id('periodo_letivo', $row['periodo_letivo_id']); ?></td>
+                                            <td><?php echo $this->crud_model->get_type_matriz_by_id('matriz', $row['matriz_id']); ?></td>
                                             <td><?php echo $row['tur_nb_periodo']; ?> </td>
-                                            <td><?php echo $row['porcentagem_maxima']; ?> </td>
 
                                             <td align="center">
                                                 <a data-toggle="modal" href="#modal-form" onclick="modal('edit_vestibular',<?php echo $row['bolsas_id']; ?>)"	class="btn btn-gray btn-small">
@@ -79,83 +77,136 @@
             <!----CREATION FORM STARTS---->
             <div class="tab-pane box" id="add" style="padding: 5px">
                 <div class="box-content">
-                    <?php echo form_open('educacional/bolsas/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
-                    <form method="post" action="<?php echo base_url(); ?>index.php?admin/teacher/create/" class="form-horizontal validatable" enctype="multipart/form-data">
-                        <div class="padded">
-                            <table width="100%" class="responsive">
-                                <tbody>
-                                    <tr>
-                                        <td width="40%">
-                                            <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('descrição'); ?></label>
-                                                <div class="controls">
-                                                    <input type="text" class="validate[required]" name="descricao"/>
-                                                </div>
+                    <?php echo form_open('educacional/turma/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
+                    <div class="padded">
+                        <table width="100%" class="responsive">
+                            <tbody>
+                                <tr>
+                                    <td width="40%">
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('descrição'); ?></label>
+                                            <div class="controls">
+                                                <input type="text" class="validate[required]" name="descricao"/>
                                             </div>
-                                        </td>
+                                        </div>
+                                    </td>
 
 
-                                        <td>
-                                            <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('perido_letivo'); ?></label>
-                                                <div class="controls">
-                                                    <?php $periodo_turma = $this->crud_model->get_periodo_turma(); ?>
-                                                    <select>
-                                                        <?php foreach ($periodo_turma as $row):
-                                                            ?>
-                                                            <option value="<?php echo $row['periodo_letivo_id'] ?>"><?php echo $row['periodo_letivo']; ?> </option>
-                                                            <?php
-                                                        endforeach;
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('periodo_letivo'); ?></label>
+                                            <div class="controls">
+                                                <?php $periodo_turma = $this->crud_model->get_periodo_turma(); ?>
+                                                <select name="periodo_letivo">
+                                                    <option value="">Selecione o Periodo Letivo</option>
+                                                    <?php foreach ($periodo_turma as $row):
                                                         ?>
-                                                    </select>
-                                                </div>
+                                                        <option value="<?php echo $row['periodo_letivo_id'] ?>"><?php echo $row['periodo_letivo']; ?> </option>
+                                                        <?php
+                                                    endforeach;
+                                                    ?>
+                                                </select>
                                             </div>
-                                        </td>
-                                    </tr>
+                                        </div>
+                                    </td>
+                                </tr>
 
 
-                                    <tr>
-                                        <td width="40%">
-                                            <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('curso'); ?></label>
-                                                <div class="controls">
-                                                    <?php $curso_turma = $this->crud_model->get_curso_turma(); ?>
-                                                    <select id="curso" name="curso" onchange="buscar_matriz()">
-                                                        <?php foreach ($curso_turma as $row):
-                                                            ?>
-                                                            <option value="<?php echo $row['cursos_id'] ?>"><?php echo $row['cur_tx_descricao']; ?> </option>
-                                                            <?php
-                                                        endforeach;
+                                <tr>
+                                    <td width="40%">
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('curso'); ?></label>
+                                            <div class="controls">
+                                                <?php $curso_turma = $this->crud_model->get_curso_turma(); ?>
+                                                <select id="curso" name="curso" onchange="buscar_matriz()">
+                                                    <?php foreach ($curso_turma as $row):
                                                         ?>
-                                                    </select>
-                                                </div>
+                                                        <option value="<?php echo $row['cursos_id'] ?>"><?php echo $row['cur_tx_descricao']; ?> </option>
+                                                        <?php
+                                                    endforeach;
+                                                    ?>
+                                                </select>
                                             </div>
-                                        </td>
+                                        </div>
+                                    </td>
 
-                                        <td>
-                                            <div class="control-group">
-                                                <label class="control-label"><?php echo get_phrase('matriz'); ?></label>
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('matriz'); ?></label>
 
-                                                <div class="controls" id="load_matriz">
-                                                    <select name="matriz" id="matriz">
-                                                        <option value="">Selecione a matriz</option>
-                                                    </select>
-                                                </div>
-
+                                            <div class="controls" id="load_matriz">
+                                                <select name="matriz" id="matriz">
+                                                    <option value="">Selecione a matriz</option>
+                                                </select>
                                             </div>
-                                        </td>
 
-                                    </tr>
+                                        </div>
+                                    </td>
 
-                                </tbody>
-                            </table>
-                        </div>
+                                </tr>
+
+                                <tr>
+                                    <td width="40%">
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('status'); ?></label>
+                                            <div class="controls">
+                                                <select name="status">
+                                                    <option value="">Selecione o Status</option>
+                                                    <option value="0">Fechada</option>
+                                                    <option value="1">Aberta</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('turno'); ?></label>
+                                            <?php $turno_turma = $this->crud_model->get_turno_turma(); ?>
+                                            <div class="controls">
+                                                <select name="turno">
+                                                    <option value="">Selecione o Turno</option>
+                                                    <?php foreach ($turno_turma as $row):
+                                                        ?> 
+                                                        <option value="<?php echo $row['turno_id']; ?>"><?php echo $row['descricao'] ?></option>
+                                                    <?php endforeach; ?>
+
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="40%">
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('periodo'); ?></label>
+                                            <?php $periodo = $this->crud_model->get_periodo(); ?>
+                                            <div class="controls">
+                                                <select name="periodo">
+                                                    <option value="">Selecione o Periodo</option>
+                                                    <?php
+                                                    foreach ($periodo as $row):
+                                                        ?>
+                                                        <option value="<?php echo $row['periodo_id'] ?>"><?php echo $row['periodo']; ?></option>
+                                                        <?php
+                                                    endforeach;
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
 
 
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-gray"><?php echo get_phrase('add_bolsa'); ?></button>
-                        </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-gray"><?php echo get_phrase('add_turma'); ?></button>
+                    </div>
                     </form>                
                 </div>                
             </div>

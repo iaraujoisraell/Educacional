@@ -18,6 +18,14 @@ class Crud_model extends CI_Model {
         return $this->db->get_where($type, array($type . '_id' => $type_id))->row()->$field;
     }
 
+    function get_type_periodo_by_id($type, $type_id = '', $field = 'periodo_letivo') {
+        return $this->db->get_where($type, array($type . '_id' => $type_id))->row()->$field;
+    }
+
+    function get_type_matriz_by_id($type, $type_id = '', $field = 'mat_tx_ano') {
+        return $this->db->get_where($type, array($type . '_id' => $type_id))->row()->$field;
+    }
+
     ////////STUDENT/////////////
     function get_students($class_id) {
         $query = $this->db->get_where('student', array('class_id' => $class_id));
@@ -66,20 +74,32 @@ class Crud_model extends CI_Model {
         $this->db->from('periodo_letivo');
         $query = $this->db->get();
         return $query->result_array();
-        
     }
 
-    
-     function get_curso_turma() {
+    function get_periodo() {
+
+        $this->db->select("*");
+        $this->db->from('periodo');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    function get_curso_turma() {
 
         $this->db->select("*");
         $this->db->from('cursos');
         $query = $this->db->get();
         return $query->result_array();
-        
     }
-    
-    
+
+    function get_turno_turma() {
+
+        $this->db->select("*");
+        $this->db->from('turno');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
     function get_candidato_chamada_info($chamada_vestibular_id) {
 
         $this->db->select("*");

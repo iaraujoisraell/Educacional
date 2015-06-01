@@ -470,13 +470,16 @@ class educacional extends CI_Controller {
             redirect(base_url(), 'refresh');
         if ($param1 == 'create') {
 
-            $data['descricao'] = $this->input->post('descricao');
-            $data['porcentagem_minima'] = $this->input->post('minima');
-            $data['porcentagem_maxima'] = $this->input->post('maxima');
+            $data['tur_tx_descricao'] = $this->input->post('descricao');
+            $data['status'] = $this->input->post('status');
+            $data['periodo_letivo_id'] = $this->input->post('periodo_letivo');
+            $data['matriz_id'] = $this->input->post('matriz');
+            $data['periodo_id'] = $this->input->post('periodo');
+            $data['turno_id'] = $this->input->post('turno');
 
-            $this->db->insert('bolsas', $data);
-            $this->session->set_flashdata('flash_message', get_phrase('bolsa_cadastrada_com_sucesso'));
-            redirect(base_url() . 'index.php?educacional/bolsas/', 'refresh');
+            $this->db->insert('turma', $data);
+            $this->session->set_flashdata('flash_message', get_phrase('turma_cadastrada_com_sucesso'));
+            redirect(base_url() . 'index.php?educacional/turma/', 'refresh');
         }
         if ($param1 == 'do_update') {
             $data['name'] = $this->input->post('name');
@@ -526,7 +529,7 @@ class educacional extends CI_Controller {
 
 
         if ($numrows >= 1) {
-            echo "<select>";
+            echo "<select name='matriz'>";
             foreach ($MatrizArray as $row) {
                 $id_matriz = $row['matriz_id'];
                 $matriznome = $row['mat_tx_ano'];
@@ -537,7 +540,7 @@ class educacional extends CI_Controller {
 
 
         if ($numrows < 1) {
-            echo "<select>";
+            echo "<select name='matriz'>";
             echo "<option value=''>Não existe matriz para este Curso</option>";
             echo "</select>";
         }
