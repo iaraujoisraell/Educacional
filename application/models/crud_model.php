@@ -17,8 +17,7 @@ class Crud_model extends CI_Model {
     function get_type_name_by_id($type, $type_id = '', $field = 'name') {
         return $this->db->get_where($type, array($type . '_id' => $type_id))->row()->$field;
     }
-    
-   
+
     ////////STUDENT/////////////
     function get_students($class_id) {
         $query = $this->db->get_where('student', array('class_id' => $class_id));
@@ -47,8 +46,7 @@ class Crud_model extends CI_Model {
         $query = $this->db->get_where('teacher', array('teacher_id' => $teacher_id));
         return $query->result_array();
     }
-    
-  
+
     function get_vestibular_chamada_info($chamada_vestibular_id) {
 
         $this->db->select("*");
@@ -62,6 +60,26 @@ class Crud_model extends CI_Model {
         return $query->result_array();
     }
 
+    function get_periodo_turma() {
+
+        $this->db->select("*");
+        $this->db->from('periodo_letivo');
+        $query = $this->db->get();
+        return $query->result_array();
+        
+    }
+
+    
+     function get_curso_turma() {
+
+        $this->db->select("*");
+        $this->db->from('cursos');
+        $query = $this->db->get();
+        return $query->result_array();
+        
+    }
+    
+    
     function get_candidato_chamada_info($chamada_vestibular_id) {
 
         $this->db->select("*");

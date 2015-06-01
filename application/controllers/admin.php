@@ -981,6 +981,7 @@ function vestibularChamada($param1 = '', $param2 = '', $param3 = '') {
                 $this->db->where('vest_nb_codigo', $param2);
                 $this->db->where('can_nb_codigo', $candidato);
                 $this->db->update('chamada_vestibular', $data);
+                
             } else {
                 $data['cv_nb_resposta'] = $this->input->post('resposta' . $i);
                 $data['vest_nb_codigo'] = $this->input->post('vestibular');

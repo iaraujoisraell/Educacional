@@ -5,11 +5,11 @@
         <ul class="nav nav-tabs nav-tabs-left">
             <li class="active">
                 <a href="#list" data-toggle="tab"><i class="icon-align-justify"></i> 
-                    <?php echo get_phrase('lista_bolsas'); ?>
+                    <?php echo get_phrase('lista_turma'); ?>
                 </a></li>
             <li>
                 <a href="#add" data-toggle="tab"><i class="icon-plus"></i>
-                    <?php echo get_phrase('add_bolsas'); ?>
+                    <?php echo get_phrase('nova_turma'); ?>
                 </a></li>
         </ul>
         <!------CONTROL TABS END------->
@@ -35,8 +35,10 @@
                                     <tr>
                                         <th><div>ID</div></th>
                                 <th><div><?php echo get_phrase('descrição'); ?></div></th>
-                                <th><div><?php echo get_phrase('porcentagem_mínima'); ?></div></th>
-                                <th><div><?php echo get_phrase('porcentagem_máxima'); ?></div></th>
+                                <th><div><?php echo get_phrase('periodo_letivo'); ?></div></th>
+                                <th><div><?php echo get_phrase('status'); ?></div></th>
+                                <th><div><?php echo get_phrase('periodo'); ?></div></th>
+                                <th><div><?php echo get_phrase('matriz'); ?></div></th>
                                 <th><div><?php echo get_phrase('options'); ?></div></th>
 
                                 </tr>
@@ -49,7 +51,9 @@
                                         <tr>
                                             <td><?php echo $count++; ?></td>
                                             <td><?php echo $row['tur_tx_descricao']; ?></td>
-                                            <td><?php echo $row['tur_nb_periodo'];?> </td>
+                                            <td><?php echo $row['tur_tx_descricao']; ?></td>
+                                            <td><?php echo $row['tur_tx_descricao']; ?></td>
+                                            <td><?php echo $row['tur_nb_periodo']; ?> </td>
                                             <td><?php echo $row['porcentagem_maxima']; ?> </td>
 
                                             <td align="center">
@@ -61,6 +65,7 @@
                                                     <i class="icon-trash"></i> <?php echo get_phrase('deletar'); ?>
                                                 </a>
                                             </td>
+
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -77,32 +82,77 @@
                     <?php echo form_open('educacional/bolsas/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
                     <form method="post" action="<?php echo base_url(); ?>index.php?admin/teacher/create/" class="form-horizontal validatable" enctype="multipart/form-data">
                         <div class="padded">
+                            <table width="100%" class="responsive">
+                                <tbody>
+                                    <tr>
+                                        <td width="40%">
+                                            <div class="control-group">
+                                                <label class="control-label"><?php echo get_phrase('descrição'); ?></label>
+                                                <div class="controls">
+                                                    <input type="text" class="validate[required]" name="descricao"/>
+                                                </div>
+                                            </div>
+                                        </td>
 
 
-                            <div class="control-group">
-                                <label class="control-label"><?php echo get_phrase('descrição'); ?></label>
-                                <div class="controls">
-                                    <input type="text" class="validate[required]" name="descricao"/>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <label class="control-label"><?php echo get_phrase('porcentagem_mínima'); ?></label>
-                                <div class="controls">
-                                    <input type="text" class="validate[required]" name="minima"/>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <label class="control-label"><?php echo get_phrase('porcentagem_máxima'); ?></label>
-                                <div class="controls">
-                                    <input type="text" class="validate[required]" name="maxima"/>
-                                </div>
-                            </div>
+                                        <td>
+                                            <div class="control-group">
+                                                <label class="control-label"><?php echo get_phrase('perido_letivo'); ?></label>
+                                                <div class="controls">
+                                                    <?php $periodo_turma = $this->crud_model->get_periodo_turma(); ?>
+                                                    <select>
+                                                        <?php foreach ($periodo_turma as $row):
+                                                            ?>
+                                                            <option value="<?php echo $row['periodo_letivo_id'] ?>"><?php echo $row['periodo_letivo']; ?> </option>
+                                                            <?php
+                                                        endforeach;
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
 
 
+                                    <tr>
+                                        <td width="40%">
+                                            <div class="control-group">
+                                                <label class="control-label"><?php echo get_phrase('curso'); ?></label>
+                                                <div class="controls">
+                                                    <?php $curso_turma = $this->crud_model->get_curso_turma(); ?>
+                                                    <select id="curso" name="curso" onchange="buscar_matriz()">
+                                                        <?php foreach ($curso_turma as $row):
+                                                            ?>
+                                                            <option value="<?php echo $row['cursos_id'] ?>"><?php echo $row['cur_tx_descricao']; ?> </option>
+                                                            <?php
+                                                        endforeach;
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
 
+                                        <td>
+                                            <div class="control-group">
+                                                <label class="control-label"><?php echo get_phrase('matriz'); ?></label>
+
+                                                <div class="controls" id="load_matriz">
+                                                    <select name="matriz" id="matriz">
+                                                        <option value="">Selecione a matriz</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
                         </div>
+
+
+
                         <div class="form-actions">
                             <button type="submit" class="btn btn-gray"><?php echo get_phrase('add_bolsa'); ?></button>
                         </div>
@@ -130,4 +180,16 @@
     $("#imgInp").change(function () {
         readURL(this);
     });
+
+    function buscar_matriz() {
+        var curso = $('#curso').val();  //codigo do estado escolhido
+        //se encontrou o estado
+        if (curso) {
+            var url = 'index.php?educacional/carrega_matriz/' + curso;  //caminho do arquivo php que irá buscar as cidades no BD
+            $.get(url, function (dataReturn) {
+                $('#load_matriz').html(dataReturn);  //coloco na div o retorno da requisicao
+            });
+        }
+    }
+
 </script>
