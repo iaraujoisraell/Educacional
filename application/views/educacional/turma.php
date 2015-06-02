@@ -36,8 +36,9 @@
                                         <th><div>ID</div></th>
                                 <th><div><?php echo get_phrase('descrição'); ?></div></th>
                                 <th><div><?php echo get_phrase('periodo_letivo'); ?></div></th>
-                                <th><div><?php echo get_phrase('Matriz'); ?></div></th>
+                                <th><div><?php echo get_phrase('curso'); ?></div></th>
                                 <th><div><?php echo get_phrase('matriz'); ?></div></th>
+                            <th><div><?php echo get_phrase('periodo'); ?></div></th>
                                 <th><div><?php echo get_phrase('options'); ?></div></th>
 
                                 </tr>
@@ -46,13 +47,36 @@
                                     <?php
                                     $count = 1;
                                     foreach ($turma as $row):
+                                        $periodo = $row['periodo_id'];
+                                        if($periodo==1){
+                                           $periodo='I'; 
+                                        }else if($periodo==2){
+                                           $periodo='II'; 
+                                        }else if($periodo==3){
+                                           $periodo='III'; 
+                                        }else if($periodo==4){
+                                           $periodo='IV'; 
+                                        }else if($periodo==5){
+                                           $periodo='V'; 
+                                        }else if($periodo==6){
+                                           $periodo='VI'; 
+                                        }else if($periodo==7){
+                                           $periodo='VII'; 
+                                        }else if($periodo==8){
+                                           $periodo='VIII'; 
+                                        }else if($periodo==9){
+                                           $periodo='IX'; 
+                                        }else if($periodo==10){
+                                           $periodo='X'; 
+                                        }
                                         ?>
                                         <tr>
                                             <td><?php echo $count++; ?></td>
                                             <td><?php echo $row['tur_tx_descricao']; ?></td>
                                             <td><?php echo $this->crud_model->get_type_periodo_by_id('periodo_letivo', $row['periodo_letivo_id']); ?></td>
-                                            <td><?php echo $this->crud_model->get_type_matriz_by_id('matriz', $row['matriz_id']); ?></td>
-                                            <td><?php echo $row['tur_nb_periodo']; ?> </td>
+                                            <td><?php echo $row['cur_tx_descricao']; ?></td>
+                                           <td><?php echo $row['mat_tx_ano']; ?>/<?php echo $row['mat_tx_semestre']; ?></td>                                          
+                                            <td><?php echo $periodo; ?> </td>
 
                                             <td align="center">
                                                 <a data-toggle="modal" href="#modal-form" onclick="modal('edit_vestibular',<?php echo $row['bolsas_id']; ?>)"	class="btn btn-gray btn-small">
@@ -119,6 +143,7 @@
                                             <div class="controls">
                                                 <?php $curso_turma = $this->crud_model->get_curso_turma(); ?>
                                                 <select id="curso" name="curso" onchange="buscar_matriz()">
+                                                    <option value="0">Selecione um curso</option>
                                                     <?php foreach ($curso_turma as $row):
                                                         ?>
                                                         <option value="<?php echo $row['cursos_id'] ?>"><?php echo $row['cur_tx_descricao']; ?> </option>

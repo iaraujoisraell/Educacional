@@ -25,6 +25,10 @@ class Crud_model extends CI_Model {
     function get_type_matriz_by_id($type, $type_id = '', $field = 'mat_tx_ano') {
         return $this->db->get_where($type, array($type . '_id' => $type_id))->row()->$field;
     }
+    
+     function get_type_curso_by_id($type, $type_id = '', $field = 'cur_tx_descricao') {
+        return $this->db->get_where($type, array($type . '_id' => $type_id))->row()->$field;
+    }
 
     ////////STUDENT/////////////
     function get_students($class_id) {

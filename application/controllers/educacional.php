@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -506,12 +505,16 @@ class educacional extends CI_Controller {
             $this->db->where('periodo_letivo_id', $param2);
             $this->db->delete('periodo_letivo');
 
-            $this->session->set_flashdata('flash_message', get_phrase('periodo_letivo_deletado_com_sucesso'));
+            $this->session->set_flashdata('flash_message', get_phrase('turma_deletado_com_sucesso'));
             redirect(base_url() . 'index.php?educacional/periodo/', 'refresh');
         }
 
+        $page_data['turma'] = $this->db->select("*");
+        $page_data['turma'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
+        $page_data['turma'] = $this->db->join('cursos', 'cursos.cursos_id = matriz.cursos_id');
+        $page_data['turma'] = $this->db->get_where('turma')->result_array();
 
-        $page_data['turma'] = $this->db->get('turma')->result_array();
+        // $page_data['turma'] = $this->db->get('turma')->result_array();
         //SELECT ABAIXO PARA MONTAR O MENU ACESSO, DEVE SER INCLUIDO EM TODOS OS MENUS
         $page_data['acesso'] = $this->db->get('acessos')->result_array();
         $page_data['page_name'] = 'turma';
@@ -533,7 +536,8 @@ class educacional extends CI_Controller {
             foreach ($MatrizArray as $row) {
                 $id_matriz = $row['matriz_id'];
                 $matriznome = $row['mat_tx_ano'];
-                echo "<option value='$id_matriz'>$matriznome</option>";
+                $matrizsemestre = $row['mat_tx_semestre'];
+                echo "<option value='$id_matriz'>$matriznome/$matrizsemestre</option>";
             }
             echo "</select>";
         }
@@ -628,6 +632,116 @@ class educacional extends CI_Controller {
         $this->load->view('../views/educacional/index', $page_data);
     }
 
-}
+    function carrega_turma($param1 = '', $param2 = '', $param3 = '') {
 
+        $this->db->from('turma');
+        $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
+        $this->db->join('cursos', 'cursos.cursos_id = matriz.cursos_id');
+        $this->db->where('cursos.cursos_id', $param1);
+
+        $numrows = $this->db->count_all_results();
+
+        $MatrizArray = $this->db->query("SELECT * FROM turma t
+inner join matriz m on m.matriz_id = t.matriz_id
+inner join cursos c on c.cursos_id = m.cursos_id
+WHERE c.cursos_id = $param1")->result_array();
+
+        if ($numrows >= 1) {
+            ?>
+
+            <select name='turma' id="turma" onchange="buscar_disciplina();" >  
+                <option value='0'>selecione uma turma</option>
+                <?php
+                foreach ($MatrizArray as $row) {
+                    $id_turma = $row['turma_id'];
+                    $turma = $row['tur_tx_descricao'];
+
+                    $periodo2 = $row['periodo_id'];
+                    if ($periodo2 == 1) {
+                        $periodo = 'I';
+                    } else if ($periodo2 == 2) {
+                        $periodo = 'II';
+                    } else if ($periodo2 == 3) {
+                        $periodo = 'III';
+                    } else if ($periodo2 == 4) {
+                        $periodo = 'IV';
+                    } else if ($periodo2 == 5) {
+                        $periodo = 'V';
+                    } else if ($periodo2 == 6) {
+                        $periodo = 'VI';
+                    } else if ($periodo2 == 7) {
+                        $periodo = 'VII';
+                    } else if ($periodo2 == 8) {
+                        $periodo = 'VIII';
+                    } else if ($periodo2 == 9) {
+                        $periodo = 'IX';
+                    } else if ($periodo2 == 10) {
+                        $periodo = 'X';
+                    }
+                    ?>
+                    <option value="<?php echo $id_turma .'/'. $periodo2 ?>"> <?php echo $turma ?>/ <?php echo $periodo ?> - Período -> <?php echo $id_turma .'|'.$periodo2; ?></option>
+                    <?php
+                }
+                ?>
+            </select>
+            <?php
+        }
+
+
+        if ($numrows < 1) {
+            echo "<select name='turma'>";
+            echo "<option value=''>Não existe turma para este Curso</option>";
+            echo "</select>";
+        }
+    }
+
+    function carrega_disciplina($param1 = '', $param2 = '', $param3 = '') {
+        
+        /*$result = $param1;
+        $result_explode = explode('/', $result);
+        $codigo_turma = $result_explode[0];
+        $periodo = $result_explode[1];
+        */
+        
+        $this->db->from('turma');
+        $this->db->join('matriz_disciplina', 'matriz_disciplina.matriz_id = turma.matriz_id');
+        $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
+        $this->db->where('turma.turma_id', $param1);
+        $this->db->where('matriz_disciplina.periodo',$param2);
+        
+        $numrows = $this->db->count_all_results();
+
+        $MatrizArray = $this->db->query("SELECT * FROM turma t
+          inner join matriz_disciplina md on md.matriz_id = t.matriz_id
+          inner join disciplina d on d.disciplina_id = md.disciplina_id
+          WHERE t.turma_id = $param1 and md.periodo =  $param2 ")->result_array();
+     
+        if ($numrows >= 1) {
+            ?>
+
+            
+            <select name='disciplina'>
+            <option value='0'>Selecione a disciplina</option>
+            <?php
+            foreach ($MatrizArray as $row) {
+                $id_matriz_disciplina = $row['matriz_disciplina_id'];
+                $disciplina = $row['disc_tx_descricao'];
+                ?>
+                <option value='<?php echo $id_matriz_disciplina  ?>'><?php echo $disciplina  ?></option>
+                 <?php
+            }
+             ?>
+           </select>
+            <?php
+        }
+
+
+        if ($numrows < 1) {
+            echo "<select name='disciplina'>";
+            echo "<option value=''>Não existe disciplina para esta turma</option>";
+            echo "</select>";
+        }
+    }
+
+}
 ?>
