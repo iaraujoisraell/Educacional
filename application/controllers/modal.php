@@ -82,6 +82,11 @@ class Modal extends CI_Controller {
                     ))->result_array();
         } else if ($param1 == 'editar_periodo') {
             $page_data['edit_data'] = $this->db->get_where('periodo_letivo', array('periodo_letivo_id' => $param2))->result_array();
+        }else if ($param1 == 'editar_disciplina_professor') {
+            $page_data['edit_data'] = $this->db->select("*");
+            $page_data['edit_data'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
+            $page_data['edit_data'] = $this->db->get_where('matriz_disciplina', array('matriz_disciplina_id' => $param2
+                    ))->result_array();
         }
 
         $page_data['page_name'] = $param1;

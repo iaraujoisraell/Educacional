@@ -3,20 +3,15 @@
 
         <!------CONTROL TABS START------->
         <ul class="nav nav-tabs nav-tabs-left">
-            <?php
-            $codigo_curso = '';
-            $count = 1;
-            foreach ($professor as $row1):
-                $codigo_curso = $row1['cursos_id'];
-                ?>
 
 
-                <li class="active">
-                    <a href="#list" data-toggle="tab"><i class="icon-align-justify"></i> 
-                        <?php echo get_phrase('Professor/Disciplina'); ?>
-                    </a>
-                </li>
-            <?php endforeach; ?>
+
+            <li class="active">
+                <a href="#list" data-toggle="tab"><i class="icon-align-justify"></i> 
+                    <?php echo get_phrase('Professor/Disciplina'); ?>
+                </a>
+            </li>
+
             <li>
                 <a href="#add" data-toggle="tab"><i class="icon-plus"></i>
                     <?php echo get_phrase('nova_disciplina'); ?>
@@ -36,9 +31,9 @@
                         <a href="#" title="Users">
                             <?php
                             $count = 1;
-                            $codigo_matriz = '';
+                            $professor_id = '';
                             foreach ($professor as $row1):
-                                //$codigo_matriz = $row1['matriz_id'];
+                                $professor_id = $row1['teacher_id'];
                                 ?>
                                 <h3><?php echo $row1['name']; ?> </h3>
                             <?php endforeach; ?>
@@ -56,11 +51,13 @@
                                 <thead>
                                     <tr>
                                         <th><div>ID</div></th>
-                                <th><div><?php echo get_phrase('Cód.Disc.'); ?></div></th>
+                                <th><div><?php echo get_phrase('Periodo_letivo'); ?></div></th>
+                                <th><div><?php echo get_phrase('Curso'); ?></div></th>   
+                                <th><div><?php echo get_phrase('Turma'); ?></div></th>
+                  
+                                <th><div><?php echo get_phrase('Período.'); ?></div></th>
                                 <th><div><?php echo get_phrase('Disciplina'); ?></div></th>
-                                <th><div><?php echo get_phrase('C.H.'); ?></div></th>
-                                <th><div><?php echo get_phrase('CR'); ?></div></th>
-                                <th><div><?php echo get_phrase('Período'); ?></div></th>
+
                                 <th><div><?php echo get_phrase('Opções'); ?></div></th>
                                 </tr>
                                 </thead>
@@ -90,13 +87,20 @@
                                         ?>
                                         <tr>
                                             <td><?php echo $count++; ?></td>
-                                            <td ><?php echo $row['disc_tx_abrev']; ?></td>
-                                            <td><?php echo $row['disc_tx_descricao']; ?></td>
-                                            <td><?php echo $row['carga_horaria']; ?></td>
-                                            <td><?php echo $row['credito']; ?></td>
+                                            <td ><?php echo $row['periodo_letivo']; ?></td>
+                                            <td><?php echo $row['cur_tx_abreviatura']; ?></td>
+                                            <td><?php echo $row['tur_tx_descricao']; ?> - <?php echo $row['descricao']; ?></td> 
+                                            
                                             <td><?php echo $periodo2; ?></td>
+                                            <td><?php echo $row['disc_tx_descricao']; ?></td>
                                             <td align="center">
-                                                <a data-toggle="modal" href="#modal-form" onclick="modal('editar_disciplina',<?php echo $row['matriz_disciplina_id']; ?>)"	class="btn btn-gray btn-small">
+                                                <a data-toggle="modal" href="#modal-form" onclick="modal('editar_disciplina',<?php echo $row['matriz_disciplina_id']; ?>)"	class="btn btn-black btn-small">
+                                                    <i class="icon-print"></i> <?php echo get_phrase('p._ensino'); ?>
+                                                </a>
+                                                <a data-toggle="modal" href="#modal-form" onclick="modal('editar_disciplina',<?php echo $row['matriz_disciplina_id']; ?>)"	class="btn btn-info btn-small">
+                                                    <i class="icon-print"></i> <?php echo get_phrase('m._nota'); ?>
+                                                </a>
+                                                <a data-toggle="modal" href="#modal-form" onclick="modal('editar_disciplina_professor',<?php echo $row['matriz_disciplina_id']; ?>)"	class="btn btn-gray btn-small">
                                                     <i class="icon-wrench"></i> <?php echo get_phrase('editar'); ?>
                                                 </a>
                                                 <a data-toggle="modal" href="#modal-delete" onclick="modal_delete('<?php echo base_url(); ?>index.php?educacional/matriz_disciplina/delete/<?php echo $row['matriz_disciplina_id']; ?>/<?php echo $row['disciplina_id']; ?>/<?php echo $row['matriz_id']; ?>')"
@@ -117,10 +121,9 @@
             <!----CREATION FORM STARTS---->
             <div class="tab-pane box" id="add" style="padding: 5px">
                 <div class="box-content">
-                    <?php echo form_open('educacional/matriz_disciplina/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
-                    <form method="post" action="<?php echo base_url(); ?>index.php?educacional/matriz_disciplina/create/" class="form-horizontal validatable" enctype="multipart/form-data">
-                        <input type="hidden" class="validate[required]"  name="cod_matriz" value="<?php echo $codigo_matriz; ?>"/>
-                        <input type="hidden" class="validate[required]"  name="cod_curso" value="<?php echo $codigo_curso; ?>"/>
+                    <?php echo form_open('educacional/professor_disciplina/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
+                    <form method="post" action="<?php echo base_url(); ?>index.php?educacional/professor_disciplina/create/" class="form-horizontal validatable" enctype="multipart/form-data">
+                        <input type="hidden" class="validate[required]"  name="cod_professor" value="<?php echo $professor_id; ?>"/>
 
                         <div class="padded">
                             <table width="100%" border="0" class="responsive">
@@ -149,20 +152,20 @@
 
                                     <tr>
                                         <td>
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('turma'); ?></label>
+                                            <div class="control-group">
+                                                <label class="control-label"><?php echo get_phrase('turma'); ?></label>
 
-                                            <div class="controls" id="load_turma">
-                                                <select name="turma" id="turma" >
-                                                    <option value="">Selecione a turma</option>
-                                                </select>
+                                                <div class="controls" id="load_turma">
+                                                    <select name="turma" id="turma" >
+                                                        <option value="">Selecione a turma</option>
+                                                    </select>
+                                                </div>
+
                                             </div>
-
-                                        </div>
-                                    </td>
+                                        </td>
                                     </tr>
-                                    
-                                    
+
+
 
 
                                     <tr>
@@ -186,7 +189,7 @@
                             </table>
                         </div>
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-gray"><?php echo get_phrase('criar_disciplina'); ?></button>
+                            <button type="submit" class="btn btn-gray"><?php echo get_phrase('cadastrar_disciplina_para_o_professor'); ?></button>
                         </div>
                     </form>                
                 </div>                
@@ -230,7 +233,7 @@
         var turma = $('#turma').val();  //codigo do estado escolhido
         //se encontrou o estado
         if (turma) {
-           
+
             var url = 'index.php?educacional/carrega_disciplina/' + turma;  //caminho do arquivo php que irá buscar as cidades no BD
             $.get(url, function (dataReturn) {
                 $('#load_disciplina').html(dataReturn);  //coloco na div o retorno da requisicao

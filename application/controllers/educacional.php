@@ -555,26 +555,21 @@ class educacional extends CI_Controller {
             redirect(base_url(), 'refresh');
 
         if ($param1 == 'create') {
-            //CADASTRA A DISCIPLINA E PEGA O ULTIMO REGISTRO
-            $data['disc_tx_descricao'] = $this->input->post('disciplina');
-            $data['disc_tx_abrev'] = $this->input->post('abreviatura');
-            $data['cursos_id'] = $this->input->post('cod_curso');
-            $this->db->insert('disciplina', $data);
-            $disciplina_id = mysql_insert_id();
 
-            //INSERE NA TABELA MATRIZ_DISCIPLINA
-            $data2['matriz_id'] = $this->input->post('cod_matriz');
-            $data2['periodo'] = $this->input->post('periodo');
-            $data2['disciplina_id'] = $disciplina_id; // $this->input->post('');
-            $data2['carga_horaria'] = $this->input->post('carga_horaria');
-            $data2['credito'] = $this->input->post('credito');
-            $this->db->insert('matriz_disciplina', $data2);
+            $result = $this->input->post('turma');
+            $result_explode = explode('/', $result);
+            $codigo_turma = $result_explode[0];
+            $periodo = $result_explode[1];
 
-            //$cod_matriz = $data2['matriz_id'];
+            $data['turma_id'] = $codigo_turma;
+            $data['teacher_id'] = $this->input->post('cod_professor');
+            $data['matriz_disciplina_id'] = $this->input->post('disciplina');
+            $this->db->insert('professor_turma', $data);
 
             $this->session->set_flashdata('flash_message', get_phrase('disciplina_cadastrada_com_sucesso'));
-            redirect(base_url() . 'index.php?educacional/matriz_disciplina/carrega_matriz/' . $data2['matriz_id'], 'refresh');
+            redirect(base_url() . 'index.php?educacional/professor_disciplina/carrega_disciplina/' . $data['teacher_id'], 'refresh');
         }
+        
         if ($param1 == 'do_update') {
             //altera tabela Disciplina
             $parametro_disciplina = $this->input->post('disciplina_codigo');
@@ -597,7 +592,7 @@ class educacional extends CI_Controller {
 
             $this->session->set_flashdata('flash_message', get_phrase('disciplina_alterada_com_sucesso'));
             redirect(base_url() . 'index.php?educacional/matriz_disciplina/carrega_matriz/' . $parametro_matriz_id, 'refresh');
-        } else if ($param1 == 'edit') {
+        } else if ($param1 == 'editar') {
 
             $page_data['edit_data'] = $this->db->select("*");
             $page_data['edit_data'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
@@ -609,6 +604,13 @@ class educacional extends CI_Controller {
 
             $page_data['disciplina'] = $this->db->select("*");
             $page_data['disciplina'] = $this->db->join('teacher', 'teacher.teacher_id = professor_turma.teacher_id');
+            $page_data['disciplina'] = $this->db->join('turma', 'turma.turma_id = professor_turma.turma_id');
+            $page_data['disciplina'] = $this->db->join('periodo_letivo', 'periodo_letivo.periodo_letivo_id = turma.periodo_letivo_id');
+            $page_data['disciplina'] = $this->db->join('matriz_disciplina', 'matriz_disciplina.matriz_disciplina_id = professor_turma.matriz_disciplina_id');
+            $page_data['disciplina'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
+            $page_data['disciplina'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
+            $page_data['disciplina'] = $this->db->join('cursos', 'cursos.cursos_id = matriz.cursos_id');   
+            $page_data['disciplina'] = $this->db->join('turno', 'turno.turno_id = turma.turno_id');   
             $page_data['disciplina'] = $this->db->get_where('professor_turma', array('professor_turma.teacher_id' => $param2
                     ))->result_array();
         }
@@ -679,7 +681,7 @@ WHERE c.cursos_id = $param1")->result_array();
                         $periodo = 'X';
                     }
                     ?>
-                    <option value="<?php echo $id_turma .'/'. $periodo2 ?>"> <?php echo $turma ?>/ <?php echo $periodo ?> - Período -> <?php echo $id_turma .'|'.$periodo2; ?></option>
+                    <option value="<?php echo $id_turma . '/' . $periodo2 ?>"> <?php echo $turma ?>/ <?php echo $periodo ?> - Período </option>
                     <?php
                 }
                 ?>
@@ -696,42 +698,42 @@ WHERE c.cursos_id = $param1")->result_array();
     }
 
     function carrega_disciplina($param1 = '', $param2 = '', $param3 = '') {
-        
-        /*$result = $param1;
-        $result_explode = explode('/', $result);
-        $codigo_turma = $result_explode[0];
-        $periodo = $result_explode[1];
-        */
-        
+
+        /* $result = $param1;
+          $result_explode = explode('/', $result);
+          $codigo_turma = $result_explode[0];
+          $periodo = $result_explode[1];
+         */
+
         $this->db->from('turma');
         $this->db->join('matriz_disciplina', 'matriz_disciplina.matriz_id = turma.matriz_id');
         $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
         $this->db->where('turma.turma_id', $param1);
-        $this->db->where('matriz_disciplina.periodo',$param2);
-        
+        $this->db->where('matriz_disciplina.periodo', $param2);
+
         $numrows = $this->db->count_all_results();
 
         $MatrizArray = $this->db->query("SELECT * FROM turma t
           inner join matriz_disciplina md on md.matriz_id = t.matriz_id
           inner join disciplina d on d.disciplina_id = md.disciplina_id
           WHERE t.turma_id = $param1 and md.periodo =  $param2 ")->result_array();
-     
+
         if ($numrows >= 1) {
             ?>
 
-            
+
             <select name='disciplina'>
-            <option value='0'>Selecione a disciplina</option>
-            <?php
-            foreach ($MatrizArray as $row) {
-                $id_matriz_disciplina = $row['matriz_disciplina_id'];
-                $disciplina = $row['disc_tx_descricao'];
+                <option value='0'>Selecione a disciplina</option>
+                <?php
+                foreach ($MatrizArray as $row) {
+                    $id_matriz_disciplina = $row['matriz_disciplina_id'];
+                    $disciplina = $row['disc_tx_descricao'];
+                    ?>
+                    <option value='<?php echo $id_matriz_disciplina ?>'><?php echo $disciplina ?></option>
+                    <?php
+                }
                 ?>
-                <option value='<?php echo $id_matriz_disciplina  ?>'><?php echo $disciplina  ?></option>
-                 <?php
-            }
-             ?>
-           </select>
+            </select>
             <?php
         }
 
