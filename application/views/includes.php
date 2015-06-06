@@ -6,7 +6,8 @@
 <script src="<?php echo base_url(); ?>template/js/excanvas.js" type="text/javascript"></script>
 <![endif]-->
 <script src="<?php echo base_url(); ?>template/js/ekattor.js" type="text/javascript"></script>
-<script src="<?php echo base_url(); ?>template/js/Chart.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>template/js/highcharts.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>template/js/exporting.js" type="text/javascript"></script>
 
 <?php
 //////////LOADING SYSTEM SETTINGS FOR ALL PAGES AND ACCOUNTS/////////
