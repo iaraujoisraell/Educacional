@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 24-Maio-2015 às 20:58
+-- Generation Time: 08-Jun-2015 às 03:51
 -- Versão do servidor: 5.6.15-log
 -- PHP Version: 5.5.8
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `acessos` (
   PRIMARY KEY (`acessos_id`),
   KEY `fk_acessos_menus1_idx` (`menus_id`),
   KEY `fk_acessos_perfis1_idx` (`perfis_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
 
 --
 -- Extraindo dados da tabela `acessos`
@@ -48,7 +48,10 @@ INSERT INTO `acessos` (`acessos_id`, `menus_id`, `perfis_id`) VALUES
 (7, 28, 11),
 (8, 30, 11),
 (9, 32, 11),
-(10, 33, 11);
+(10, 33, 11),
+(11, 34, 11),
+(12, 35, 11),
+(13, 36, 11);
 
 -- --------------------------------------------------------
 
@@ -96,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `bolsas` (
   `porcentagem_minima` double NOT NULL COMMENT 'a porcentagem mínima da bolsa:\n\n20%, 30%',
   `porcentagem_maxima` double NOT NULL COMMENT 'a porcentagem máxima da bolsa,\n\n50%, 100%.',
   PRIMARY KEY (`bolsas_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Extraindo dados da tabela `bolsas`
@@ -105,7 +108,10 @@ CREATE TABLE IF NOT EXISTS `bolsas` (
 INSERT INTO `bolsas` (`bolsas_id`, `descricao`, `porcentagem_minima`, `porcentagem_maxima`) VALUES
 (1, 'bolsa universidade', 49, 55),
 (2, 'Pro Uni', 60, 70),
-(3, 'Bolsa Faculdade', 30, 20);
+(3, 'Bolsa Faculdade', 30, 20),
+(4, 'AJIDIXJISAHXUSHAUEHDKDUSHSUSS', 0, 0),
+(5, 'TURMA TESTE', 0, 0),
+(6, 'TURMA TESTE', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -145,6 +151,55 @@ CREATE TABLE IF NOT EXISTS `book` (
 
 INSERT INTO `book` (`book_id`, `name`, `description`, `author`, `class_id`, `status`, `price`) VALUES
 (1, 'Camisa', 'df', 'df', '4', 'unavailable', '1300');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `cadastro_aluno`
+--
+
+CREATE TABLE IF NOT EXISTS `cadastro_aluno` (
+  `cadastro_aluno_id` int(11) NOT NULL AUTO_INCREMENT,
+  `estado_civil` int(11) NOT NULL COMMENT '1 - Solteiro(a)\n2 - Casado(a)\n3 - Divorciado(a)\n4 - Viuvo(a)\n5 - Outro(a)',
+  `conjuge` varchar(250) DEFAULT NULL,
+  `responsavel` varchar(250) DEFAULT NULL,
+  `rg_responsavel` varchar(13) DEFAULT NULL,
+  `cpf_responsavel` varchar(14) DEFAULT NULL,
+  `fone_responsavel` varchar(9) DEFAULT NULL,
+  `cel_responsavel` varchar(9) DEFAULT NULL,
+  `obs_doc` varchar(200) NOT NULL,
+  `titulo` varchar(20) DEFAULT NULL,
+  `uf_titulo` varchar(2) DEFAULT NULL,
+  `cert_reservista` varchar(20) DEFAULT NULL,
+  `uf_cert_reservista` varchar(2) DEFAULT NULL,
+  `rg` varchar(15) NOT NULL,
+  `rg_orgao_expeditor` varchar(50) DEFAULT NULL,
+  `rg_uf` varchar(2) DEFAULT NULL,
+  `email` varchar(200) NOT NULL,
+  `endereco` varchar(200) NOT NULL,
+  `bairro` varchar(100) NOT NULL,
+  `cidade` varchar(100) NOT NULL,
+  `uf` varchar(2) NOT NULL,
+  `cep` varchar(10) NOT NULL,
+  `complemento` varchar(200) DEFAULT NULL,
+  `fone` varchar(14) NOT NULL,
+  `celular` varchar(14) NOT NULL,
+  `candidato_id` int(11) DEFAULT NULL,
+  `nome` varchar(250) NOT NULL,
+  `cpf` int(11) NOT NULL,
+  `documento_estrangeiro` varchar(20) DEFAULT NULL COMMENT 'Usado somente em caso de estrangeiro. \nsó pode ser informado o documento de estrangeiro quando a nacionalidade for = 3;',
+  `data_nascimento` date NOT NULL,
+  `sexo` int(11) NOT NULL COMMENT '0- Mesculino\n1 - Feminino',
+  `cor` int(11) NOT NULL COMMENT '1-Branca\n2-Preta\n3-Parda\n4-Amarela\n5-Indígina\n6-Não dispoe da informação\n7-O aluno não quis declarar',
+  `mae` varchar(120) DEFAULT NULL,
+  `nacionalidade` int(1) NOT NULL COMMENT '1 - Brasileira\n2 - Brasileira-Nascido no exterior ou naturalizado.\n3 - Estrangeira',
+  `pai` varchar(120) DEFAULT NULL,
+  `uf_nascimento` char(2) DEFAULT NULL COMMENT 'só pode ser informado se a nacionalidade for brasileira. opção 1.',
+  `municipio_nascimento` int(7) DEFAULT NULL COMMENT 'Deve aparecer somente se for selecionado um UF.\n\nusar a tabela corporativa TC_MUNICIPIO ',
+  `pais_origem` varchar(3) NOT NULL COMMENT 'só se deve escolher um país de origem se a opcao de nacionalidade for estrageira = 3.\n\nse a nacionalidade for a opção 1 ou 2, o país de origem deve ser = BRA.\n',
+  PRIMARY KEY (`cadastro_aluno_id`),
+  KEY `fk_cadastro_aluno_candidato1` (`candidato_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -257,64 +312,6 @@ INSERT INTO `chamada_vestibular` (`chamada_vestibular_id`, `cv_nb_resposta`, `ca
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `class`
---
-
-CREATE TABLE IF NOT EXISTS `class` (
-  `class_id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `name_numeric` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `teacher_id` int(11) NOT NULL,
-  PRIMARY KEY (`class_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
-
---
--- Extraindo dados da tabela `class`
---
-
-INSERT INTO `class` (`class_id`, `name`, `name_numeric`, `teacher_id`) VALUES
-(4, '3º Ano', '3', 2),
-(5, 'ELETRONICA DE BANCADA', '01', 8),
-(6, 'PÓS-ENFERMAGEM', 'PÓS-ENFERMAGEM', 8),
-(7, '11', '11', 2),
-(8, 'Avançado em Teologia Turma 1', 'Curso Teologia Tarde', 3),
-(11, 'Teste', 'Teste', 3);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `class_routine`
---
-
-CREATE TABLE IF NOT EXISTS `class_routine` (
-  `class_routine_id` int(11) NOT NULL AUTO_INCREMENT,
-  `class_id` int(11) NOT NULL,
-  `subject_id` int(11) NOT NULL,
-  `time_start` int(11) NOT NULL,
-  `time_end` int(11) NOT NULL,
-  `day` longtext COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`class_routine_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
-
---
--- Extraindo dados da tabela `class_routine`
---
-
-INSERT INTO `class_routine` (`class_routine_id`, `class_id`, `subject_id`, `time_start`, `time_end`, `day`) VALUES
-(1, 1, 0, 14, 16, 'monday'),
-(2, 2, 1, 2, 4, 'monday'),
-(3, 2, 1, 24, 13, 'sunday'),
-(4, 5, 1, 24, 13, 'sunday'),
-(5, 4, 1, 9, 10, 'tuesday'),
-(6, 5, 1, 0, 0, 'sunday'),
-(7, 2, 1, 12, 16, 'thursday'),
-(8, 8, 2, 20, 21, 'tuesday'),
-(9, 4, 1, 0, 0, 'monday'),
-(10, 4, 2, 1, 4, 'sunday');
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `cursos`
 --
 
@@ -347,12 +344,107 @@ INSERT INTO `cursos` (`cursos_id`, `cur_tx_descricao`, `cur_tx_duracao`, `cur_tx
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `dados_censo_aluno`
+--
+
+CREATE TABLE IF NOT EXISTS `dados_censo_aluno` (
+  `dados_censo_aluno_id` int(11) NOT NULL AUTO_INCREMENT,
+  `aluno_deficiencia` int(11) NOT NULL COMMENT '0 - NAO\n1 - SIM\n2 - NAO DISPOE da INFORMACAO',
+  `ad_cegueira` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ad_baixa_visao` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ad_surdez` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ad_auditiva` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ad_fisica` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ad_surdogagueira` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ad_multipla` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ad_intelectual` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ad_autismo` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ad_asperger` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ad_rett` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ad_transtorno` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ad_superdotacao` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `cadastro_aluno_id` int(11) NOT NULL,
+  `tipo_registro` int(11) DEFAULT '40' COMMENT 'Salvar sempre como 40',
+  `tipo_arquivo` int(11) DEFAULT '4' COMMENT 'salvar com o valor: 4',
+  PRIMARY KEY (`dados_censo_aluno_id`),
+  KEY `fk_dados_censo_aluno_cadastro_aluno1` (`cadastro_aluno_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `dados_censo_vinculo_curso`
+--
+
+CREATE TABLE IF NOT EXISTS `dados_censo_vinculo_curso` (
+  `dados_censo_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tipo_registro` int(2) NOT NULL DEFAULT '42' COMMENT 'Salvar sempre como 42',
+  `codigo_curso_inep` int(12) NOT NULL COMMENT 'ID do curso no INEP',
+  `curso_origem` int(11) DEFAULT NULL COMMENT 'se a situação do vinculo do aluno for = 5 - Transferido para outro curso da mesma instituição, deve ser informado o código do curso de origem, código no INEP.',
+  `semestre_conclusao` varchar(15) DEFAULT NULL COMMENT 'Valores:\n\n1 - 1o Semestre\n2 - 2o Semestre',
+  `parfor` int(11) DEFAULT NULL COMMENT 'deve ser informado quando o curso possui o grau de licenciatura.\n\n0 - Não\n1 - SIM',
+  `tipo_escola` int(11) DEFAULT NULL COMMENT 'Tipo de escola que concluiu o ensino médio.\n\n\n0- Privado\n1 - Público\n2 - Não dispõe da informação',
+  `fi_vestibular` int(11) NOT NULL COMMENT 'a forma de ingresso foi vestibular?\n\n0- NÃO\n1 - SIM',
+  `fi_enem` int(11) NOT NULL COMMENT '0 - NÃO\n1 - SIM',
+  `fi_avaliacao_seriada` int(11) NOT NULL COMMENT '0 - NÃO\n1 - SIM',
+  `fi_selecao_simplificada` int(11) NOT NULL COMMENT '0 - NÃO\n1 - SIM',
+  `fi_pecg` int(11) DEFAULT NULL COMMENT 'Este campo só é informado se a nacionalidade do aluno for ESTRANGEIRA\n\n0 - NÃO\n1 - SIM',
+  `fi_transferencia_exoficcio` int(11) NOT NULL COMMENT '0 - NÃO\n1 - SIM',
+  `fi_decisao_judicial` int(11) NOT NULL COMMENT '0 - NÃO\n1 - SIM',
+  `fi_vagas_remanescentes` int(11) NOT NULL COMMENT '0 - NÃO\n1 - SIM',
+  `fi_programas_especiais` int(11) NOT NULL,
+  `mobilidade_academica` int(11) NOT NULL COMMENT '0 - NÃO\n1 - SIM',
+  `ies_destino` int(12) DEFAULT NULL COMMENT 'só é possível informar se no campo MOBILIDADE ACADÊMICA = 1.\n\n',
+  `mobilidade_academica_internacional` int(11) DEFAULT NULL COMMENT 'se informado a opcao 1 na MOBILIDADE ACADÊMICA\n\nvalores válidos:\n1 - Intercambio\n2 - Ciências sem fronteiras',
+  `pais_destino` int(11) DEFAULT NULL COMMENT 'obrigatório quando for selecionado a opção TIPO DE MOBILIDADE ACADÊMICA INTERNACIONAL.\n\nVer código do país na tabela.',
+  `programa_reserva_vagas` int(11) NOT NULL COMMENT '0 - não\n1 - SIM',
+  `pr_etnico` int(11) DEFAULT NULL COMMENT '0- nao\n1- sim',
+  `pr_pessoa_deficiencia` int(11) DEFAULT NULL COMMENT '0- nao\n1- sim',
+  `pr_procedente_escola_publica` int(11) DEFAULT NULL COMMENT '0- nao\n1- sim',
+  `pr_renda_familiar` int(11) DEFAULT NULL COMMENT '0- nao\n1- sim',
+  `pr_outros` int(11) DEFAULT NULL COMMENT '0- nao\n1- sim',
+  `financiamento_estudantil` int(11) NOT NULL COMMENT '0 - NAO\n1 - SIM',
+  `fe_fies` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `fi_governo_estadual` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `fi_governo_municipal` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `fe_ies` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `fe_entidades_externas` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `fnr_prouni_integral` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `fnr_prouni_parcial` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `fnr_entidades_externas` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `fnr_governo_estadual` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `fnr_ies` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `fnr_governo_municipal` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `apoio_social` int(11) NOT NULL COMMENT '0 - NAO\n1 - SIM',
+  `as_alimentacao` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `as_moradia` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `as_transporte` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `as_material_didatico` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `as_bolsa_trabalho` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `as_bolsa_permanencia` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `atividade_extracurricular` int(11) NOT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ae_pesquisa` int(11) DEFAULT NULL,
+  `bolsa_ae_pesquisa` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ae_extensao` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `bolsa_ae_extensao` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ae_monitoria` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `bolsa_ae_monitoria` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `ae_estagio_nao_obrigatorio` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `bolsa_ae_estagio_nao_obrigatorio` int(11) DEFAULT NULL COMMENT '0 - NAO\n1 - SIM',
+  `matricula_aluno_id` int(11) NOT NULL,
+  PRIMARY KEY (`dados_censo_id`),
+  KEY `fk_dados_censo_vinculo_curso_matricula_aluno1` (`matricula_aluno_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `disciplina`
 --
 
 CREATE TABLE IF NOT EXISTS `disciplina` (
   `disciplina_id` int(11) NOT NULL AUTO_INCREMENT,
-  `disc_tx_descricao` varchar(350) DEFAULT NULL,
+  `disc_tx_descricao` varchar(350) NOT NULL,
   `disc_tx_abrev` varchar(100) NOT NULL,
   `cursos_id` int(10) unsigned zerofill NOT NULL,
   PRIMARY KEY (`disciplina_id`),
@@ -418,20 +510,6 @@ INSERT INTO `disciplina` (`disciplina_id`, `disc_tx_descricao`, `disc_tx_abrev`,
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `email_template`
---
-
-CREATE TABLE IF NOT EXISTS `email_template` (
-  `email_template_id` int(11) NOT NULL AUTO_INCREMENT,
-  `task` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `subject` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `body` longtext COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`email_template_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `etapa`
 --
 
@@ -462,47 +540,6 @@ CREATE TABLE IF NOT EXISTS `etapa_periodo` (
   `porcentagem_faltas` int(11) NOT NULL COMMENT 'A porcentagem de falta permitida, ex:\n\n25%, acima disso, seria reprovado.',
   PRIMARY KEY (`etapa_periodo_id`),
   KEY `fk_etapa_periodo_periodo_letivo1` (`periodo_letivo_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `grade`
---
-
-CREATE TABLE IF NOT EXISTS `grade` (
-  `grade_id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `grade_point` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `mark_from` int(11) NOT NULL,
-  `mark_upto` int(11) NOT NULL,
-  `comment` longtext COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`grade_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
-
---
--- Extraindo dados da tabela `grade`
---
-
-INSERT INTO `grade` (`grade_id`, `name`, `grade_point`, `mark_from`, `mark_upto`, `comment`) VALUES
-(1, 'Lucas', '10', 6, 5, ''),
-(3, 'Jonas', '5', 7, 9, 'moderado'),
-(4, 'Fabio', 'asdf', 7, 10, 'teste'),
-(5, 'Anatomia', '10', 10, 6, 'ok'),
-(6, 'Aulas EM', '', 0, 0, '');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `horario`
---
-
-CREATE TABLE IF NOT EXISTS `horario` (
-  `horario_id` int(11) NOT NULL AUTO_INCREMENT,
-  `turno_id` int(11) NOT NULL,
-  `descricao` varchar(200) NOT NULL COMMENT 'Aula 1 - 6:30h as 20h\nIntervalo - 20:00h as 20:20h\nAula 2 - 20:30h as 22:00h',
-  PRIMARY KEY (`horario_id`),
-  KEY `fk_horario_turno1` (`turno_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -539,41 +576,6 @@ INSERT INTO `instituicao` (`instituicao_id`, `nome_abreviatura`, `nome_instituic
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `invoice`
---
-
-CREATE TABLE IF NOT EXISTS `invoice` (
-  `invoice_id` int(11) NOT NULL AUTO_INCREMENT,
-  `student_id` int(11) NOT NULL,
-  `title` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `amount` int(11) NOT NULL,
-  `creation_timestamp` int(11) NOT NULL,
-  `payment_timestamp` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `payment_method` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `payment_details` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `status` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT 'paid or unpaid',
-  PRIMARY KEY (`invoice_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
-
---
--- Extraindo dados da tabela `invoice`
---
-
-INSERT INTO `invoice` (`invoice_id`, `student_id`, `title`, `description`, `amount`, `creation_timestamp`, `payment_timestamp`, `payment_method`, `payment_details`, `status`) VALUES
-(1, 4, 'Cartão', 'Boleto', 1, 1420610400, '', '', '', 'paid'),
-(2, 3, 'boleto', 'teste descricao', 100, 1423029600, '', '', '', 'paid'),
-(4, 1, '', 'Mensalidade', 500, 1425535200, '', '', '', 'paid'),
-(3, 6, 'Teste', 'teste', 0, 1424584800, '', '', '', 'paid'),
-(5, 1, 'aaaaaa', 'aaaa', 200, 1425362400, '', '', '', 'paid'),
-(6, 1, '', '', 0, 0, '', '', '', 'paid'),
-(7, 2, '', '', 0, 0, '', '', '', 'unpaid'),
-(8, 1, '1', 'PARCELA 01 ', 550, 1424757600, '', '', '', 'paid'),
-(9, 4, '', '', 0, -64800, '', '', '', 'unpaid');
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `language`
 --
 
@@ -583,7 +585,7 @@ CREATE TABLE IF NOT EXISTS `language` (
   `Portugues` longtext COLLATE utf8_unicode_ci NOT NULL,
   `Português` longtext COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`phrase_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2917 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4426 ;
 
 --
 -- Extraindo dados da tabela `language`
@@ -3498,7 +3500,1517 @@ INSERT INTO `language` (`phrase_id`, `phrase`, `Portugues`, `Português`) VALUES
 (2913, 'carga_horária', '', ''),
 (2914, 'carga_horária', '', ''),
 (2915, 'Opções', '', ''),
-(2916, 'Carga_Horária', '', '');
+(2916, 'Carga_Horária', '', ''),
+(2917, 'Processo Seletivo', '', ''),
+(2918, 'Processo Seletivo', '', ''),
+(2919, 'Processo Seletivo', '', ''),
+(2920, 'etapa', '', ''),
+(2921, 'Ano', '', ''),
+(2922, 'Semestre', '', ''),
+(2923, 'Opções', '', ''),
+(2924, 'Ano', '', ''),
+(2925, 'Semestre', '', ''),
+(2926, 'Opções', '', ''),
+(2927, 'Carga_Horária', '', ''),
+(2928, 'carga_horária', '', ''),
+(2929, 'Processo Seletivo', '', ''),
+(2930, 'Ano', '', ''),
+(2931, 'Semestre', '', ''),
+(2932, 'Opções', '', ''),
+(2933, 'Ano', '', ''),
+(2934, 'Semestre', '', ''),
+(2935, 'Processo Seletivo', '', ''),
+(2936, 'Ano', '', ''),
+(2937, 'Semestre', '', ''),
+(2938, 'Opções', '', ''),
+(2939, 'Ano', '', ''),
+(2940, 'Semestre', '', ''),
+(2941, 'Processo Seletivo', '', ''),
+(2942, 'Processo Seletivo', '', ''),
+(2943, 'Processo Seletivo', '', ''),
+(2944, 'Processo Seletivo', '', ''),
+(2945, 'Ano', '', ''),
+(2946, 'Semestre', '', ''),
+(2947, 'Opções', '', ''),
+(2948, 'Ano', '', ''),
+(2949, 'Semestre', '', ''),
+(2950, 'Opções', '', ''),
+(2951, 'Carga_Horária', '', ''),
+(2952, 'Processo Seletivo', '', ''),
+(2953, 'Processo Seletivo', '', ''),
+(2954, 'Processo Seletivo', '', ''),
+(2955, 'Ano', '', ''),
+(2956, 'Semestre', '', ''),
+(2957, 'Opções', '', ''),
+(2958, 'Ano', '', ''),
+(2959, 'Semestre', '', ''),
+(2960, 'Opções', '', ''),
+(2961, 'Carga_Horária', '', ''),
+(2962, 'Opções', '', ''),
+(2963, 'Carga_Horária', '', ''),
+(2964, 'Processo Seletivo', '', ''),
+(2965, 'Processo Seletivo', '', ''),
+(2966, 'Processo Seletivo', '', ''),
+(2967, 'Ano', '', ''),
+(2968, 'Semestre', '', ''),
+(2969, 'Opções', '', ''),
+(2970, 'Ano', '', ''),
+(2971, 'Semestre', '', ''),
+(2972, 'Opções', '', ''),
+(2973, 'Carga_Horária', '', ''),
+(2974, 'Opções', '', ''),
+(2975, 'Carga_Horária', '', ''),
+(2976, 'carga_horária', '', ''),
+(2977, 'Opções', '', ''),
+(2978, 'Carga_Horária', '', ''),
+(2979, 'carga_horária', '', ''),
+(2980, 'Opções', '', ''),
+(2981, 'Carga_Horária', '', ''),
+(2982, 'carga_horária', '', ''),
+(2983, 'disciplina_alterada_com_sucesso', '', ''),
+(2984, 'Opções', '', ''),
+(2985, 'Carga_Horária', '', ''),
+(2986, 'Opções', '', ''),
+(2987, 'Carga_Horária', '', ''),
+(2988, 'Processo Seletivo', '', ''),
+(2989, 'Ano', '', ''),
+(2990, 'Semestre', '', ''),
+(2991, 'Opções', '', ''),
+(2992, 'Ano', '', ''),
+(2993, 'Semestre', '', ''),
+(2994, 'Opções', '', ''),
+(2995, 'Carga_Horária', '', ''),
+(2996, 'carga_horária', '', ''),
+(2997, 'Opções', '', ''),
+(2998, 'Carga_Horária', '', ''),
+(2999, 'Opções', '', ''),
+(3000, 'Carga_Horária', '', ''),
+(3001, 'Opções', '', ''),
+(3002, 'Carga_Horária', '', ''),
+(3003, 'Opções', '', ''),
+(3004, 'Carga_Horária', '', ''),
+(3005, 'disciplina_deletado_com_sucesso', '', ''),
+(3006, 'Opções', '', ''),
+(3007, 'Carga_Horária', '', ''),
+(3008, 'Processo Seletivo', '', ''),
+(3009, 'Ano', '', ''),
+(3010, 'Semestre', '', ''),
+(3011, 'Opções', '', ''),
+(3012, 'Ano', '', ''),
+(3013, 'Semestre', '', ''),
+(3014, 'Opções', '', ''),
+(3015, 'Carga_Horária', '', ''),
+(3016, 'Opções', '', ''),
+(3017, 'Carga_Horária', '', ''),
+(3018, 'Opções', '', ''),
+(3019, 'Carga_Horária', '', ''),
+(3020, 'Opções', '', ''),
+(3021, 'Carga_Horária', '', ''),
+(3022, '<a href="index.php?admin/dashboard">Painel Geral</a> > <a href="index.php?admin/educacional">Painel_educacional </a><b>></b> <a href="index.php?educacional/matriz">Gerenciar_matriz_curricular</a>', '', ''),
+(3023, 'Opções', '', ''),
+(3024, 'Carga_Horária', '', ''),
+(3025, 'Ano', '', ''),
+(3026, 'Semestre', '', ''),
+(3027, 'Opções', '', ''),
+(3028, 'Ano', '', ''),
+(3029, 'Semestre', '', ''),
+(3030, 'Ano', '', ''),
+(3031, 'Semestre', '', ''),
+(3032, 'Opções', '', ''),
+(3033, 'Ano', '', ''),
+(3034, 'Semestre', '', ''),
+(3035, 'Ano', '', ''),
+(3036, 'Semestre', '', ''),
+(3037, 'Opções', '', ''),
+(3038, 'Ano', '', ''),
+(3039, 'Semestre', '', ''),
+(3040, 'Ano', '', ''),
+(3041, 'Semestre', '', ''),
+(3042, 'Opções', '', ''),
+(3043, 'Ano', '', ''),
+(3044, 'Semestre', '', ''),
+(3045, 'matriz_deletada_com_sucesso', '', ''),
+(3046, 'Ano', '', ''),
+(3047, 'Semestre', '', ''),
+(3048, 'Opções', '', ''),
+(3049, 'Ano', '', ''),
+(3050, 'Semestre', '', ''),
+(3051, 'Ano', '', ''),
+(3052, 'Semestre', '', ''),
+(3053, 'Opções', '', ''),
+(3054, 'Ano', '', ''),
+(3055, 'Semestre', '', ''),
+(3056, 'Ano', '', ''),
+(3057, 'Semestre', '', ''),
+(3058, 'Opções', '', ''),
+(3059, 'Ano', '', ''),
+(3060, 'Semestre', '', ''),
+(3061, 'Matriz :PED-2015/II', '', ''),
+(3062, 'Opções', '', ''),
+(3063, 'Carga_Horária', '', ''),
+(3064, 'Opções', '', ''),
+(3065, 'Carga_Horária', '', '');
+INSERT INTO `language` (`phrase_id`, `phrase`, `Portugues`, `Português`) VALUES
+(3066, '<a href="index.php?admin/dashboard">Home</a> > <a href="index.php?admin/educacional">educacional </a><b>></b> <a href="index.php?educacional/matriz">Gerenciar_matriz_curricular</a><b>></b> <a href="">disciplinas</a>', '', ''),
+(3067, 'Opções', '', ''),
+(3068, 'Carga_Horária', '', ''),
+(3069, '<a href="index.php?admin/dashboard">Home</a> > <a href="index.php?admin/educacional">Educacional </a><b>></b> <a href="index.php?educacional/matriz">Gerenciar_matriz_curricular</a><b>></b> <a href="">Disciplinas</a>', '', ''),
+(3070, 'Opções', '', ''),
+(3071, 'Carga_Horária', '', ''),
+(3072, '<a href="index.php?admin/dashboard">Home</a> > <a href="index.php?admin/educacional">Educacional </a><b>></b> <a href="index.php?educacional/matriz">Gerenciar_matriz_curricular</a><b> > </b> <a href="">Disciplinas</a>', '', ''),
+(3073, 'Opções', '', ''),
+(3074, 'Carga_Horária', '', ''),
+(3075, '<a href="index.php?admin/dashboard">Home</a> > <a href="index.php?admin/educacional">educacional </a><b>></b> <a href="">Gerenciar_matriz_curricular</a>', '', ''),
+(3076, 'Ano', '', ''),
+(3077, 'Semestre', '', ''),
+(3078, 'Opções', '', ''),
+(3079, 'Ano', '', ''),
+(3080, 'Semestre', '', ''),
+(3081, 'Ano', '', ''),
+(3082, 'Semestre', '', ''),
+(3083, 'Opções', '', ''),
+(3084, 'Ano', '', ''),
+(3085, 'Semestre', '', ''),
+(3086, 'Opções', '', ''),
+(3087, 'Carga_Horária', '', ''),
+(3088, 'Opções', '', ''),
+(3089, 'Carga_Horária', '', ''),
+(3090, 'Ano', '', ''),
+(3091, 'Semestre', '', ''),
+(3092, 'Opções', '', ''),
+(3093, 'Ano', '', ''),
+(3094, 'Semestre', '', ''),
+(3095, 'Ano', '', ''),
+(3096, 'Semestre', '', ''),
+(3097, 'Opções', '', ''),
+(3098, 'Ano', '', ''),
+(3099, 'Semestre', '', ''),
+(3100, 'Ano', '', ''),
+(3101, 'Semestre', '', ''),
+(3102, 'Opções', '', ''),
+(3103, 'imprimir', '', ''),
+(3104, 'Ano', '', ''),
+(3105, 'Semestre', '', ''),
+(3106, 'Ano', '', ''),
+(3107, 'Semestre', '', ''),
+(3108, 'Opções', '', ''),
+(3109, 'Ano', '', ''),
+(3110, 'Semestre', '', ''),
+(3111, 'Opções', '', ''),
+(3112, 'Carga_Horária', '', ''),
+(3113, 'carga_horária', '', ''),
+(3114, 'Ano', '', ''),
+(3115, 'Semestre', '', ''),
+(3116, 'Opções', '', ''),
+(3117, 'Ano', '', ''),
+(3118, 'Semestre', '', ''),
+(3119, 'Ano', '', ''),
+(3120, 'Semestre', '', ''),
+(3121, 'Opções', '', ''),
+(3122, 'Ano', '', ''),
+(3123, 'Semestre', '', ''),
+(3124, 'Ano', '', ''),
+(3125, 'Semestre', '', ''),
+(3126, 'Opções', '', ''),
+(3127, 'Ano', '', ''),
+(3128, 'Semestre', '', ''),
+(3129, 'Ano', '', ''),
+(3130, 'Semestre', '', ''),
+(3131, 'Opções', '', ''),
+(3132, 'Ano', '', ''),
+(3133, 'Semestre', '', ''),
+(3134, 'Opções', '', ''),
+(3135, 'Carga_Horária', '', ''),
+(3136, 'Ano', '', ''),
+(3137, 'Semestre', '', ''),
+(3138, 'Opções', '', ''),
+(3139, 'Ano', '', ''),
+(3140, 'Semestre', '', ''),
+(3141, 'Ano', '', ''),
+(3142, 'Semestre', '', ''),
+(3143, 'Opções', '', ''),
+(3144, 'Ano', '', ''),
+(3145, 'Semestre', '', ''),
+(3146, 'Opções', '', ''),
+(3147, 'Carga_Horária', '', ''),
+(3148, 'Ano', '', ''),
+(3149, 'Semestre', '', ''),
+(3150, 'Opções', '', ''),
+(3151, 'Ano', '', ''),
+(3152, 'Semestre', '', ''),
+(3153, 'Ano', '', ''),
+(3154, 'Semestre', '', ''),
+(3155, 'Opções', '', ''),
+(3156, 'Ano', '', ''),
+(3157, 'Semestre', '', ''),
+(3158, 'Opções', '', ''),
+(3159, 'Carga_Horária', '', ''),
+(3160, 'Ano', '', ''),
+(3161, 'Semestre', '', ''),
+(3162, 'Opções', '', ''),
+(3163, 'Ano', '', ''),
+(3164, 'Semestre', '', ''),
+(3165, 'Opções', '', ''),
+(3166, 'Carga_Horária', '', ''),
+(3167, 'Opções', '', ''),
+(3168, 'Carga_Horária', '', ''),
+(3169, 'Ano', '', ''),
+(3170, 'Semestre', '', ''),
+(3171, 'Opções', '', ''),
+(3172, 'Ano', '', ''),
+(3173, 'Semestre', '', ''),
+(3174, 'Ano', '', ''),
+(3175, 'Semestre', '', ''),
+(3176, 'Opções', '', ''),
+(3177, 'Ano', '', ''),
+(3178, 'Semestre', '', ''),
+(3179, 'Opções', '', ''),
+(3180, 'Carga_Horária', '', ''),
+(3181, 'Opções', '', ''),
+(3182, 'Carga_Horária', '', ''),
+(3183, 'Ano', '', ''),
+(3184, 'Semestre', '', ''),
+(3185, 'Opções', '', ''),
+(3186, 'Ano', '', ''),
+(3187, 'Semestre', '', ''),
+(3188, 'Ano', '', ''),
+(3189, 'Semestre', '', ''),
+(3190, 'Opções', '', ''),
+(3191, 'Ano', '', ''),
+(3192, 'Semestre', '', ''),
+(3193, 'Ano', '', ''),
+(3194, 'Semestre', '', ''),
+(3195, 'Opções', '', ''),
+(3196, 'Ano', '', ''),
+(3197, 'Semestre', '', ''),
+(3198, 'Ano', '', ''),
+(3199, 'Semestre', '', ''),
+(3200, 'Opções', '', ''),
+(3201, 'Ano', '', ''),
+(3202, 'Semestre', '', ''),
+(3203, 'Ano', '', ''),
+(3204, 'Semestre', '', ''),
+(3205, 'Opções', '', ''),
+(3206, 'Ano', '', ''),
+(3207, 'Semestre', '', ''),
+(3208, 'Ano', '', ''),
+(3209, 'Semestre', '', ''),
+(3210, 'Opções', '', ''),
+(3211, 'Ano', '', ''),
+(3212, 'Semestre', '', ''),
+(3213, 'Ano', '', ''),
+(3214, 'Semestre', '', ''),
+(3215, 'Opções', '', ''),
+(3216, 'Ano', '', ''),
+(3217, 'Semestre', '', ''),
+(3218, 'Ano', '', ''),
+(3219, 'Semestre', '', ''),
+(3220, 'Opções', '', ''),
+(3221, 'Ano', '', ''),
+(3222, 'Semestre', '', ''),
+(3223, 'Ano', '', ''),
+(3224, 'Semestre', '', ''),
+(3225, 'Opções', '', ''),
+(3226, 'Ano', '', ''),
+(3227, 'Semestre', '', ''),
+(3228, 'Ano', '', ''),
+(3229, 'Semestre', '', ''),
+(3230, 'Opções', '', ''),
+(3231, 'Ano', '', ''),
+(3232, 'Semestre', '', ''),
+(3233, 'Ano', '', ''),
+(3234, 'Semestre', '', ''),
+(3235, 'Opções', '', ''),
+(3236, 'Ano', '', ''),
+(3237, 'Semestre', '', ''),
+(3238, 'Ano', '', ''),
+(3239, 'Semestre', '', ''),
+(3240, 'Opções', '', ''),
+(3241, 'Ano', '', ''),
+(3242, 'Semestre', '', ''),
+(3243, 'Ano', '', ''),
+(3244, 'Semestre', '', ''),
+(3245, 'Opções', '', ''),
+(3246, 'Ano', '', ''),
+(3247, 'Semestre', '', ''),
+(3248, 'Ano', '', ''),
+(3249, 'Semestre', '', ''),
+(3250, 'Opções', '', ''),
+(3251, 'Ano', '', ''),
+(3252, 'Semestre', '', ''),
+(3253, 'Opções', '', ''),
+(3254, 'Carga_Horária', '', ''),
+(3255, 'Ano', '', ''),
+(3256, 'Semestre', '', ''),
+(3257, 'Opções', '', ''),
+(3258, 'Ano', '', ''),
+(3259, 'Semestre', '', ''),
+(3260, 'Ano', '', ''),
+(3261, 'Semestre', '', ''),
+(3262, 'Opções', '', ''),
+(3263, 'Ano', '', ''),
+(3264, 'Semestre', '', ''),
+(3265, 'Opções', '', ''),
+(3266, 'Carga_Horária', '', ''),
+(3267, 'Ano', '', ''),
+(3268, 'Semestre', '', ''),
+(3269, 'Opções', '', ''),
+(3270, 'Ano', '', ''),
+(3271, 'Semestre', '', ''),
+(3272, 'Ano', '', ''),
+(3273, 'Semestre', '', ''),
+(3274, 'Opções', '', ''),
+(3275, 'Ano', '', ''),
+(3276, 'Semestre', '', ''),
+(3277, 'Ano', '', ''),
+(3278, 'Semestre', '', ''),
+(3279, 'Opções', '', ''),
+(3280, 'Ano', '', ''),
+(3281, 'Semestre', '', ''),
+(3282, 'Ano', '', ''),
+(3283, 'Semestre', '', ''),
+(3284, 'Opções', '', ''),
+(3285, 'Ano', '', ''),
+(3286, 'Semestre', '', ''),
+(3287, 'Ano', '', ''),
+(3288, 'Semestre', '', ''),
+(3289, 'Opções', '', ''),
+(3290, 'Ano', '', ''),
+(3291, 'Semestre', '', ''),
+(3292, 'Ano', '', ''),
+(3293, 'Semestre', '', ''),
+(3294, 'Opções', '', ''),
+(3295, 'Ano', '', ''),
+(3296, 'Semestre', '', ''),
+(3297, 'Ano', '', ''),
+(3298, 'Semestre', '', ''),
+(3299, 'Opções', '', ''),
+(3300, 'Ano', '', ''),
+(3301, 'Semestre', '', ''),
+(3302, 'Ano', '', ''),
+(3303, 'Semestre', '', ''),
+(3304, 'Opções', '', ''),
+(3305, 'Ano', '', ''),
+(3306, 'Semestre', '', ''),
+(3307, 'Opções', '', ''),
+(3308, 'Carga_Horária', '', ''),
+(3309, 'Ano', '', ''),
+(3310, 'Semestre', '', ''),
+(3311, 'Opções', '', ''),
+(3312, 'Ano', '', ''),
+(3313, 'Semestre', '', ''),
+(3314, 'Ano', '', ''),
+(3315, 'Semestre', '', ''),
+(3316, 'Opções', '', ''),
+(3317, 'Ano', '', ''),
+(3318, 'Semestre', '', ''),
+(3319, 'Opções', '', ''),
+(3320, 'Carga_Horária', '', ''),
+(3321, 'Ano', '', ''),
+(3322, 'Semestre', '', ''),
+(3323, 'Opções', '', ''),
+(3324, 'Ano', '', ''),
+(3325, 'Semestre', '', ''),
+(3326, 'Opções', '', ''),
+(3327, 'Carga_Horária', '', ''),
+(3328, 'Opções', '', ''),
+(3329, 'Carga_Horária', '', ''),
+(3330, 'Opções', '', ''),
+(3331, 'Carga_Horária', '', ''),
+(3332, 'Ano', '', ''),
+(3333, 'Semestre', '', ''),
+(3334, 'Opções', '', ''),
+(3335, 'Ano', '', ''),
+(3336, 'Semestre', '', ''),
+(3337, 'Ano', '', ''),
+(3338, 'Semestre', '', ''),
+(3339, 'Opções', '', ''),
+(3340, 'Ano', '', ''),
+(3341, 'Semestre', '', ''),
+(3342, 'Ano', '', ''),
+(3343, 'Semestre', '', ''),
+(3344, 'Opções', '', ''),
+(3345, 'Ano', '', ''),
+(3346, 'Semestre', '', ''),
+(3347, 'Ano', '', ''),
+(3348, 'Semestre', '', ''),
+(3349, 'Opções', '', ''),
+(3350, 'Ano', '', ''),
+(3351, 'Semestre', '', ''),
+(3352, 'Ano', '', ''),
+(3353, 'Semestre', '', ''),
+(3354, 'Opções', '', ''),
+(3355, 'Ano', '', ''),
+(3356, 'Semestre', '', ''),
+(3357, 'Opções', '', ''),
+(3358, 'Ano', '', ''),
+(3359, 'Semestre', '', ''),
+(3360, 'Opções', '', ''),
+(3361, 'Ano', '', ''),
+(3362, 'Semestre', '', ''),
+(3363, 'Opções', '', ''),
+(3364, 'Opções', '', ''),
+(3365, 'Carga_Horária', '', ''),
+(3366, 'Opções', '', ''),
+(3367, 'Carga_Horária', '', ''),
+(3368, 'Processo Seletivo', '', ''),
+(3369, 'Ano', '', ''),
+(3370, 'Semestre', '', ''),
+(3371, 'Opções', '', ''),
+(3372, 'Ano', '', ''),
+(3373, 'Semestre', '', ''),
+(3374, 'Ano', '', ''),
+(3375, 'Semestre', '', ''),
+(3376, 'Opções', '', ''),
+(3377, 'Ano', '', ''),
+(3378, 'Semestre', '', ''),
+(3379, 'Opções', '', ''),
+(3380, 'Carga_Horária', '', ''),
+(3381, 'Opções', '', ''),
+(3382, 'Carga_Horária', '', ''),
+(3383, 'Ano', '', ''),
+(3384, 'Semestre', '', ''),
+(3385, 'Opções', '', ''),
+(3386, 'Ano', '', ''),
+(3387, 'Semestre', '', ''),
+(3388, 'Opções', '', ''),
+(3389, 'Carga_Horária', '', ''),
+(3390, 'Opções', '', ''),
+(3391, 'Ano', '', ''),
+(3392, 'Semestre', '', ''),
+(3393, 'Opções', '', ''),
+(3394, 'Ano', '', ''),
+(3395, 'Semestre', '', ''),
+(3396, 'Processo Seletivo', '', ''),
+(3397, 'Processo Seletivo', '', ''),
+(3398, 'Processo Seletivo', '', ''),
+(3399, 'lista_periodo_letivo', '', ''),
+(3400, 'novo_periodo_letivo', '', ''),
+(3401, 'peridodo_letivo.', '', ''),
+(3402, 'dias_letivo', '', ''),
+(3403, 'Opções', '', ''),
+(3404, 'data_inicio', '', ''),
+(3405, 'data_previsão_termino', '', ''),
+(3406, 'situação_período', '', ''),
+(3407, 'Processo Seletivo', '', ''),
+(3408, 'Processo Seletivo', '', ''),
+(3409, 'Processo Seletivo', '', ''),
+(3410, 'Processo Seletivo', '', ''),
+(3411, 'Processo Seletivo', '', ''),
+(3412, 'Processo Seletivo', '', ''),
+(3413, 'Processo Seletivo', '', ''),
+(3414, 'Processo Seletivo', '', ''),
+(3415, 'Processo Seletivo', '', ''),
+(3416, 'Processo Seletivo', '', ''),
+(3417, 'Processo Seletivo', '', ''),
+(3418, 'Processo Seletivo', '', ''),
+(3419, '<a href="index.php?admin/dashboard">Home</a> > <a href="index.php?admin/educacional">educacional </a><b>></b> <a href="">professor(a)</a>', '', ''),
+(3420, 'novo_professor', '', ''),
+(3421, 'Dt Nascimento', '', ''),
+(3422, 'Masculino', '', ''),
+(3423, 'Feminino', '', ''),
+(3424, 'Endereço', '', ''),
+(3425, 'Contato', '', ''),
+(3426, 'senha', '', ''),
+(3427, 'foto', '', ''),
+(3428, 'criar_professor', '', ''),
+(3429, 'Processo Seletivo', '', ''),
+(3430, 'Processo Seletivo', '', ''),
+(3431, 'Processo Seletivo', '', ''),
+(3432, 'Processo Seletivo', '', ''),
+(3433, 'Processo Seletivo', '', ''),
+(3434, 'Processo Seletivo', '', ''),
+(3435, 'Processo Seletivo', '', ''),
+(3436, 'Processo Seletivo', '', ''),
+(3437, 'Processo Seletivo', '', ''),
+(3438, 'Processo Seletivo', '', ''),
+(3439, 'Processo Seletivo', '', ''),
+(3440, 'Processo Seletivo', '', ''),
+(3441, 'Processo Seletivo', '', ''),
+(3442, 'Processo Seletivo', '', ''),
+(3443, 'Processo Seletivo', '', ''),
+(3444, 'Foto', '', ''),
+(3445, 'Nome', '', ''),
+(3446, 'Foto', '', ''),
+(3447, 'Nome', '', ''),
+(3448, 'Foto', '', ''),
+(3449, 'Nome', '', ''),
+(3450, 'professores', '', ''),
+(3451, 'novo_professor(a)', '', ''),
+(3452, 'Foto', '', ''),
+(3453, 'Nome', '', ''),
+(3454, 'Foto', '', ''),
+(3455, 'Nome', '', ''),
+(3456, 'Foto', '', ''),
+(3457, 'Nome', '', ''),
+(3458, 'Foto', '', ''),
+(3459, 'Nome', '', ''),
+(3460, 'Foto', '', ''),
+(3461, 'Nome', '', ''),
+(3462, 'Foto', '', ''),
+(3463, 'Nome', '', ''),
+(3464, 'Foto', '', ''),
+(3465, 'Nome', '', ''),
+(3466, 'disciplinas', '', ''),
+(3467, 'Foto', '', ''),
+(3468, 'Nome', '', ''),
+(3469, 'Foto', '', ''),
+(3470, 'Nome', '', ''),
+(3471, 'Foto', '', ''),
+(3472, 'Nome', '', ''),
+(3473, 'Foto', '', ''),
+(3474, 'Nome', '', ''),
+(3475, 'Processo Seletivo', '', ''),
+(3476, 'Processo Seletivo', '', ''),
+(3477, 'Processo Seletivo', '', ''),
+(3478, 'Foto', '', ''),
+(3479, 'Nome', '', ''),
+(3480, 'Foto', '', ''),
+(3481, 'Nome', '', ''),
+(3482, 'Processo Seletivo', '', ''),
+(3483, 'Processo Seletivo', '', ''),
+(3484, 'Processo Seletivo', '', ''),
+(3485, 'Processo Seletivo', '', ''),
+(3486, 'Processo Seletivo', '', ''),
+(3487, 'Opções', '', ''),
+(3488, 'Processo Seletivo', '', ''),
+(3489, 'Processo Seletivo', '', ''),
+(3490, 'Processo Seletivo', '', ''),
+(3491, 'Processo Seletivo', '', ''),
+(3492, 'Processo Seletivo', '', ''),
+(3493, 'Processo Seletivo', '', ''),
+(3494, 'Processo Seletivo', '', ''),
+(3495, 'Processo Seletivo', '', ''),
+(3496, 'Processo Seletivo', '', ''),
+(3497, 'Opções', '', ''),
+(3498, 'Processo Seletivo', '', ''),
+(3499, 'Processo Seletivo', '', ''),
+(3500, 'Processo Seletivo', '', ''),
+(3501, 'Processo Seletivo', '', ''),
+(3502, 'Processo Seletivo', '', ''),
+(3503, 'Processo Seletivo', '', ''),
+(3504, 'Processo Seletivo', '', ''),
+(3505, 'Processo Seletivo', '', ''),
+(3506, 'lista_etapa', '', ''),
+(3507, 'nova_etapa', '', ''),
+(3508, 'Opções', '', ''),
+(3509, 'Processo Seletivo', '', ''),
+(3510, 'Processo Seletivo', '', ''),
+(3511, 'Processo Seletivo', '', ''),
+(3512, 'Foto', '', ''),
+(3513, 'Nome', '', ''),
+(3514, 'Foto', '', ''),
+(3515, 'Nome', '', ''),
+(3516, 'Foto', '', ''),
+(3517, 'Nome', '', ''),
+(3518, 'Foto', '', ''),
+(3519, 'Nome', '', ''),
+(3520, 'Foto', '', ''),
+(3521, 'Nome', '', ''),
+(3522, 'Foto', '', ''),
+(3523, 'Nome', '', ''),
+(3524, 'Processo Seletivo', '', ''),
+(3525, 'Processo Seletivo', '', ''),
+(3526, 'Processo Seletivo', '', ''),
+(3527, 'Ano', '', ''),
+(3528, 'Semestre', '', ''),
+(3529, 'Opções', '', ''),
+(3530, 'Ano', '', ''),
+(3531, 'Semestre', '', ''),
+(3532, 'Opções', '', ''),
+(3533, 'Carga_Horária', '', ''),
+(3534, 'Processo Seletivo', '', ''),
+(3535, 'Processo Seletivo', '', ''),
+(3536, 'Processo Seletivo', '', ''),
+(3537, 'Ano', '', ''),
+(3538, 'Semestre', '', ''),
+(3539, 'Opções', '', ''),
+(3540, 'Ano', '', ''),
+(3541, 'Semestre', '', ''),
+(3542, 'Matriz :PED-2013/I', '', ''),
+(3543, 'Opções', '', ''),
+(3544, 'Carga_Horária', '', ''),
+(3545, 'Processo Seletivo', '', ''),
+(3546, 'Processo Seletivo', '', ''),
+(3547, 'Processo Seletivo', '', ''),
+(3548, 'Ano', '', ''),
+(3549, 'Semestre', '', ''),
+(3550, 'Opções', '', ''),
+(3551, 'Ano', '', ''),
+(3552, 'Semestre', '', ''),
+(3553, 'Opções', '', ''),
+(3554, 'Carga_Horária', '', ''),
+(3555, 'Processo Seletivo', '', ''),
+(3556, 'Processo Seletivo', '', ''),
+(3557, 'Processo Seletivo', '', ''),
+(3558, 'Foto', '', ''),
+(3559, 'Nome', '', ''),
+(3560, 'Processo Seletivo', '', ''),
+(3561, 'Processo Seletivo', '', ''),
+(3562, 'Processo Seletivo', '', ''),
+(3563, 'Foto', '', ''),
+(3564, 'Nome', '', ''),
+(3565, 'Professor/Disciplina', '', ''),
+(3566, 'Opções', '', ''),
+(3567, 'Carga_Horária', '', ''),
+(3568, 'Processo Seletivo', '', ''),
+(3569, 'Processo Seletivo', '', ''),
+(3570, 'Processo Seletivo', '', ''),
+(3571, 'Ano', '', ''),
+(3572, 'Semestre', '', ''),
+(3573, 'Opções', '', ''),
+(3574, 'Ano', '', ''),
+(3575, 'Semestre', '', ''),
+(3576, 'Processo Seletivo', '', ''),
+(3577, 'Processo Seletivo', '', ''),
+(3578, 'Processo Seletivo', '', ''),
+(3579, 'Ano', '', ''),
+(3580, 'Semestre', '', ''),
+(3581, 'Opções', '', ''),
+(3582, 'Ano', '', ''),
+(3583, 'Semestre', '', ''),
+(3584, 'Opções', '', ''),
+(3585, 'Carga_Horária', '', ''),
+(3586, 'Processo Seletivo', '', ''),
+(3587, 'Processo Seletivo', '', ''),
+(3588, 'Processo Seletivo', '', ''),
+(3589, 'Foto', '', ''),
+(3590, 'Nome', '', ''),
+(3591, 'Processo Seletivo', '', ''),
+(3592, 'Processo Seletivo', '', ''),
+(3593, 'Processo Seletivo', '', ''),
+(3594, 'Ano', '', ''),
+(3595, 'Semestre', '', ''),
+(3596, 'Opções', '', ''),
+(3597, 'Ano', '', ''),
+(3598, 'Semestre', '', ''),
+(3599, 'Opções', '', ''),
+(3600, 'Carga_Horária', '', ''),
+(3601, 'carga_horária', '', ''),
+(3602, 'data_início', '', ''),
+(3603, 'situação', '', ''),
+(3604, 'Opções', '', ''),
+(3605, 'data_término', '', ''),
+(3606, 'criar_período_letivo', '', ''),
+(3607, 'data_início', '', ''),
+(3608, 'Opções', '', ''),
+(3609, 'Processo Seletivo', '', ''),
+(3610, 'Processo Seletivo', '', ''),
+(3611, 'Processo Seletivo', '', ''),
+(3612, 'Processo Seletivo', '', ''),
+(3613, 'Biblioteca', '', ''),
+(3614, 'Processo Seletivo', '', ''),
+(3615, 'Processo Seletivo', '', ''),
+(3616, 'Processo Seletivo', '', ''),
+(3617, 'Processo Seletivo', '', ''),
+(3618, 'Processo Seletivo', '', ''),
+(3619, 'Processo Seletivo', '', ''),
+(3620, 'Processo Seletivo', '', ''),
+(3621, 'Processo Seletivo', '', ''),
+(3622, 'Processo Seletivo', '', ''),
+(3623, 'Processo Seletivo', '', ''),
+(3624, 'Processo Seletivo', '', ''),
+(3625, 'Processo Seletivo', '', ''),
+(3626, 'Processo Seletivo', '', ''),
+(3627, 'Processo Seletivo', '', ''),
+(3628, 'Processo Seletivo', '', ''),
+(3629, 'Processo Seletivo', '', ''),
+(3630, 'Processo Seletivo', '', ''),
+(3631, 'Processo Seletivo', '', ''),
+(3632, 'Processo Seletivo', '', ''),
+(3633, 'Processo Seletivo', '', ''),
+(3634, 'Processo Seletivo', '', ''),
+(3635, 'Processo Seletivo', '', ''),
+(3636, 'Processo Seletivo', '', ''),
+(3637, 'Processo Seletivo', '', ''),
+(3638, 'Processo Seletivo', '', ''),
+(3639, 'Processo Seletivo', '', ''),
+(3640, 'Processo Seletivo', '', ''),
+(3641, 'Processo Seletivo', '', ''),
+(3642, 'Processo Seletivo', '', ''),
+(3643, 'Processo Seletivo', '', ''),
+(3644, 'Processo Seletivo', '', ''),
+(3645, 'Processo Seletivo', '', ''),
+(3646, 'Processo Seletivo', '', ''),
+(3647, 'Processo Seletivo', '', ''),
+(3648, 'Processo Seletivo', '', ''),
+(3649, 'Processo Seletivo', '', ''),
+(3650, 'Processo Seletivo', '', ''),
+(3651, 'Processo Seletivo', '', ''),
+(3652, 'Processo Seletivo', '', ''),
+(3653, 'Processo Seletivo', '', ''),
+(3654, 'Processo Seletivo', '', ''),
+(3655, 'Processo Seletivo', '', ''),
+(3656, 'Processo Seletivo', '', ''),
+(3657, 'Processo Seletivo', '', ''),
+(3658, 'Processo Seletivo', '', ''),
+(3659, 'Processo Seletivo', '', ''),
+(3660, 'Processo Seletivo', '', ''),
+(3661, 'Processo Seletivo', '', ''),
+(3662, 'Processo Seletivo', '', ''),
+(3663, 'Processo Seletivo', '', ''),
+(3664, 'data_início', '', ''),
+(3665, 'Opções', '', ''),
+(3666, 'dias_letivos', '', ''),
+(3667, 'data_termino', '', ''),
+(3668, 'situação_periodo', '', ''),
+(3669, 'data_início', '', ''),
+(3670, 'Opções', '', ''),
+(3671, 'data_termino', '', ''),
+(3672, 'situação_periodo', '', ''),
+(3673, 'editar_periodo_letivo', '', ''),
+(3674, 'data_início', '', ''),
+(3675, 'Opções', '', ''),
+(3676, 'data_termino', '', ''),
+(3677, 'situação_periodo', '', ''),
+(3678, 'data_início', '', ''),
+(3679, 'Opções', '', ''),
+(3680, 'data_termino', '', ''),
+(3681, 'situação_periodo', '', ''),
+(3682, 'data_termino', '', ''),
+(3683, 'situação_periodo', '', ''),
+(3684, 'data_início', '', ''),
+(3685, 'Opções', '', ''),
+(3686, 'data_termino', '', ''),
+(3687, 'situação_periodo', '', ''),
+(3688, 'data_termino', '', ''),
+(3689, 'situação_periodo', '', ''),
+(3690, 'data_início', '', ''),
+(3691, 'Opções', '', ''),
+(3692, 'data_termino', '', ''),
+(3693, 'situação_periodo', '', ''),
+(3694, 'data_início', '', ''),
+(3695, 'Opções', '', ''),
+(3696, 'data_termino', '', ''),
+(3697, 'situação_periodo', '', ''),
+(3698, 'data_início', '', ''),
+(3699, 'Opções', '', ''),
+(3700, 'data_termino', '', ''),
+(3701, 'situação_periodo', '', ''),
+(3702, 'data_início', '', ''),
+(3703, 'Opções', '', ''),
+(3704, 'data_termino', '', ''),
+(3705, 'situação_periodo', '', ''),
+(3706, 'data_início', '', ''),
+(3707, 'Opções', '', ''),
+(3708, 'data_termino', '', ''),
+(3709, 'situação_periodo', '', ''),
+(3710, 'data_termino', '', ''),
+(3711, 'situação_periodo', '', ''),
+(3712, 'data_início', '', ''),
+(3713, 'Opções', '', ''),
+(3714, 'data_termino', '', ''),
+(3715, 'situação_periodo', '', ''),
+(3716, 'data_início', '', ''),
+(3717, 'Opções', '', ''),
+(3718, 'data_termino', '', ''),
+(3719, 'situação_periodo', '', ''),
+(3720, 'data_início', '', ''),
+(3721, 'Opções', '', ''),
+(3722, 'data_início', '', ''),
+(3723, 'Opções', '', ''),
+(3724, 'data_termino', '', ''),
+(3725, 'situação_periodo', '', ''),
+(3726, 'periodo_alterado_com_sucesso', '', ''),
+(3727, 'data_início', '', ''),
+(3728, 'Opções', '', ''),
+(3729, 'Processo Seletivo', '', ''),
+(3730, 'Processo Seletivo', '', ''),
+(3731, 'Processo Seletivo', '', ''),
+(3732, 'Processo Seletivo', '', ''),
+(3733, 'Processo Seletivo', '', ''),
+(3734, 'turma', '', ''),
+(3735, 'Processo Seletivo', '', ''),
+(3736, 'Processo Seletivo', '', ''),
+(3737, 'Processo Seletivo', '', ''),
+(3738, 'Processo Seletivo', '', ''),
+(3739, 'Processo Seletivo', '', ''),
+(3740, 'Processo Seletivo', '', ''),
+(3741, 'Processo Seletivo', '', ''),
+(3742, 'Processo Seletivo', '', ''),
+(3743, 'Processo Seletivo', '', ''),
+(3744, 'Processo Seletivo', '', ''),
+(3745, '<a href="index.php?admin/dashboard">Painel Geral</a> > <a href="index.php?admin/educacional">Painel_educacional </a><b>></b> <a href="">Gerenciar Turma</a>', '', ''),
+(3746, 'periodo', '', ''),
+(3747, 'periodo', '', ''),
+(3748, 'periodo', '', ''),
+(3749, 'periodo', '', ''),
+(3750, 'Processo Seletivo', '', ''),
+(3751, 'Processo Seletivo', '', ''),
+(3752, 'Processo Seletivo', '', ''),
+(3753, 'Ano', '', ''),
+(3754, 'Semestre', '', ''),
+(3755, 'Opções', '', ''),
+(3756, 'Ano', '', ''),
+(3757, 'Semestre', '', ''),
+(3758, 'Opções', '', ''),
+(3759, 'Carga_Horária', '', ''),
+(3760, 'Processo Seletivo', '', ''),
+(3761, 'Processo Seletivo', '', ''),
+(3762, 'Processo Seletivo', '', ''),
+(3763, 'periodo', '', ''),
+(3764, 'Processo Seletivo', '', ''),
+(3765, 'Processo Seletivo', '', ''),
+(3766, 'Processo Seletivo', '', ''),
+(3767, 'data_início', '', ''),
+(3768, 'Opções', '', ''),
+(3769, 'Processo Seletivo', '', ''),
+(3770, 'Processo Seletivo', '', ''),
+(3771, 'Processo Seletivo', '', ''),
+(3772, 'periodo', '', ''),
+(3773, 'lista_turma', '', ''),
+(3774, 'nova_turma', '', ''),
+(3775, 'periodo', '', ''),
+(3776, 'periodo', '', ''),
+(3777, 'periodo', '', ''),
+(3778, 'periodo', '', ''),
+(3779, 'Processo Seletivo', '', ''),
+(3780, 'Processo Seletivo', '', ''),
+(3781, 'Processo Seletivo', '', ''),
+(3782, 'data_início', '', ''),
+(3783, 'Opções', '', ''),
+(3784, 'Processo Seletivo', '', ''),
+(3785, 'Processo Seletivo', '', ''),
+(3786, 'Processo Seletivo', '', ''),
+(3787, 'periodo', '', ''),
+(3788, 'Processo Seletivo', '', ''),
+(3789, 'Processo Seletivo', '', ''),
+(3790, 'Processo Seletivo', '', ''),
+(3791, 'periodo', '', ''),
+(3792, 'periodo', '', ''),
+(3793, 'periodo', '', ''),
+(3794, 'periodo', '', ''),
+(3795, 'periodo', '', ''),
+(3796, 'periodo', '', ''),
+(3797, 'perido_letivo', '', ''),
+(3798, 'periodo', '', ''),
+(3799, 'periodo', '', ''),
+(3800, 'periodo', '', ''),
+(3801, 'periodo', '', ''),
+(3802, 'curso', '', ''),
+(3803, 'Processo Seletivo', '', ''),
+(3804, 'Processo Seletivo', '', ''),
+(3805, 'Processo Seletivo', '', ''),
+(3806, 'periodo', '', ''),
+(3807, 'curso', '', ''),
+(3808, 'periodo', '', ''),
+(3809, 'curso', '', ''),
+(3810, 'periodo', '', ''),
+(3811, 'curso', '', ''),
+(3812, 'periodo', '', ''),
+(3813, 'curso', '', ''),
+(3814, 'periodo', '', ''),
+(3815, 'curso', '', ''),
+(3816, 'periodo', '', ''),
+(3817, 'curso', '', ''),
+(3818, 'periodo', '', ''),
+(3819, 'curso', '', ''),
+(3820, 'Processo Seletivo', '', ''),
+(3821, 'Processo Seletivo', '', ''),
+(3822, 'Processo Seletivo', '', ''),
+(3823, 'Processo Seletivo', '', ''),
+(3824, 'Processo Seletivo', '', ''),
+(3825, 'periodo', '', ''),
+(3826, 'curso', '', ''),
+(3827, 'periodo', '', ''),
+(3828, 'curso', '', ''),
+(3829, 'periodo', '', ''),
+(3830, 'curso', '', ''),
+(3831, 'periodo', '', ''),
+(3832, 'curso', '', ''),
+(3833, 'periodo', '', ''),
+(3834, 'curso', '', ''),
+(3835, 'periodo', '', ''),
+(3836, 'curso', '', ''),
+(3837, 'periodo', '', ''),
+(3838, 'curso', '', ''),
+(3839, 'periodo', '', ''),
+(3840, 'curso', '', ''),
+(3841, 'periodo', '', ''),
+(3842, 'curso', '', ''),
+(3843, 'periodo', '', ''),
+(3844, 'curso', '', ''),
+(3845, 'periodo', '', ''),
+(3846, 'curso', '', ''),
+(3847, 'periodo', '', ''),
+(3848, 'curso', '', ''),
+(3849, 'periodo', '', ''),
+(3850, 'curso', '', ''),
+(3851, 'periodo', '', ''),
+(3852, 'curso', '', ''),
+(3853, 'periodo', '', ''),
+(3854, 'curso', '', ''),
+(3855, 'periodo', '', ''),
+(3856, 'curso', '', ''),
+(3857, 'periodo', '', ''),
+(3858, 'curso', '', ''),
+(3859, 'periodo', '', ''),
+(3860, 'curso', '', ''),
+(3861, 'periodo', '', ''),
+(3862, 'curso', '', ''),
+(3863, 'periodo', '', ''),
+(3864, 'curso', '', ''),
+(3865, 'periodo', '', ''),
+(3866, 'curso', '', ''),
+(3867, 'periodo', '', ''),
+(3868, 'curso', '', ''),
+(3869, 'periodo', '', ''),
+(3870, 'curso', '', ''),
+(3871, 'periodo', '', ''),
+(3872, 'curso', '', ''),
+(3873, 'periodo', '', ''),
+(3874, 'curso', '', ''),
+(3875, 'periodo', '', ''),
+(3876, 'curso', '', ''),
+(3877, 'periodo', '', ''),
+(3878, 'curso', '', ''),
+(3879, 'periodo', '', ''),
+(3880, 'curso', '', ''),
+(3881, 'periodo', '', ''),
+(3882, 'curso', '', ''),
+(3883, 'periodo', '', ''),
+(3884, 'curso', '', ''),
+(3885, 'periodo', '', ''),
+(3886, 'curso', '', ''),
+(3887, 'periodo', '', ''),
+(3888, 'curso', '', ''),
+(3889, 'periodo', '', ''),
+(3890, 'curso', '', ''),
+(3891, 'periodo', '', ''),
+(3892, 'curso', '', ''),
+(3893, 'periodo', '', ''),
+(3894, 'curso', '', ''),
+(3895, 'periodo', '', ''),
+(3896, 'curso', '', ''),
+(3897, 'periodo', '', ''),
+(3898, 'curso', '', ''),
+(3899, 'periodo', '', ''),
+(3900, 'curso', '', ''),
+(3901, 'periodo', '', ''),
+(3902, 'curso', '', ''),
+(3903, 'periodo', '', ''),
+(3904, 'curso', '', ''),
+(3905, 'periodo', '', ''),
+(3906, 'curso', '', ''),
+(3907, 'periodo', '', ''),
+(3908, 'curso', '', ''),
+(3909, 'periodo', '', ''),
+(3910, 'curso', '', ''),
+(3911, 'periodo', '', ''),
+(3912, 'curso', '', ''),
+(3913, 'periodo', '', ''),
+(3914, 'curso', '', ''),
+(3915, 'periodo', '', ''),
+(3916, 'curso', '', ''),
+(3917, 'periodo', '', ''),
+(3918, 'curso', '', ''),
+(3919, 'periodo', '', ''),
+(3920, 'curso', '', ''),
+(3921, 'periodo', '', ''),
+(3922, 'curso', '', ''),
+(3923, 'periodo', '', ''),
+(3924, 'curso', '', ''),
+(3925, 'periodo', '', ''),
+(3926, 'curso', '', ''),
+(3927, 'periodo', '', ''),
+(3928, 'curso', '', ''),
+(3929, 'periodo', '', ''),
+(3930, 'curso', '', ''),
+(3931, 'Processo Seletivo', '', ''),
+(3932, 'Processo Seletivo', '', ''),
+(3933, 'Processo Seletivo', '', ''),
+(3934, 'Foto', '', ''),
+(3935, 'Nome', '', ''),
+(3936, 'Opções', '', ''),
+(3937, 'Carga_Horária', '', ''),
+(3938, 'Processo Seletivo', '', ''),
+(3939, 'Processo Seletivo', '', ''),
+(3940, 'Processo Seletivo', '', ''),
+(3941, 'data_início', '', ''),
+(3942, 'Opções', '', ''),
+(3943, 'Processo Seletivo', '', ''),
+(3944, 'Processo Seletivo', '', ''),
+(3945, 'Processo Seletivo', '', ''),
+(3946, 'periodo', '', ''),
+(3947, 'curso', '', ''),
+(3948, 'Processo Seletivo', '', ''),
+(3949, 'Processo Seletivo', '', ''),
+(3950, 'Processo Seletivo', '', ''),
+(3951, 'Foto', '', ''),
+(3952, 'Nome', '', ''),
+(3953, 'Opções', '', ''),
+(3954, 'Carga_Horária', '', ''),
+(3955, 'Processo Seletivo', '', ''),
+(3956, 'Processo Seletivo', '', ''),
+(3957, 'Processo Seletivo', '', ''),
+(3958, 'Foto', '', ''),
+(3959, 'Nome', '', ''),
+(3960, 'Opções', '', ''),
+(3961, 'Carga_Horária', '', ''),
+(3962, 'Processo Seletivo', '', ''),
+(3963, 'Processo Seletivo', '', ''),
+(3964, 'Processo Seletivo', '', ''),
+(3965, 'Foto', '', ''),
+(3966, 'Nome', '', ''),
+(3967, 'Opções', '', ''),
+(3968, 'Carga_Horária', '', ''),
+(3969, 'Processo Seletivo', '', ''),
+(3970, 'Processo Seletivo', '', ''),
+(3971, 'Processo Seletivo', '', ''),
+(3972, 'Foto', '', ''),
+(3973, 'Nome', '', ''),
+(3974, 'Opções', '', ''),
+(3975, 'Carga_Horária', '', ''),
+(3976, 'Processo Seletivo', '', ''),
+(3977, 'Processo Seletivo', '', ''),
+(3978, 'Processo Seletivo', '', ''),
+(3979, 'data_início', '', ''),
+(3980, 'Opções', '', ''),
+(3981, 'Processo Seletivo', '', ''),
+(3982, 'Processo Seletivo', '', ''),
+(3983, 'Processo Seletivo', '', ''),
+(3984, 'periodo', '', ''),
+(3985, 'curso', '', ''),
+(3986, 'horario', '', ''),
+(3987, 'periodo', '', ''),
+(3988, 'curso', '', ''),
+(3989, 'Processo Seletivo', '', ''),
+(3990, 'Processo Seletivo', '', ''),
+(3991, 'Processo Seletivo', '', ''),
+(3992, 'periodo', '', ''),
+(3993, 'curso', '', ''),
+(3994, 'periodo', '', ''),
+(3995, 'curso', '', ''),
+(3996, 'periodo', '', ''),
+(3997, 'curso', '', ''),
+(3998, 'periodo', '', ''),
+(3999, 'curso', '', ''),
+(4000, 'periodo', '', ''),
+(4001, 'curso', '', ''),
+(4002, 'periodo', '', ''),
+(4003, 'Processo Seletivo', '', ''),
+(4004, 'Processo Seletivo', '', ''),
+(4005, 'Processo Seletivo', '', ''),
+(4006, 'Opções', '', ''),
+(4007, 'Processo Seletivo', '', ''),
+(4008, 'Processo Seletivo', '', ''),
+(4009, 'Processo Seletivo', '', ''),
+(4010, 'periodo', '', ''),
+(4011, 'curso', '', ''),
+(4012, 'periodo', '', ''),
+(4013, 'curso', '', ''),
+(4014, 'periodo', '', ''),
+(4015, 'add_turma', '', ''),
+(4016, 'periodo', '', ''),
+(4017, 'curso', '', ''),
+(4018, 'periodo', '', ''),
+(4019, 'periodo', '', ''),
+(4020, 'curso', '', ''),
+(4021, 'periodo', '', ''),
+(4022, 'periodo', '', ''),
+(4023, 'curso', '', ''),
+(4024, 'periodo', '', ''),
+(4025, 'periodo', '', ''),
+(4026, 'curso', '', ''),
+(4027, 'periodo', '', ''),
+(4028, 'periodo', '', ''),
+(4029, 'curso', '', ''),
+(4030, 'periodo', '', ''),
+(4031, 'periodo', '', ''),
+(4032, 'curso', '', ''),
+(4033, 'periodo', '', ''),
+(4034, 'periodo', '', ''),
+(4035, 'curso', '', ''),
+(4036, 'turno', '', ''),
+(4037, 'periodo', '', ''),
+(4038, 'periodo', '', ''),
+(4039, 'curso', '', ''),
+(4040, 'periodo', '', ''),
+(4041, 'periodo', '', ''),
+(4042, 'curso', '', ''),
+(4043, 'periodo', '', ''),
+(4044, 'periodo', '', ''),
+(4045, 'curso', '', ''),
+(4046, 'periodo', '', ''),
+(4047, 'periodo', '', ''),
+(4048, 'curso', '', ''),
+(4049, 'periodo', '', ''),
+(4050, 'Processo Seletivo', '', ''),
+(4051, 'Processo Seletivo', '', ''),
+(4052, 'Processo Seletivo', '', ''),
+(4053, 'periodo', '', ''),
+(4054, 'curso', '', ''),
+(4055, 'periodo', '', ''),
+(4056, 'Processo Seletivo', '', ''),
+(4057, 'Processo Seletivo', '', ''),
+(4058, 'Processo Seletivo', '', ''),
+(4059, 'periodo', '', ''),
+(4060, 'curso', '', ''),
+(4061, 'periodo', '', ''),
+(4062, 'turma_cadastrada_com_sucesso', '', ''),
+(4063, 'periodo', '', ''),
+(4064, 'curso', '', ''),
+(4065, 'periodo', '', ''),
+(4066, 'periodo', '', ''),
+(4067, 'curso', '', ''),
+(4068, 'periodo', '', ''),
+(4069, 'periodo', '', ''),
+(4070, 'curso', '', ''),
+(4071, 'periodo', '', ''),
+(4072, 'periodo', '', ''),
+(4073, 'curso', '', ''),
+(4074, 'periodo', '', ''),
+(4075, 'periodo', '', ''),
+(4076, 'curso', '', ''),
+(4077, 'periodo', '', ''),
+(4078, 'periodo', '', ''),
+(4079, 'curso', '', ''),
+(4080, 'periodo', '', ''),
+(4081, 'Matriz', '', ''),
+(4082, 'curso', '', ''),
+(4083, 'periodo', '', ''),
+(4084, 'Matriz', '', ''),
+(4085, 'curso', '', ''),
+(4086, 'periodo', '', ''),
+(4087, 'Processo Seletivo', '', ''),
+(4088, 'Processo Seletivo', '', ''),
+(4089, 'Processo Seletivo', '', ''),
+(4090, 'Processo Seletivo', '', ''),
+(4091, 'Processo Seletivo', '', ''),
+(4092, 'Processo Seletivo', '', ''),
+(4093, 'curso', '', ''),
+(4094, 'periodo', '', ''),
+(4095, 'curso', '', ''),
+(4096, 'periodo', '', ''),
+(4097, 'Processo Seletivo', '', ''),
+(4098, 'Processo Seletivo', '', ''),
+(4099, 'Processo Seletivo', '', ''),
+(4100, 'data_início', '', ''),
+(4101, 'Opções', '', ''),
+(4102, 'Processo Seletivo', '', ''),
+(4103, 'Processo Seletivo', '', ''),
+(4104, 'Processo Seletivo', '', ''),
+(4105, 'curso', '', ''),
+(4106, 'periodo', '', ''),
+(4107, 'curso', '', ''),
+(4108, 'periodo', '', ''),
+(4109, 'Processo Seletivo', '', ''),
+(4110, 'Processo Seletivo', '', ''),
+(4111, 'Processo Seletivo', '', ''),
+(4112, 'Processo Seletivo', '', ''),
+(4113, 'Processo Seletivo', '', ''),
+(4114, 'Processo Seletivo', '', ''),
+(4115, 'Processo Seletivo', '', ''),
+(4116, 'Processo Seletivo', '', ''),
+(4117, 'Processo Seletivo', '', ''),
+(4118, 'Processo Seletivo', '', ''),
+(4119, 'Processo Seletivo', '', ''),
+(4120, 'Processo Seletivo', '', ''),
+(4121, 'Processo Seletivo', '', ''),
+(4122, 'Processo Seletivo', '', ''),
+(4123, 'Processo Seletivo', '', ''),
+(4124, 'Processo Seletivo', '', ''),
+(4125, 'Processo Seletivo', '', ''),
+(4126, 'Processo Seletivo', '', ''),
+(4127, 'Processo Seletivo', '', ''),
+(4128, 'Processo Seletivo', '', ''),
+(4129, 'Processo Seletivo', '', ''),
+(4130, 'Processo Seletivo', '', ''),
+(4131, 'Processo Seletivo', '', ''),
+(4132, 'Processo Seletivo', '', ''),
+(4133, 'Processo Seletivo', '', ''),
+(4134, 'Processo Seletivo', '', ''),
+(4135, 'Processo Seletivo', '', ''),
+(4136, 'Processo Seletivo', '', ''),
+(4137, 'Processo Seletivo', '', ''),
+(4138, 'Processo Seletivo', '', ''),
+(4139, 'Processo Seletivo', '', ''),
+(4140, 'Processo Seletivo', '', ''),
+(4141, 'Processo Seletivo', '', ''),
+(4142, 'Processo Seletivo', '', ''),
+(4143, 'Processo Seletivo', '', ''),
+(4144, 'Processo Seletivo', '', ''),
+(4145, 'Processo Seletivo', '', ''),
+(4146, 'Processo Seletivo', '', ''),
+(4147, 'Processo Seletivo', '', ''),
+(4148, 'Processo Seletivo', '', ''),
+(4149, 'Processo Seletivo', '', ''),
+(4150, 'Processo Seletivo', '', ''),
+(4151, 'Processo Seletivo', '', ''),
+(4152, 'Processo Seletivo', '', ''),
+(4153, 'Processo Seletivo', '', ''),
+(4154, 'Processo Seletivo', '', ''),
+(4155, 'Processo Seletivo', '', ''),
+(4156, 'Processo Seletivo', '', ''),
+(4157, 'Processo Seletivo', '', ''),
+(4158, 'Processo Seletivo', '', ''),
+(4159, 'Processo Seletivo', '', ''),
+(4160, 'Processo Seletivo', '', ''),
+(4161, 'Processo Seletivo', '', ''),
+(4162, 'Processo Seletivo', '', ''),
+(4163, 'Processo Seletivo', '', ''),
+(4164, 'Processo Seletivo', '', ''),
+(4165, 'Processo Seletivo', '', ''),
+(4166, 'Processo Seletivo', '', ''),
+(4167, 'Processo Seletivo', '', ''),
+(4168, 'Processo Seletivo', '', ''),
+(4169, 'Processo Seletivo', '', ''),
+(4170, 'Processo Seletivo', '', ''),
+(4171, 'Processo Seletivo', '', ''),
+(4172, 'Processo Seletivo', '', ''),
+(4173, 'Processo Seletivo', '', ''),
+(4174, 'Processo Seletivo', '', ''),
+(4175, 'Processo Seletivo', '', ''),
+(4176, 'Processo Seletivo', '', ''),
+(4177, 'Processo Seletivo', '', ''),
+(4178, 'Processo Seletivo', '', ''),
+(4179, 'Processo Seletivo', '', ''),
+(4180, 'Processo Seletivo', '', ''),
+(4181, 'Processo Seletivo', '', ''),
+(4182, 'Gráfico', '', ''),
+(4183, 'Processo Seletivo', '', ''),
+(4184, 'gráfico', '', ''),
+(4185, 'Processo Seletivo', '', ''),
+(4186, 'gráfico', '', ''),
+(4187, 'Processo Seletivo', '', ''),
+(4188, 'gráfico', '', ''),
+(4189, 'Processo Seletivo', '', ''),
+(4190, 'gráfico', '', ''),
+(4191, 'Processo Seletivo', '', ''),
+(4192, 'gráfico', '', ''),
+(4193, 'Processo Seletivo', '', ''),
+(4194, 'gráfico', '', ''),
+(4195, 'Processo Seletivo', '', ''),
+(4196, 'gráfico', '', ''),
+(4197, 'Processo Seletivo', '', ''),
+(4198, 'gráfico', '', ''),
+(4199, 'Processo Seletivo', '', ''),
+(4200, 'gráfico', '', ''),
+(4201, 'Processo Seletivo', '', ''),
+(4202, 'gráfico', '', ''),
+(4203, 'Processo Seletivo', '', ''),
+(4204, 'gráfico', '', ''),
+(4205, 'Processo Seletivo', '', ''),
+(4206, 'gráfico', '', ''),
+(4207, 'Processo Seletivo', '', ''),
+(4208, 'gráfico', '', ''),
+(4209, 'gráfico', '', ''),
+(4210, 'Processo Seletivo', '', ''),
+(4211, 'gráfico', '', ''),
+(4212, 'gráfico', '', ''),
+(4213, 'Processo Seletivo', '', ''),
+(4214, 'gráfico', '', ''),
+(4215, 'gráfico', '', ''),
+(4216, 'Processo Seletivo', '', ''),
+(4217, 'gráfico', '', ''),
+(4218, 'gráfico', '', ''),
+(4219, 'Processo Seletivo', '', ''),
+(4220, 'gráfico', '', ''),
+(4221, 'gráfico', '', ''),
+(4222, 'Processo Seletivo', '', ''),
+(4223, 'gráfico', '', ''),
+(4224, 'gráfico', '', ''),
+(4225, 'Processo Seletivo', '', ''),
+(4226, 'gráfico', '', ''),
+(4227, 'gráfico', '', ''),
+(4228, 'Processo Seletivo', '', ''),
+(4229, 'gráfico', '', ''),
+(4230, 'gráfico', '', ''),
+(4231, 'Processo Seletivo', '', ''),
+(4232, 'gráfico', '', ''),
+(4233, 'gráfico', '', ''),
+(4234, 'Processo Seletivo', '', ''),
+(4235, 'gráfico', '', ''),
+(4236, 'Processo Seletivo', '', ''),
+(4237, 'gráfico', '', ''),
+(4238, 'Processo Seletivo', '', ''),
+(4239, 'gráfico', '', ''),
+(4240, 'Processo Seletivo', '', ''),
+(4241, 'gráfico', '', ''),
+(4242, 'Processo Seletivo', '', ''),
+(4243, 'gráfico', '', ''),
+(4244, 'Processo Seletivo', '', ''),
+(4245, 'Processo Seletivo', '', ''),
+(4246, 'Processo Seletivo', '', ''),
+(4247, 'Processo Seletivo', '', ''),
+(4248, 'Processo Seletivo', '', ''),
+(4249, 'Processo Seletivo', '', ''),
+(4250, 'Processo Seletivo', '', ''),
+(4251, 'gráfico', '', ''),
+(4252, 'Processo Seletivo', '', ''),
+(4253, 'Processo Seletivo', '', ''),
+(4254, 'Processo Seletivo', '', ''),
+(4255, 'Processo Seletivo', '', ''),
+(4256, 'Processo Seletivo', '', ''),
+(4257, 'gráfico', '', ''),
+(4258, 'Processo Seletivo', '', ''),
+(4259, 'gráfico', '', ''),
+(4260, 'Processo Seletivo', '', ''),
+(4261, 'gráfico', '', ''),
+(4262, 'gráfico', '', ''),
+(4263, 'Processo Seletivo', '', ''),
+(4264, 'gráfico', '', ''),
+(4265, 'gráfico', '', ''),
+(4266, 'Processo Seletivo', '', ''),
+(4267, 'gráfico', '', ''),
+(4268, 'gráfico', '', ''),
+(4269, 'Processo Seletivo', '', ''),
+(4270, 'gráfico', '', ''),
+(4271, 'gráfico', '', ''),
+(4272, 'Processo Seletivo', '', ''),
+(4273, 'gráfico', '', ''),
+(4274, 'gráfico', '', ''),
+(4275, 'Processo Seletivo', '', ''),
+(4276, 'gráfico', '', ''),
+(4277, 'gráfico', '', ''),
+(4278, 'Processo Seletivo', '', ''),
+(4279, 'gráfico', '', ''),
+(4280, 'gráfico', '', ''),
+(4281, 'Processo Seletivo', '', ''),
+(4282, 'gráfico', '', ''),
+(4283, 'gráfico', '', ''),
+(4284, 'Processo Seletivo', '', ''),
+(4285, 'gráfico', '', ''),
+(4286, 'gráfico', '', ''),
+(4287, 'Processo Seletivo', '', ''),
+(4288, 'gráfico', '', ''),
+(4289, 'gráfico', '', ''),
+(4290, 'Processo Seletivo', '', ''),
+(4291, 'gráfico', '', ''),
+(4292, 'gráfico', '', ''),
+(4293, 'Processo Seletivo', '', ''),
+(4294, 'gráfico', '', ''),
+(4295, 'gráfico', '', ''),
+(4296, 'Processo Seletivo', '', ''),
+(4297, 'gráfico', '', ''),
+(4298, 'gráfico', '', ''),
+(4299, 'Processo Seletivo', '', ''),
+(4300, 'gráfico', '', ''),
+(4301, 'gráfico', '', ''),
+(4302, 'Processo Seletivo', '', ''),
+(4303, 'gráfico', '', ''),
+(4304, 'gráfico', '', ''),
+(4305, 'Processo Seletivo', '', ''),
+(4306, 'gráfico', '', ''),
+(4307, 'gráfico', '', ''),
+(4308, 'Processo Seletivo', '', ''),
+(4309, 'gráfico', '', ''),
+(4310, 'gráfico', '', ''),
+(4311, 'Processo Seletivo', '', ''),
+(4312, 'gráfico', '', ''),
+(4313, 'gráfico', '', ''),
+(4314, 'Processo Seletivo', '', ''),
+(4315, 'gráfico', '', ''),
+(4316, 'gráfico', '', ''),
+(4317, 'Processo Seletivo', '', ''),
+(4318, 'gráfico', '', ''),
+(4319, 'gráfico', '', ''),
+(4320, 'Processo Seletivo', '', ''),
+(4321, 'gráfico', '', ''),
+(4322, 'gráfico', '', ''),
+(4323, 'Processo Seletivo', '', ''),
+(4324, 'gráfico', '', ''),
+(4325, 'gráfico', '', ''),
+(4326, 'Processo Seletivo', '', ''),
+(4327, 'gráfico', '', ''),
+(4328, 'gráfico', '', ''),
+(4329, 'Processo Seletivo', '', ''),
+(4330, 'gráfico', '', ''),
+(4331, 'gráfico', '', ''),
+(4332, 'Processo Seletivo', '', ''),
+(4333, 'gráfico', '', ''),
+(4334, 'gráfico', '', ''),
+(4335, 'Processo Seletivo', '', ''),
+(4336, 'gráfico', '', ''),
+(4337, 'gráfico', '', ''),
+(4338, 'Processo Seletivo', '', ''),
+(4339, 'gráfico', '', ''),
+(4340, 'gráfico', '', ''),
+(4341, 'Processo Seletivo', '', ''),
+(4342, 'gráfico', '', ''),
+(4343, 'gráfico', '', ''),
+(4344, 'gráfico', '', ''),
+(4345, 'Processo Seletivo', '', ''),
+(4346, 'gráfico', '', ''),
+(4347, 'gráfico', '', ''),
+(4348, 'gráfico', '', ''),
+(4349, 'Processo Seletivo', '', ''),
+(4350, 'gráfico', '', ''),
+(4351, 'gráfico', '', ''),
+(4352, 'gráfico', '', ''),
+(4353, 'gráfico', '', ''),
+(4354, 'Processo Seletivo', '', ''),
+(4355, 'gráfico', '', ''),
+(4356, 'gráfico', '', ''),
+(4357, 'gráfico', '', ''),
+(4358, 'gráfico', '', ''),
+(4359, 'Processo Seletivo', '', ''),
+(4360, 'gráfico', '', ''),
+(4361, 'gráfico', '', ''),
+(4362, 'gráfico', '', ''),
+(4363, 'gráfico', '', ''),
+(4364, 'Processo Seletivo', '', ''),
+(4365, 'gráfico', '', ''),
+(4366, 'gráfico', '', ''),
+(4367, 'gráfico', '', ''),
+(4368, 'gráfico', '', ''),
+(4369, 'Processo Seletivo', '', ''),
+(4370, 'gráfico', '', ''),
+(4371, 'gráfico', '', ''),
+(4372, 'gráfico', '', ''),
+(4373, 'gráfico', '', ''),
+(4374, 'Processo Seletivo', '', ''),
+(4375, 'gráfico', '', ''),
+(4376, 'gráfico', '', ''),
+(4377, 'gráfico', '', ''),
+(4378, 'gráfico', '', ''),
+(4379, 'Processo Seletivo', '', ''),
+(4380, 'gráfico', '', ''),
+(4381, 'gráfico', '', ''),
+(4382, 'gráfico', '', ''),
+(4383, 'gráfico', '', ''),
+(4384, 'Processo Seletivo', '', ''),
+(4385, 'gráfico', '', ''),
+(4386, 'gráfico', '', ''),
+(4387, 'gráfico', '', ''),
+(4388, 'gráfico', '', ''),
+(4389, 'Processo Seletivo', '', ''),
+(4390, 'gráfico', '', ''),
+(4391, 'gráfico', '', ''),
+(4392, 'gráfico', '', ''),
+(4393, 'gráfico', '', ''),
+(4394, 'Processo Seletivo', '', ''),
+(4395, 'gráfico', '', ''),
+(4396, 'gráfico', '', ''),
+(4397, 'gráfico', '', ''),
+(4398, 'gráfico', '', ''),
+(4399, 'Processo Seletivo', '', ''),
+(4400, 'gráfico', '', ''),
+(4401, 'gráfico', '', ''),
+(4402, 'gráfico', '', ''),
+(4403, 'gráfico', '', ''),
+(4404, 'Processo Seletivo', '', ''),
+(4405, 'gráfico', '', ''),
+(4406, 'gráfico', '', ''),
+(4407, 'gráfico', '', ''),
+(4408, 'gráfico', '', ''),
+(4409, 'Processo Seletivo', '', ''),
+(4410, 'gráfico', '', ''),
+(4411, 'gráfico', '', ''),
+(4412, 'gráfico', '', ''),
+(4413, 'gráfico', '', ''),
+(4414, 'Processo Seletivo', '', ''),
+(4415, 'gráfico', '', ''),
+(4416, 'gráfico', '', ''),
+(4417, 'gráfico', '', ''),
+(4418, 'gráfico', '', ''),
+(4419, 'Processo Seletivo', '', ''),
+(4420, 'Processo Seletivo', '', ''),
+(4421, 'Processo Seletivo', '', ''),
+(4422, 'gráfico', '', ''),
+(4423, 'gráfico', '', ''),
+(4424, 'gráfico', '', ''),
+(4425, 'gráfico', '', '');
 
 -- --------------------------------------------------------
 
@@ -3554,6 +5066,44 @@ INSERT INTO `mark` (`mark_id`, `student_id`, `subject_id`, `class_id`, `exam_id`
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `matricula_aluno`
+--
+
+CREATE TABLE IF NOT EXISTS `matricula_aluno` (
+  `matricula_aluno_id` int(11) NOT NULL AUTO_INCREMENT,
+  `registro_academico` int(15) NOT NULL COMMENT 'Registro Acadêmico, ou número de matrícula',
+  `data_matricula` date NOT NULL,
+  `situacao` int(11) DEFAULT NULL COMMENT 'opções de acordo c o MEC\n\n1 - pré-matriculado\n2 - Cursando\n3 - Matrícula Trancada\n4 - Desvinculado do curso\n5 - Transferido para outro curso da mesma IES\n6 - Formado\n7 - Falecido',
+  `semestre_ano_ingresso` varchar(6) DEFAULT NULL COMMENT 'Informação para o Censo\n\nSalvar no formato:\n\n012015\n\n\n',
+  `forma_ingresso` int(11) DEFAULT NULL,
+  `cadastro_aluno_id` int(11) NOT NULL,
+  `curso_id` int(10) unsigned zerofill NOT NULL,
+  `turno` int(11) DEFAULT NULL COMMENT '1 - Matutino\n2 - Vespertino\n3 - Noturno\n4 - Integral',
+  PRIMARY KEY (`matricula_aluno_id`),
+  KEY `fk_matricula_aluno_cadastro_aluno1` (`cadastro_aluno_id`),
+  KEY `fk_matricula_aluno_curso1` (`curso_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `matricula_aluno_turma`
+--
+
+CREATE TABLE IF NOT EXISTS `matricula_aluno_turma` (
+  `matricula_aluno_turma_id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `situacao` int(11) DEFAULT NULL COMMENT '1 - matriculado\n2 - Semestre concluído\n3 - pré-matriculado\n',
+  `data_matricula` datetime NOT NULL,
+  `matricula_aluno_id` int(11) NOT NULL,
+  `turma_id` int(11) NOT NULL,
+  PRIMARY KEY (`matricula_aluno_turma_id`),
+  KEY `fk_matricula_turma_matricula_aluno1` (`matricula_aluno_id`),
+  KEY `fk_matricula_turma_turma1` (`turma_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `matriz`
 --
 
@@ -3565,14 +5115,15 @@ CREATE TABLE IF NOT EXISTS `matriz` (
   `cursos_id` int(10) unsigned zerofill NOT NULL,
   PRIMARY KEY (`matriz_id`),
   KEY `fk_matriz_curso1` (`cursos_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Extraindo dados da tabela `matriz`
 --
 
 INSERT INTO `matriz` (`matriz_id`, `mat_tx_ano`, `mat_nb_total_hora`, `mat_tx_semestre`, `cursos_id`) VALUES
-(1, '2012', NULL, 'I', 0000000001);
+(1, '2012', NULL, 'I', 0000000001),
+(2, '2013', NULL, 'I', 0000000003);
 
 -- --------------------------------------------------------
 
@@ -3665,7 +5216,7 @@ CREATE TABLE IF NOT EXISTS `menus` (
   `men_tx_tabela` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`menus_id`),
   KEY `fk_menus_modulos1_idx` (`modulos_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=34 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
 
 --
 -- Extraindo dados da tabela `menus`
@@ -3681,7 +5232,10 @@ INSERT INTO `menus` (`menus_id`, `nome`, `men_tx_descricao`, `men_tx_url`, `men_
 (28, 'periodo_letivo', NULL, 'index.php?educacional/periodo', NULL, 3, 'template/images/icons_menu/periodo_letivo.png', 'periodo_letivo'),
 (30, 'cursos', NULL, 'index.php?educacional/cursos', NULL, 3, 'template/images/icons_menu/bolsas.png', 'cursos'),
 (32, 'matriz', NULL, 'index.php?educacional/matriz', NULL, 3, 'template/images/icons_menu/bolsas.png', 'matriz'),
-(33, 'etapa', NULL, 'index.php?educacional/etapa', NULL, 3, 'template/images/icons_menu/bolsas.png', 'etapa');
+(33, 'etapa', NULL, 'index.php?educacional/etapa', NULL, 3, 'template/images/icons_menu/bolsas.png', 'etapa'),
+(34, 'professor', NULL, 'index.php?admin/teacher', NULL, 3, 'template/images/icons_menu/bolsas.png', 'professor'),
+(35, 'teste', NULL, 'index.php?biblioteca/teste', NULL, 4, 'template/images/icons_menu/bolsas.png', 'professor'),
+(36, 'turma', NULL, 'index.php?educacional/turma', NULL, 3, 'template/images/icons_menu/bolsas.png', 'turma');
 
 -- --------------------------------------------------------
 
@@ -3695,7 +5249,7 @@ CREATE TABLE IF NOT EXISTS `modulos` (
   `mod_tx_url_imagem` varchar(300) DEFAULT NULL,
   `mod_tx_url` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`modulos_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Extraindo dados da tabela `modulos`
@@ -3704,7 +5258,8 @@ CREATE TABLE IF NOT EXISTS `modulos` (
 INSERT INTO `modulos` (`modulos_id`, `nome`, `mod_tx_url_imagem`, `mod_tx_url`) VALUES
 (1, 'Processo Seletivo', 'template/images/icons_modulo/processo_seletivo.png', 'index.php?admin/processo'),
 (2, 'Financeiro', 'template/images/icons_modulo/financeiro.png', 'index.php?admin/financeiro'),
-(3, 'Educacional', 'template/images/icons_modulo/educacional.png', 'index.php?admin/educacional');
+(3, 'Educacional', 'template/images/icons_modulo/educacional.png', 'index.php?admin/educacional'),
+(4, 'Biblioteca', 'template/images/icons_modulo/educacional.png', 'index.php?admin/biblioteca');
 
 -- --------------------------------------------------------
 
@@ -3727,23 +5282,6 @@ CREATE TABLE IF NOT EXISTS `noticeboard` (
 INSERT INTO `noticeboard` (`notice_id`, `notice_title`, `notice`, `create_timestamp`) VALUES
 (5, 'TESTE VALEU', 'cARNAVAL 2015', 0),
 (7, 'KAROL', 'FTFTFTFTFTF', 0);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `parametrizacao_curso_periodo`
---
-
-CREATE TABLE IF NOT EXISTS `parametrizacao_curso_periodo` (
-  `parametrizacao_curso_periodo_id` int(11) NOT NULL AUTO_INCREMENT,
-  `periodo_letivo_id` int(11) NOT NULL,
-  `matriz_id` int(11) NOT NULL,
-  `turno_id` int(11) NOT NULL,
-  PRIMARY KEY (`parametrizacao_curso_periodo_id`),
-  KEY `fk_parametrizacao_curso_periodo_periodo_letivo1` (`periodo_letivo_id`),
-  KEY `fk_parametrizacao_curso_periodo_matriz1` (`matriz_id`),
-  KEY `fk_parametrizacao_curso_periodo_turno1` (`turno_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -3816,6 +5354,34 @@ INSERT INTO `perfis` (`perfis_id`, `nome`, `per_tx_descricao`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `periodo`
+--
+
+CREATE TABLE IF NOT EXISTS `periodo` (
+  `periodo_id` int(11) NOT NULL AUTO_INCREMENT,
+  `periodo` int(11) NOT NULL,
+  PRIMARY KEY (`periodo_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+
+--
+-- Extraindo dados da tabela `periodo`
+--
+
+INSERT INTO `periodo` (`periodo_id`, `periodo`) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `periodo_letivo`
 --
 
@@ -3831,7 +5397,56 @@ CREATE TABLE IF NOT EXISTS `periodo_letivo` (
   `ano` int(11) NOT NULL,
   `semestre` int(11) NOT NULL,
   PRIMARY KEY (`periodo_letivo_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Extraindo dados da tabela `periodo_letivo`
+--
+
+INSERT INTO `periodo_letivo` (`periodo_letivo_id`, `periodo_letivo`, `periodo_letivo_descricao`, `dias_letivos`, `data_inicio`, `data_prev_termino`, `data_termino`, `periodo_encerrado`, `ano`, `semestre`) VALUES
+(1, '2015/1', '1o. Semestre de 2015', 4944, '2015-10-02', '2015-08-07', '1970-01-01', 1, 2015, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `professor`
+--
+
+CREATE TABLE IF NOT EXISTS `professor` (
+  `professor_id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `name` longtext NOT NULL,
+  `birthday` longtext NOT NULL COMMENT '1- Masculino\n2- Feminino',
+  `sex` longtext NOT NULL,
+  `religion` longtext NOT NULL,
+  `blood_group` longtext NOT NULL,
+  `address` longtext NOT NULL,
+  `phone` longtext NOT NULL,
+  `email` longtext NOT NULL,
+  `password` longtext NOT NULL,
+  PRIMARY KEY (`professor_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Extraindo dados da tabela `professor`
+--
+
+INSERT INTO `professor` (`professor_id`, `name`, `birthday`, `sex`, `religion`, `blood_group`, `address`, `phone`, `email`, `password`) VALUES
+(0000000006, 'Israel Frota Araujo', '05/28/2015', 'male', '', '', 'Emílio Moreira 2176', '92982319913', 'iaraujo.israel@gmail.com', '123456');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `professor_turma`
+--
+
+CREATE TABLE IF NOT EXISTS `professor_turma` (
+  `professor_turma_id` int(11) NOT NULL DEFAULT '0',
+  `turma_id` int(11) NOT NULL DEFAULT '0',
+  `teacher_id` int(11) NOT NULL,
+  PRIMARY KEY (`professor_turma_id`),
+  KEY `fk_professor_turma_turma1` (`turma_id`),
+  KEY `fk_professor_turma_teacher1` (`teacher_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -3852,7 +5467,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
 
 INSERT INTO `settings` (`settings_id`, `type`, `description`) VALUES
 (1, 'system_name', 'Faculdade Boas Novas'),
-(2, 'system_title', 'Weconn Sistemas'),
+(2, 'system_title', 'Future Educacional'),
 (3, 'address', 'Dhaka, Bangladesh'),
 (4, 'phone', '+8012654159'),
 (5, 'paypal_email', 'contato@dedial.com'),
@@ -3955,17 +5570,15 @@ CREATE TABLE IF NOT EXISTS `teacher` (
   `email` longtext COLLATE utf8_unicode_ci NOT NULL,
   `password` longtext COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`teacher_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=13 ;
 
 --
 -- Extraindo dados da tabela `teacher`
 --
 
 INSERT INTO `teacher` (`teacher_id`, `name`, `birthday`, `sex`, `religion`, `blood_group`, `address`, `phone`, `email`, `password`) VALUES
-(2, 'João da Silva', '01/01/1970', 'male', '', '', 'Rua dos Marotos', '55 1234 1234', 'joao@joao.com', 'joao'),
-(3, 'teste', '03/21/2015', 'male', '', '', 'teste', 'tete', 'professor@professor', '123456'),
-(5, 'Aloisio Santos', '04/23/2015', 'male', '', '', 'Rua das marias', '34922422598', 'aloisio@gmail.com', '04131973'),
-(6, 'jose mathias', '04/15/1980', 'male', '', '', 'rua b', '51656566565', 'maria@gmail.com', '123456789');
+(9, 'Israel Frota Araujo', '05/28/2015', 'male', '', '', 'Emílio Moreira 2176', '92982319913', 'iaraujo.israel@gmail.com', '123456'),
+(12, 'professor 2', '05/29/2015', 'male', '', '', 'Emílio Moreira 2176', '92982319913', 'iaraujo.israel@gmail.com', '123456');
 
 -- --------------------------------------------------------
 
@@ -3998,12 +5611,24 @@ INSERT INTO `transport` (`transport_id`, `route_name`, `number_of_vehicle`, `des
 CREATE TABLE IF NOT EXISTS `turma` (
   `turma_id` int(11) NOT NULL AUTO_INCREMENT,
   `tur_tx_descricao` varchar(100) NOT NULL,
-  `tur_nb_periodo` varchar(4) NOT NULL,
-  `parametrizacao_curso_periodo_id` int(11) NOT NULL,
   `status` int(11) DEFAULT NULL COMMENT '1 - Aberta\n0 - Fechada',
+  `periodo_letivo_id` int(11) NOT NULL,
+  `matriz_id` int(11) NOT NULL,
+  `periodo_id` int(11) NOT NULL,
+  `turno_id` int(11) NOT NULL,
   PRIMARY KEY (`turma_id`),
-  KEY `fk_turma_parametrizacao_curso_periodo1` (`parametrizacao_curso_periodo_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  KEY `fk_turma_periodo_letivo1` (`periodo_letivo_id`),
+  KEY `fk_turma_matriz1` (`matriz_id`),
+  KEY `fk_turma_periodo1` (`periodo_id`),
+  KEY `fk_turma_turno1_idx` (`turno_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Extraindo dados da tabela `turma`
+--
+
+INSERT INTO `turma` (`turma_id`, `tur_tx_descricao`, `status`, `periodo_letivo_id`, `matriz_id`, `periodo_id`, `turno_id`) VALUES
+(1, 'teste', 0, 1, 2, 8, 1);
 
 -- --------------------------------------------------------
 
@@ -4013,9 +5638,19 @@ CREATE TABLE IF NOT EXISTS `turma` (
 
 CREATE TABLE IF NOT EXISTS `turno` (
   `turno_id` int(11) NOT NULL AUTO_INCREMENT,
-  `descricao` varchar(100) NOT NULL,
+  `descricao` varchar(45) DEFAULT NULL,
+  `horario` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`turno_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Extraindo dados da tabela `turno`
+--
+
+INSERT INTO `turno` (`turno_id`, `descricao`, `horario`) VALUES
+(1, 'Matutino', '08:00 as 12:00'),
+(2, 'Vespertino', '13:00 as 17:00'),
+(3, 'Noturno', '18:00 as 22:00');
 
 -- --------------------------------------------------------
 
@@ -4110,6 +5745,18 @@ ALTER TABLE `cursos`
   ADD CONSTRAINT `fk_curso_instituicao1` FOREIGN KEY (`instituicao_id`) REFERENCES `instituicao` (`instituicao_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
+-- Limitadores para a tabela `dados_censo_aluno`
+--
+ALTER TABLE `dados_censo_aluno`
+  ADD CONSTRAINT `fk_dados_censo_aluno_cadastro_aluno1` FOREIGN KEY (`cadastro_aluno_id`) REFERENCES `cadastro_aluno` (`cadastro_aluno_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `dados_censo_vinculo_curso`
+--
+ALTER TABLE `dados_censo_vinculo_curso`
+  ADD CONSTRAINT `fk_dados_censo_vinculo_curso_matricula_aluno1` FOREIGN KEY (`matricula_aluno_id`) REFERENCES `matricula_aluno` (`matricula_aluno_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
 -- Limitadores para a tabela `disciplina`
 --
 ALTER TABLE `disciplina`
@@ -4128,17 +5775,25 @@ ALTER TABLE `etapa_periodo`
   ADD CONSTRAINT `fk_etapa_periodo_periodo_letivo1` FOREIGN KEY (`periodo_letivo_id`) REFERENCES `periodo_letivo` (`periodo_letivo_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Limitadores para a tabela `horario`
---
-ALTER TABLE `horario`
-  ADD CONSTRAINT `fk_horario_turno1` FOREIGN KEY (`turno_id`) REFERENCES `turno` (`turno_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Limitadores para a tabela `logs`
 --
 ALTER TABLE `logs`
   ADD CONSTRAINT `fk_logs_acoes1` FOREIGN KEY (`acoes_id`) REFERENCES `acoes` (`acoes_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_logs_usuario` FOREIGN KEY (`usuarios_id`) REFERENCES `usuarios` (`usuarios_id`);
+
+--
+-- Limitadores para a tabela `matricula_aluno`
+--
+ALTER TABLE `matricula_aluno`
+  ADD CONSTRAINT `fk_matricula_aluno_cadastro_aluno1` FOREIGN KEY (`cadastro_aluno_id`) REFERENCES `cadastro_aluno` (`cadastro_aluno_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_matricula_aluno_curso1` FOREIGN KEY (`curso_id`) REFERENCES `cursos` (`cursos_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `matricula_aluno_turma`
+--
+ALTER TABLE `matricula_aluno_turma`
+  ADD CONSTRAINT `fk_matricula_turma_matricula_aluno1` FOREIGN KEY (`matricula_aluno_id`) REFERENCES `matricula_aluno` (`matricula_aluno_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_matricula_turma_turma1` FOREIGN KEY (`turma_id`) REFERENCES `turma` (`turma_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `matriz`
@@ -4160,12 +5815,11 @@ ALTER TABLE `menus`
   ADD CONSTRAINT `fk_menus_modulos1` FOREIGN KEY (`modulos_id`) REFERENCES `modulos` (`modulos_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Limitadores para a tabela `parametrizacao_curso_periodo`
+-- Limitadores para a tabela `professor_turma`
 --
-ALTER TABLE `parametrizacao_curso_periodo`
-  ADD CONSTRAINT `fk_parametrizacao_curso_periodo_periodo_letivo1` FOREIGN KEY (`periodo_letivo_id`) REFERENCES `periodo_letivo` (`periodo_letivo_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_parametrizacao_curso_periodo_matriz1` FOREIGN KEY (`matriz_id`) REFERENCES `matriz` (`matriz_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_parametrizacao_curso_periodo_turno1` FOREIGN KEY (`turno_id`) REFERENCES `turno` (`turno_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `professor_turma`
+  ADD CONSTRAINT `FK_professor_turma_2` FOREIGN KEY (`turma_id`) REFERENCES `turma` (`turma_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_professor_turma_teacher1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`teacher_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `sub_menus`
@@ -4177,7 +5831,10 @@ ALTER TABLE `sub_menus`
 -- Limitadores para a tabela `turma`
 --
 ALTER TABLE `turma`
-  ADD CONSTRAINT `fk_turma_parametrizacao_curso_periodo1` FOREIGN KEY (`parametrizacao_curso_periodo_id`) REFERENCES `parametrizacao_curso_periodo` (`parametrizacao_curso_periodo_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_turma_matriz1` FOREIGN KEY (`matriz_id`) REFERENCES `matriz` (`matriz_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_turma_periodo1` FOREIGN KEY (`periodo_id`) REFERENCES `periodo` (`periodo_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_turma_periodo_letivo1` FOREIGN KEY (`periodo_letivo_id`) REFERENCES `periodo_letivo` (`periodo_letivo_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_turma_turno1` FOREIGN KEY (`turno_id`) REFERENCES `turno` (`turno_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `usuarios`
