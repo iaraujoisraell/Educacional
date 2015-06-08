@@ -788,23 +788,18 @@ function manage_profile($param1 = '', $param2 = '', $param3 = '') {
 }
 
 function carregaModulos() {
-
 //pegando id do usuario por sessao.
     $usuarios_id = $this->session->userdata('login');
-
     $page_data['modulos'] = $this->db->query("select modulos.nome as nome, mod_tx_url_imagem, mod_tx_url from usuarios
                                         INNER JOIN perfis  ON usuarios.perfis_id = perfis.perfis_id
                                         INNER JOIN acessos ON perfis.perfis_id = acessos.perfis_id
                                         INNER JOIN menus   ON acessos.menus_id = menus.menus_id
                                         INNER JOIN modulos ON menus.modulos_id = modulos.modulos_id
                                         WHERE usuarios_id = $usuarios_id group by nome")->result_array();
-
     $this->load->vars($page_data);
 }
 
 function financeiro() {
-
-
     if ($this->session->userdata('admin_login') != 1)
         redirect(base_url(), 'refresh');
 
@@ -816,7 +811,6 @@ function financeiro() {
 }
 
 function processo() {
-
     if ($this->session->userdata('admin_login') != 1)
         redirect(base_url(), 'refresh');
 
@@ -829,7 +823,6 @@ function processo() {
 }
 
 function educacional() {
-
     if ($this->session->userdata('admin_login') != 1)
         redirect(base_url(), 'refresh');
 
@@ -841,8 +834,19 @@ function educacional() {
     $this->load->view('index', $page_data);
 }
 
-function vestibular($param1 = '', $param2 = '', $param3 = '') {
+function biblioteca() {
+    if ($this->session->userdata('admin_login') != 1)
+        redirect(base_url(), 'refresh');
 
+    $page_data['acesso'] = $this->db->get('acessos')->result_array();
+    $page_data['page_name'] = 'dashboard';
+    $page_data['nome_modulo'] = 'Biblioteca';
+    $page_data['page_title'] = get_phrase('painel_educacional');
+    $this->carregaModulos();
+    $this->load->view('index', $page_data);
+}
+
+function vestibular($param1 = '', $param2 = '', $param3 = '') {
     if ($this->session->userdata('admin_login') != 1)
         redirect(base_url(), 'refresh');
     if ($param1 == 'create') {
