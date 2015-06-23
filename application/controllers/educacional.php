@@ -750,7 +750,7 @@ WHERE c.cursos_id = $param1")->result_array();
         }
     }
 
-<<<<<<< HEAD
+
     function aluno($param1 = '', $param2 = '', $param3 = '') {
 
         if ($this->session->userdata('admin_login') != 1)
@@ -813,7 +813,5 @@ WHERE c.cursos_id = $param1")->result_array();
         
     }
 
-=======
->>>>>>> origin/master
 }
 ?>
