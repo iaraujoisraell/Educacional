@@ -131,30 +131,19 @@
                                 <tr>
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('curso'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('RG'); ?></label>
                                             <div class="controls">
-                                                <?php $curso_turma = $this->crud_model->get_curso_turma(); ?>
-                                                <select id="curso" name="curso" onchange="buscar_matriz()">
-                                                    <option value="0">Selecione um curso</option>
-                                                    <?php foreach ($curso_turma as $row):
-                                                        ?>
-                                                        <option value="<?php echo $row['cursos_id'] ?>"><?php echo $row['cur_tx_descricao']; ?> </option>
-                                                        <?php
-                                                    endforeach;
-                                                    ?>
-                                                </select>
+                                                <input type="text" class="validate[required]" name="rg"/>
                                             </div>
                                         </div>
                                     </td>
 
                                     <td>
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('matriz'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('RG_UF'); ?></label>
 
                                             <div class="controls" id="load_matriz">
-                                                <select name="matriz" id="matriz">
-                                                    <option value="">Selecione a matriz</option>
-                                                </select>
+                                                <input type="text" class="validate[required]" name="rg"/>
                                             </div>
 
                                         </div>
@@ -165,32 +154,19 @@
                                 <tr>
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('status'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('RG_orgão_expeditor'); ?></label>
                                             <div class="controls">
-                                                <select name="status">
-                                                    <option value="">Selecione o Status</option>
-                                                    <option value="0">Fechada</option>
-                                                    <option value="1">Aberta</option>
-                                                </select>
+                                                <input type="text" class="validate[required]" name="rg_orgao_expeditor"/>
                                             </div>
                                         </div>
                                     </td>
 
                                     <td>
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('turno'); ?></label>
-                                            <?php $turno_turma = $this->crud_model->get_turno_turma(); ?>
+                                            <label class="control-label"><?php echo get_phrase('data_nascimento'); ?></label>
                                             <div class="controls">
-                                                <select name="turno">
-                                                    <option value="">Selecione o Turno</option>
-                                                    <?php foreach ($turno_turma as $row):
-                                                        ?> 
-                                                        <option value="<?php echo $row['turno_id']; ?>"><?php echo $row['descricao'] ?></option>
-                                                    <?php endforeach; ?>
-
-                                                </select>
+                                                <input type="text" class="validate[required]" name="data_nascimento"/>
                                             </div>
-
                                         </div>
                                     </td>
                                 </tr>
@@ -198,23 +174,163 @@
                                 <tr>
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('periodo'); ?></label>
-                                            <?php $periodo = $this->crud_model->get_periodo(); ?>
+                                            <label class="control-label"><?php echo get_phrase('pais_origem'); ?></label>
+
                                             <div class="controls">
-                                                <select name="periodo">
-                                                    <option value="">Selecione o Periodo</option>
-                                                    <?php
-                                                    foreach ($periodo as $row):
-                                                        ?>
-                                                        <option value="<?php echo $row['periodo_id'] ?>"><?php echo $row['periodo']; ?></option>
-                                                        <?php
-                                                    endforeach;
-                                                    ?>
+                                                <input type="text" class="validate[required]" name="pais_origem"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('UF_nascimento'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text" class="validate[required]" name="UF_nascimento"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+
+
+                                </tr>
+
+
+
+                                <tr>
+                                    <td width="40%">
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('cidade'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text" class="validate[required]" name="pais_origem"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('sexo'); ?></label>
+
+                                            <div class="controls">
+
+
+                                                <select name="sexo">
+
+                                                    <option>Selecione o Sexo</option>
+                                                    <option value="0">Feminino</option>
+                                                    <option value="1">Masculino</option>
+
                                                 </select>
+
+
                                             </div>
                                         </div>
                                     </td>
+
                                 </tr>
+
+
+
+                                <tr>
+                                    <td width="40%">
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('estado_civil'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text" class="validate[required]" name="cidade"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('cep'); ?></label>
+
+                                            <div class="controls">
+
+
+                                                <input type="text" class="validate[required]" name="cep"/>
+
+
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+
+
+                                <tr>
+                                    <td width="40%">
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('endereco'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text" class="validate[required]" name="endereco"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('bairro'); ?></label>
+
+                                            <div class="controls">
+
+                                                <input type="text" class="validate[required]" name="endereco"/>
+
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+
+
+
+                                <tr>
+                                    <td width="40%">
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('cidade'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text" class="validate[required]" name="pais_origem"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('sexo'); ?></label>
+
+                                            <div class="controls">
+
+
+                                                <select name="sexo">
+
+                                                    <option>Selecione o Sexo</option>
+                                                    <option value="0">Feminino</option>
+                                                    <option value="1">Masculino</option>
+
+                                                </select>
+
+
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+
+
                             </tbody>
                         </table>
                     </div>

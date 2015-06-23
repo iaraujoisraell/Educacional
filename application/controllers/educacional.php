@@ -802,6 +802,8 @@ WHERE c.cursos_id = $param1")->result_array();
         $page_data['page_name'] = 'aluno';
         $page_data['page_title'] = get_phrase('Educacional->');
         $this->load->view('../views/educacional/index', $page_data);
+        
+        
     }
 
 }
