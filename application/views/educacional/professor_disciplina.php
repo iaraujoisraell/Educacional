@@ -100,7 +100,7 @@
                                                 <a data-toggle="modal" href="#modal-form" onclick="modal('editar_disciplina',<?php echo $row['matriz_disciplina_id']; ?>)"	class="btn btn-info btn-small">
                                                     <i class="icon-print"></i> <?php echo get_phrase('m._nota'); ?>
                                                 </a>
-                                                <a data-toggle="modal" href="#modal-form" onclick="modal('editar_disciplina_professor',<?php echo $row['matriz_disciplina_id']; ?>)"	class="btn btn-gray btn-small">
+                                                <a data-toggle="modal" href="#modal-form" onclick="modal('editar_disciplina_professor',<?php echo $row['professor_turma_id']; ?>,<?php echo $row['cursos_id']; ?>,<?php echo $row['periodo']; ?>)"	class="btn btn-gray btn-small">
                                                     <i class="icon-wrench"></i> <?php echo get_phrase('editar'); ?>
                                                 </a>
                                                 <a data-toggle="modal" href="#modal-delete" onclick="modal_delete('<?php echo base_url(); ?>index.php?educacional/matriz_disciplina/delete/<?php echo $row['matriz_disciplina_id']; ?>/<?php echo $row['disciplina_id']; ?>/<?php echo $row['matriz_id']; ?>')"

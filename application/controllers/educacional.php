@@ -572,32 +572,37 @@ class educacional extends CI_Controller {
 
         if ($param1 == 'do_update') {
             //altera tabela Disciplina
-            $parametro_disciplina = $this->input->post('disciplina_codigo');
-            $data['disc_tx_descricao'] = $this->input->post('disciplina');
-            $data['disc_tx_abrev'] = $this->input->post('abreviatura');
+            $data['turma_id'] = $this->input->post('turma');
+            $data['teacher_id'] = $this->input->post('cod_professor');
+            $data['matriz_disciplina_id'] = $this->input->post('disciplina');
 
-            $this->db->where('disciplina_id', $parametro_disciplina);
-            $this->db->update('disciplina', $data);
-
-            //altera tabela matriz_periodo
-            $parametro_matriz_id = $this->input->post('matriz_codigo');
-            $data2['periodo'] = $this->input->post('periodo');
-            $data2['carga_horaria'] = $this->input->post('carga_horaria');
-            $data2['credito'] = $this->input->post('credito');
-
-
-            $this->db->where('matriz_disciplina_id', $param2);
-            $this->db->update('matriz_disciplina', $data2);
+            $this->db->where('professor_turma_id', $param2);
+            $this->db->update('professor_turma', $data);
 
 
             $this->session->set_flashdata('flash_message', get_phrase('disciplina_alterada_com_sucesso'));
-            redirect(base_url() . 'index.php?educacional/matriz_disciplina/carrega_matriz/' . $parametro_matriz_id, 'refresh');
-        } else if ($param1 == 'editar') {
+              redirect(base_url() . 'index.php?educacional/professor_disciplina/carrega_disciplina/' . $data['teacher_id'], 'refresh');
+      } else if ($param1 == 'editar') {
 
             $page_data['edit_data'] = $this->db->select("*");
+            $page_data['edit_data'] = $this->db->join('turma', 'turma.turma_id = professor_turma.turma_id');
+            $page_data['edit_data'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
+            $page_data['edit_data'] = $this->db->join('cursos', 'cursos.cursos_id = matriz.cursos_id');
+            $page_data['edit_data'] = $this->db->join('matriz_disciplina', 'matriz_disciplina.matriz_disciplina_id = professor_turma.matriz_disciplina_id');
             $page_data['edit_data'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
-            $page_data['edit_data'] = $this->db->get_where('matriz_disciplina', array('matriz_disciplina_id' => $param2
+            $page_data['edit_data'] = $this->db->get_where('professor_turma', array('professor_turma_id' => $param2
                     ))->result_array();
+            
+                $page_data['edit_data1'] = $this->db->select("*");
+             $page_data['edit_data1'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
+             $page_data['edit_data1'] = $this->db->get_where('turma', array('cursos_id' => $param4
+                    ))->result_array();
+            
+            $page_data['edit_data2'] = $this->db->select("*");
+             $page_data['edit_data2'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
+            $page_data['edit_data2'] = $this->db->get_where('matriz_disciplina', array('periodo' => $param3
+                    ))->result_array();
+            
         } else if ($param1 == 'carrega_disciplina') {
             $page_data['professor'] = $this->db->get_where('teacher', array('teacher_id' => $param2
                     ))->result_array();
@@ -639,7 +644,7 @@ class educacional extends CI_Controller {
         $this->db->from('turma');
         $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
         $this->db->join('cursos', 'cursos.cursos_id = matriz.cursos_id');
-        $this->db->where('cursos.cursos_id', $param1);
+        $this->db->where('matriz.cursos_id', $param1);
 
         $numrows = $this->db->count_all_results();
 
@@ -737,6 +742,7 @@ WHERE c.cursos_id = $param1")->result_array();
             <?php
         }
 
+
         if ($numrows < 1) {
             echo "<select name='disciplina'>";
             echo "<option value=''>Não existe disciplina para esta turma</option>";
@@ -744,6 +750,7 @@ WHERE c.cursos_id = $param1")->result_array();
         }
     }
 
+<<<<<<< HEAD
     function aluno($param1 = '', $param2 = '', $param3 = '') {
 
         if ($this->session->userdata('admin_login') != 1)
@@ -806,5 +813,7 @@ WHERE c.cursos_id = $param1")->result_array();
         
     }
 
+=======
+>>>>>>> origin/master
 }
 ?>

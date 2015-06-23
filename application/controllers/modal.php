@@ -21,7 +21,7 @@ class Modal extends CI_Controller {
         
     }
 
-    function popup($param1 = '', $param2 = '', $param3 = '') {
+    function popup($param1 = '', $param2 = '', $param3 = '', $param4 = '') {
         if ($param1 == 'student_profile') {
             $page_data['current_student_id'] = $param2;
         } else if ($param1 == 'student_academic_result') {
@@ -84,8 +84,22 @@ class Modal extends CI_Controller {
             $page_data['edit_data'] = $this->db->get_where('periodo_letivo', array('periodo_letivo_id' => $param2))->result_array();
         }else if ($param1 == 'editar_disciplina_professor') {
             $page_data['edit_data'] = $this->db->select("*");
-            $page_data['edit_data'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
-            $page_data['edit_data'] = $this->db->get_where('matriz_disciplina', array('matriz_disciplina_id' => $param2
+            $page_data['edit_data'] = $this->db->join('turma', 'turma.turma_id = professor_turma.turma_id');
+           $page_data['edit_data'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
+           $page_data['edit_data'] = $this->db->join('cursos', 'cursos.cursos_id = matriz.cursos_id');    
+           $page_data['edit_data'] = $this->db->join('matriz_disciplina', 'matriz_disciplina.matriz_disciplina_id = professor_turma.matriz_disciplina_id');
+           $page_data['edit_data'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id'); 
+            $page_data['edit_data'] = $this->db->get_where('professor_turma', array('professor_turma_id' => $param2
+                    ))->result_array();
+            
+            $page_data['edit_data1'] = $this->db->select("*");
+             $page_data['edit_data1'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
+             $page_data['edit_data1'] = $this->db->get_where('turma', array('cursos_id' => $param3
+                    ))->result_array();
+            
+            $page_data['edit_data2'] = $this->db->select("*");
+             $page_data['edit_data2'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
+            $page_data['edit_data2'] = $this->db->get_where('matriz_disciplina', array('periodo' => $param4
                     ))->result_array();
         }
 
