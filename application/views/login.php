@@ -7,6 +7,16 @@
         <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 		<?php include 'includes.php';?>
         <title><?php echo get_phrase('login');?> | <?php echo $system_title;?></title>
+        
+        <style>
+            body{
+                 width: 100%;
+                height: 100%;
+                background-image:url(template/images/background.png); 
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+            }
+        </style>
     </head>
 	<body>
         <div id="main_body">
@@ -19,45 +29,7 @@
             </script>
             <?php endif;?>
             
-            <div class="navbar navbar-top navbar-inverse">
-                <div class="navbar-inner">
-                    <div class="container-fluid">
-                        
-                        <a class="brand" href="<?php echo base_url();?>">
-                            <?php echo $system_name;?>
-                        </a>
-                        
-                        <ul class="nav pull-right" >
-                            <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Select Language <b class="caret"></b></a>
-                            <!-- Language Selector -->
-                                <ul class="dropdown-menu">
-                                    <?php
-                                    $fields = $this->db->list_fields('language');
-                                    foreach ($fields as $field)
-                                    {
-                                        if($field == 'phrase_id' || $field == 'phrase')continue;
-                                        ?>
-                                            <li>
-                                                <a href="<?php echo base_url();?>index.php?multilanguage/select_language/<?php echo $field;?>">
-                                                    <?php echo $field;?>
-                                                    <?php //selecting current language
-                                                        if($this->session->userdata('current_language') == $field):?>
-                                                            <i class="icon-ok"></i>
-                                                    <?php endif;?>
-                                                </a>
-                                            </li>
-                                        <?php
-                                    }
-                                    ?>
-                                </ul>
-                            <!-- Language Selector -->
-                            </li>
-                        </ul>
-                        
-                    </div>
-                </div>
-            </div>
+            
             <div class="container">
                 <div class="span4 offset4">
                     <div class="padded">
