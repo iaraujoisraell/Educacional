@@ -10,6 +10,7 @@
     </head>
 	<body>
         <div id="main_body">
+            
             <?php if($this->session->flashdata('flash_message') != ""):?>
             <script>
                 $(document).ready(function() {
@@ -17,6 +18,7 @@
                 });
             </script>
             <?php endif;?>
+            
             <div class="navbar navbar-top navbar-inverse">
                 <div class="navbar-inner">
                     <div class="container-fluid">
