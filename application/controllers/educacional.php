@@ -581,8 +581,8 @@ class educacional extends CI_Controller {
 
 
             $this->session->set_flashdata('flash_message', get_phrase('disciplina_alterada_com_sucesso'));
-              redirect(base_url() . 'index.php?educacional/professor_disciplina/carrega_disciplina/' . $data['teacher_id'], 'refresh');
-      } else if ($param1 == 'editar') {
+            redirect(base_url() . 'index.php?educacional/professor_disciplina/carrega_disciplina/' . $data['teacher_id'], 'refresh');
+        } else if ($param1 == 'editar') {
 
             $page_data['edit_data'] = $this->db->select("*");
             $page_data['edit_data'] = $this->db->join('turma', 'turma.turma_id = professor_turma.turma_id');
@@ -592,17 +592,16 @@ class educacional extends CI_Controller {
             $page_data['edit_data'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
             $page_data['edit_data'] = $this->db->get_where('professor_turma', array('professor_turma_id' => $param2
                     ))->result_array();
-            
-                $page_data['edit_data1'] = $this->db->select("*");
-             $page_data['edit_data1'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
-             $page_data['edit_data1'] = $this->db->get_where('turma', array('cursos_id' => $param4
+
+            $page_data['edit_data1'] = $this->db->select("*");
+            $page_data['edit_data1'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
+            $page_data['edit_data1'] = $this->db->get_where('turma', array('cursos_id' => $param4
                     ))->result_array();
-            
+
             $page_data['edit_data2'] = $this->db->select("*");
-             $page_data['edit_data2'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
+            $page_data['edit_data2'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
             $page_data['edit_data2'] = $this->db->get_where('matriz_disciplina', array('periodo' => $param3
                     ))->result_array();
-            
         } else if ($param1 == 'carrega_disciplina') {
             $page_data['professor'] = $this->db->get_where('teacher', array('teacher_id' => $param2
                     ))->result_array();
@@ -750,23 +749,75 @@ WHERE c.cursos_id = $param1")->result_array();
         }
     }
 
-
     function aluno($param1 = '', $param2 = '', $param3 = '') {
 
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
         if ($param1 == 'create') {
 
-            $data['tur_tx_descricao'] = $this->input->post('descricao');
-            $data['status'] = $this->input->post('status');
-            $data['periodo_letivo_id'] = $this->input->post('periodo_letivo');
-            $data['matriz_id'] = $this->input->post('matriz');
-            $data['periodo_id'] = $this->input->post('periodo');
-            $data['turno_id'] = $this->input->post('turno');
+            $data['nome'] = $this->input->post('nome');
+            $data['cpf'] = $this->input->post('cpf');
+            $data['rg'] = $this->input->post('rg');
+            $data['rg_uf'] = $this->input->post('rg_uf');
+            $data['rg_orgao_expeditor'] = $this->input->post('rg_orgao_expeditor');
+            $data['data_nascimento'] = $this->input->post('data_nascimento');
+            $data['pais_origem'] = $this->input->post('pais_origem');
+            $data['uf_nascimento'] = $this->input->post('uf_nascimento');
+            $data['municipio_nascimento'] = $this->input->post('cidade_origem');
+            $data['sexo'] = $this->input->post('sexo');
+            $data['estado_civil'] = $this->input->post('estado_civil');
+            $data['cep'] = $this->input->post('cep');
+            $data['endereco'] = $this->input->post('endereco');
+            $data['bairro'] = $this->input->post('bairro');
+            $data['complemento'] = $this->input->post('complemento');
+            $data['uf'] = $this->input->post('uf');
+            $data['cidade'] = $this->input->post('cidade');
+            $data['titulo'] = $this->input->post('titulo');
+            $data['uf_titulo'] = $this->input->post('uf_titulo');
+            $data['fone'] = $this->input->post('fone');
+            $data['celular'] = $this->input->post('celular');
+            $data['email'] = $this->input->post('email');
+            $data['nacionalidade'] = $this->input->post('nacionalidade');
+            $data['cor'] = $this->input->post('cor');
+            $data['mae'] = $this->input->post('mae');
+            $data['pai'] = $this->input->post('pai');
+            $data['conjuge'] = $this->input->post('conjuge');
+            $data['uf_cert_reservista'] = $this->input->post('uf_certidao');
+            $data['documento_estrangeiro'] = $this->input->post('documento_estrangeiro');
+            $data['cert_reservista'] = $this->input->post('certidao_reservista');
+            $data['responsavel'] = $this->input->post('responsavel');
+            $data['fone_responsavel'] = $this->input->post('fone_responsavel');
+            $data['rg_responsavel'] = $this->input->post('rg_responsavel');
+            $data['cpf_responsavel'] = $this->input->post('cpf_responsavel');
+            $data['cel_responsavel'] = $this->input->post('celular_responsavel');
+            $data['obs_doc'] = $this->input->post('obs_documento');
+            $data['obs_doc'] = $this->input->post('obs_documento');
+          
+            
+            $this->db->insert('cadastro_aluno', $data);
+            $aluno_id = mysql_insert_id();
 
-            $this->db->insert('turma', $data);
-            $this->session->set_flashdata('flash_message', get_phrase('turma_cadastrada_com_sucesso'));
-            redirect(base_url() . 'index.php?educacional/turma/', 'refresh');
+            //INSERE NA TABELA MATRICULA ALUNO
+            if (date('m') == 01 || date('m') == 02 || date('m') == 03 || date('m') == 04 || date('m') == 05 || date('m') == 06) {
+
+                $semestre = 01;
+            } else if (date('m') == 07 || date('m') == 08 || date('m') == 09 || date('m') == 10 || date('m') == 11 || date('m') == 12) {
+
+                $semestre = 02;
+            }
+
+            $data_matricula['registro_academico'] = "1"; //VERIFICAR DEPOIS
+            $data_matricula['data_matricula'] = date('Y-m-d');
+            $data_matricula['situacao'] = '1';
+            $data_matricula['semestre_ano_ingresso'] = $semestre . date('Y');
+            $data_matricula['forma_ingresso'] = '11';//VERIFICAR
+            $data_matricula['cadastro_aluno_id'] = $aluno_id;
+            $data_matricula['curso_id'] = $this->input->post('curso');
+            $this->db->insert('matricula_aluno', $data_matricula);
+            
+
+            $this->session->set_flashdata('flash_message', get_phrase('aluno_cadastro_com_sucesso'));
+            redirect(base_url() . 'index.php?educacional/aluno/', 'refresh');
         }
         if ($param1 == 'do_update') {
             $data['name'] = $this->input->post('name');
@@ -797,6 +848,7 @@ WHERE c.cursos_id = $param1")->result_array();
             redirect(base_url() . 'index.php?educacional/periodo/', 'refresh');
         }
 
+
         $page_data['turma'] = $this->db->select("*");
         $page_data['turma'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
         $page_data['turma'] = $this->db->join('cursos', 'cursos.cursos_id = matriz.cursos_id');
@@ -806,11 +858,13 @@ WHERE c.cursos_id = $param1")->result_array();
         $page_data['aluno'] = $this->db->get('cadastro_aluno')->result_array();
         //SELECT ABAIXO PARA MONTAR O MENU ACESSO, DEVE SER INCLUIDO EM TODOS OS MENUS
         $page_data['acesso'] = $this->db->get('acessos')->result_array();
+        $page_data['cursos'] = $this->db->get('cursos')->result_array();
+        $page_data['matriz'] = $this->db->get('matriz')->result_array();
+
         $page_data['page_name'] = 'aluno';
         $page_data['page_title'] = get_phrase('Educacional->');
+
         $this->load->view('../views/educacional/index', $page_data);
-        
-        
     }
 
 }
