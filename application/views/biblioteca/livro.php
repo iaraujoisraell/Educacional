@@ -84,33 +84,35 @@
                     <div class="padded">
                         <table width="100%" class="responsive">
                             <tbody>
+                                
                                 <tr>
+                                    
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Data do Registro'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('data_do_registro'); ?></label>
                                             <div class="controls">
-                                                <input type="text" class="validate[required]" name="data_registro"/>
+                                                <input type="text" class="datepicker fill-up validate[required]" name="data_registro"/>
                                             </div>
                                         </div>
                                     </td>
 
-
                                     <td>
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Número de Exemplares'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('número_de_exemplar'); ?></label>
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="num_exemplar"/>
 
                                             </div>
                                         </div>
                                     </td>
+                                    
                                 </tr>
                                 
                                 <tr>
                                     
                                     <td>
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Tipo de Obra'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('tipo_de_obra'); ?></label>
 
                                             <div class="controls">
 
@@ -123,14 +125,13 @@
 
                                                 </select>
 
-
                                             </div>
                                         </div>
                                     </td>
                                     
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Título'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('título_do_livro'); ?></label>
 
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="titulo_livro"/>
@@ -141,11 +142,11 @@
 
                                 </tr>
 
-
                                 <tr>
+                                    
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Subtítulo'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('subtítulo'); ?></label>
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="subtitulo"/>
                                             </div>
@@ -154,10 +155,9 @@
 
                                     <td>
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Categoria'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('categoria'); ?></label>
 
                                             <div class="controls">
-
 
                                                 <select name="categoria">
 
@@ -167,7 +167,6 @@
 
                                                 </select>
 
-
                                             </div>
                                         </div>
                                     </td>
@@ -175,9 +174,10 @@
                                 </tr>
 
                                 <tr>
+                                    
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Palavra-Chave 1'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('palavra-chave_1'); ?></label>
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="palavra_chave1"/>
                                             </div>
@@ -186,18 +186,20 @@
 
                                     <td>
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Palavra-Chave 2'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('palavra_-_chave_2'); ?></label>
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="palavra_chave2"/>
                                             </div>
                                         </div>
                                     </td>
+                                    
                                 </tr>
                                 
                                      <tr>
+                                         
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Palavra-Chave 3'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('palavra_-_chave_3'); ?></label>
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="palavra_chave3"/>
                                             </div>
@@ -206,15 +208,17 @@
 
                                     <td>
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Palavra-Chave 4'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('palavra_-_chave_4'); ?></label>
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="palavra_chave4"/>
                                             </div>
                                         </div>
                                     </td>
+                                    
                                 </tr>
 
                                 <tr>
+                                    
                                     <td width="40%">
                                         <div class="control-group">
                                             <label class="control-label"><?php echo get_phrase('CUTTER'); ?></label>
@@ -228,7 +232,7 @@
 
                                     <td>
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Autor'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('autor'); ?></label>
 
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="autor"/>
@@ -238,15 +242,13 @@
                                     </td>
 
 
-
                                 </tr>
 
-
-
                                 <tr>
+                                    
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Autor 2'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('autor_2'); ?></label>
 
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="autor2"/>
@@ -257,7 +259,7 @@
 
                                    <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Autor 3'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('autor_3'); ?></label>
 
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="autor3"/>
@@ -268,12 +270,11 @@
 
                                 </tr>
 
-
-
                                 <tr>
+                                    
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Tradutor'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('tradutor'); ?></label>
 
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="tradutor"/>
@@ -284,7 +285,7 @@
 
                                     <td>
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Editora'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('editora'); ?></label>
 
                                             <div class="controls">
 
@@ -298,12 +299,11 @@
 
                                 </tr>
 
-
-
                                 <tr>
+                                    
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Local de Edição'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('local_de_edição'); ?></label>
 
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="local_edicao"/>
@@ -325,12 +325,12 @@
                                     </td>
 
                                 </tr>
-
-
+                    
                                 <tr>
+                                    
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('País'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('país'); ?></label>
 
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="pais"/>
@@ -341,7 +341,7 @@
 
                                    <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Idioma'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('idioma'); ?></label>
 
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="idioma"/>
@@ -354,9 +354,10 @@
                                 
                                 
                                <tr>
+                                   
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Ano'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('ano'); ?></label>
 
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="ano"/>
@@ -367,7 +368,7 @@
 
                                    <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Série'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('série'); ?></label>
 
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="serie"/>
@@ -379,9 +380,10 @@
                                 </tr>
                                 
                                 <tr>
+                                    
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Número de Páginas'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('número_de_páginas'); ?></label>
 
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="num_pagina"/>
@@ -392,7 +394,7 @@
 
                                   <td>
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Forma de Aquisição'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('forma_de_aquisição'); ?></label>
 
                                             <div class="controls">
 
@@ -408,12 +410,15 @@
 
                                             </div>
                                         </div>
+                                      
                                     </td>
+                                    
+                                </tr>
                                     
                                    <tr>
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Número de Chamada'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('número_de_chamada'); ?></label>
 
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="num_chamada"/>
@@ -424,7 +429,7 @@
 
                                    <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Prateleira'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('prateleira'); ?></label>
 
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="prateleira"/>
@@ -436,9 +441,10 @@
                                 </tr>
                                 
                                 <tr>
+                                    
                                     <td width="40%">
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Bloco'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('bloco'); ?></label>
 
                                             <div class="controls">
                                                 <input type="text" class="validate[required]" name="bloco"/>
@@ -449,7 +455,7 @@
 
                                    <td>
                                         <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('Biblioteca'); ?></label>
+                                            <label class="control-label"><?php echo get_phrase('biblioteca'); ?></label>
 
                                             <div class="controls">
 
@@ -475,7 +481,7 @@
 
 
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-gray"><?php echo get_phrase('add_turma'); ?></button>
+                        <button type="submit" class="btn btn-gray"><?php echo get_phrase('add_livro'); ?></button>
                     </div>
                     </form>                
                 </div>                
