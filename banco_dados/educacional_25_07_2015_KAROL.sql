@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 25-Jul-2015 às 23:53
+-- Generation Time: 26-Jul-2015 às 00:01
 -- Versão do servidor: 5.6.15-log
 -- PHP Version: 5.4.24
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `acessos` (
   PRIMARY KEY (`acessos_id`),
   KEY `fk_acessos_menus1_idx` (`menus_id`),
   KEY `fk_acessos_perfis1_idx` (`perfis_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Extraindo dados da tabela `acessos`
@@ -52,7 +52,8 @@ INSERT INTO `acessos` (`acessos_id`, `menus_id`, `perfis_id`) VALUES
 (11, 34, 11),
 (12, 35, 11),
 (13, 36, 11),
-(15, 37, 11);
+(15, 37, 11),
+(16, 38, 11);
 
 -- --------------------------------------------------------
 
@@ -263,6 +264,18 @@ INSERT INTO `candidato` (`candidato_id`, `nome`, `can_ch_sexo`, `can_tx_cpf`, `c
 (3, 'Karoline Ingrid de Oliveira Avinte', 'F', '003.075.612-08', '2410129-0', 'SSP', 'AM', NULL, 'Joana da Silva', '1992-10-03', 'joana_silva@hotmail.com', NULL, 'Rua: Sátiro Dias', 'São Francisco', 'Manaus', 'AM', '69079060', 'CASA', '(92) 3664-5166', '(92)8195-9014', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', NULL, NULL, 496),
 (5, 'Pedro Martins', 'M', '145.058.658-09', '2018745-0', 'SSP', 'AM', NULL, 'Carmen Silva', '1993-10-03', 'pedro@gmail.com', NULL, 'Rua: Pimenta Bueno', 'São Francisco', 'Manaus', 'AM', '69014107', 'APARTAMENTO', '(92) 3664-5688', '(92)8270-2518', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', NULL, NULL, 497),
 (6, 'Leonardo Menezes Silva', 'M', '676.443.123-00', '4355665-7', 'SSP', 'AM', NULL, 'Joana Martins', '1991-05-05', 'teste@teste.com', NULL, 'Rua: Pimenta Bueno', 'São Francisco', 'Manaus', 'AM', '69014107', 'APARTAMENTO', '(92) 3664-5688', '(92)8270-2518', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', NULL, NULL, 497);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `categoria`
+--
+
+CREATE TABLE IF NOT EXISTS `categoria` (
+  `cat_nb_codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `cat_tx_descricao` varchar(150) NOT NULL,
+  PRIMARY KEY (`cat_nb_codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -494,6 +507,24 @@ INSERT INTO `disciplina` (`disciplina_id`, `disc_tx_descricao`, `disc_tx_abrev`,
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `emprestimo_livro_itens`
+--
+
+CREATE TABLE IF NOT EXISTS `emprestimo_livro_itens` (
+  `eli_nb_codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `eli_dt_prev_dv` date DEFAULT NULL,
+  `eli_dt_dev` date DEFAULT NULL,
+  `eli_nb_status` int(1) DEFAULT NULL,
+  `le_nb_codigo` int(11) NOT NULL,
+  `liv_nb_codigo` int(11) NOT NULL,
+  PRIMARY KEY (`eli_nb_codigo`),
+  KEY `fk_emprestimo_livro_itens_livro_emprestimo1` (`le_nb_codigo`),
+  KEY `fk_emprestimo_livro_itens_livro1` (`liv_nb_codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `etapa`
 --
 
@@ -569,7 +600,7 @@ CREATE TABLE IF NOT EXISTS `language` (
   `Portugues` longtext COLLATE utf8_unicode_ci NOT NULL,
   `Português` longtext COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`phrase_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5190 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5234 ;
 
 --
 -- Extraindo dados da tabela `language`
@@ -1608,6 +1639,50 @@ INSERT INTO `language` (`phrase_id`, `phrase`, `Portugues`, `Português`) VALUES
 (1527, 'telefone', '', ''),
 (1528, 'telefone', '', ''),
 (1529, 'telefone', '', ''),
+(5233, 'data_da_devolução', '', ''),
+(5232, 'data_do_emprestimo', '', ''),
+(5231, 'código_livro', '', ''),
+(5230, 'código_empréstimo', '', ''),
+(5229, 'matrícula', '', ''),
+(5228, 'turmas', '', ''),
+(5227, 'devolver', '', ''),
+(5226, 'novo_emprestimo', '', ''),
+(5225, 'Biblioteca', '', ''),
+(5224, 'add_livro', '', ''),
+(5223, 'biblioteca', '', ''),
+(5222, 'bloco', '', ''),
+(5221, 'prateleira', '', ''),
+(5220, 'número_de_chamada', '', ''),
+(5219, 'forma_de_aquisição', '', ''),
+(5218, 'número_de_páginas', '', ''),
+(5217, 'série', '', ''),
+(5216, 'idioma', '', ''),
+(5215, 'país', '', ''),
+(5214, 'CDD', '', ''),
+(5213, 'local_de_edição', '', ''),
+(5212, 'editora', '', ''),
+(5211, 'tradutor', '', ''),
+(5210, 'autor_3', '', ''),
+(5209, 'autor_2', '', ''),
+(5208, 'CUTTER', '', ''),
+(5207, 'palavra_-_chave_4', '', ''),
+(5206, 'palavra_-_chave_3', '', ''),
+(5205, 'palavra_-_chave_2', '', ''),
+(5204, 'palavra-chave_1', '', ''),
+(5203, 'subtítulo', '', ''),
+(5202, 'título_do_livro', '', ''),
+(5201, 'tipo_de_obra', '', ''),
+(5200, 'número_de_exemplar', '', ''),
+(5199, 'data_do_registro', '', ''),
+(5198, 'tipo_obra', '', ''),
+(5197, 'categoria', '', ''),
+(5196, 'autor', '', ''),
+(5195, 'titulo_livro', '', ''),
+(5194, 'num_registro', '', ''),
+(5193, 'novo_livro', '', ''),
+(5192, 'lista_livro', '', ''),
+(5191, 'livro', '', ''),
+(5190, 'emprestimo', '', ''),
 (5189, 'cpf', '', ''),
 (5188, 'cpf', '', ''),
 (5187, 'CADASTRO DE DADOS DA TURMA', '', ''),
@@ -2024,7 +2099,8 @@ INSERT INTO `language` (`phrase_id`, `phrase`, `Portugues`, `Português`) VALUES
 (2317, 'Semestre', '', ''),
 (2318, 'Opções', '', ''),
 (2319, 'Ano', '', ''),
-(2320, 'Semestre', '', ''),
+(2320, 'Semestre', '', '');
+INSERT INTO `language` (`phrase_id`, `phrase`, `Portugues`, `Português`) VALUES
 (2321, 'matriz_cadastrada_com_sucesso', '', ''),
 (2322, 'Opções', '', ''),
 (2323, 'Ano', '', ''),
@@ -2074,8 +2150,7 @@ INSERT INTO `language` (`phrase_id`, `phrase`, `Portugues`, `Português`) VALUES
 (2367, 'Semestre', '', ''),
 (2368, 'Ano', '', ''),
 (2369, 'Semestre', '', ''),
-(2370, 'Opções', '', '');
-INSERT INTO `language` (`phrase_id`, `phrase`, `Portugues`, `Português`) VALUES
+(2370, 'Opções', '', ''),
 (2371, 'Ano', '', ''),
 (2372, 'Semestre', '', ''),
 (2373, 'Ano', '', ''),
@@ -3105,6 +3180,44 @@ INSERT INTO `language` (`phrase_id`, `phrase`, `Portugues`, `Português`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `livro`
+--
+
+CREATE TABLE IF NOT EXISTS `livro` (
+  `bnq_pratileira` varchar(10) DEFAULT NULL,
+  `liv_nb_codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `liv_nb_data` date DEFAULT NULL,
+  `liv_tx_titulo` varchar(200) NOT NULL,
+  `liv_tx_subtitulo` varchar(250) DEFAULT NULL,
+  `liv_tx_autor` varchar(150) DEFAULT NULL,
+  `liv_tx_tradutor` varchar(150) DEFAULT NULL,
+  `liv_tx_editora` varchar(150) DEFAULT NULL,
+  `liv_tx_idioma` varchar(150) DEFAULT NULL,
+  `liv_tx_isbn` varchar(50) DEFAULT NULL,
+  `liv_tx_pais` varchar(50) DEFAULT NULL,
+  `liv_tx_ano` varchar(4) DEFAULT NULL,
+  `liv_tx_npag` varchar(11) DEFAULT NULL,
+  `liv_tx_serie` varchar(20) DEFAULT NULL,
+  `liv_tx_subserie` varchar(20) DEFAULT NULL,
+  `liv_tx_autor2` varchar(150) DEFAULT NULL,
+  `liv_tx_autor3` varchar(150) DEFAULT NULL,
+  `liv_tx_exemplar` varchar(5) DEFAULT NULL,
+  `liv_tx_edicao` varchar(10) DEFAULT NULL,
+  `liv_tx_local` varchar(30) DEFAULT NULL,
+  `liv_tx_bloco` varchar(5) DEFAULT NULL,
+  `liv_tx_codautor` varchar(15) DEFAULT NULL,
+  `cat_nb_codigo` int(11) NOT NULL,
+  `sl_nb_codigo` int(11) NOT NULL,
+  `to_nb_codigo` int(11) NOT NULL,
+  PRIMARY KEY (`liv_nb_codigo`),
+  KEY `fk_livro_categoria1` (`cat_nb_codigo`),
+  KEY `fk_livro_status_livro1` (`sl_nb_codigo`),
+  KEY `fk_livro_tipo_obra1` (`to_nb_codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `logs`
 --
 
@@ -3332,7 +3445,7 @@ CREATE TABLE IF NOT EXISTS `menus` (
   `men_tx_tabela` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`menus_id`),
   KEY `fk_menus_modulos1_idx` (`modulos_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=38 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=39 ;
 
 --
 -- Extraindo dados da tabela `menus`
@@ -3350,9 +3463,10 @@ INSERT INTO `menus` (`menus_id`, `nome`, `men_tx_descricao`, `men_tx_url`, `men_
 (32, 'matriz', NULL, 'index.php?educacional/matriz', NULL, 3, 'template/images/icons_menu/bolsas.png', 'matriz'),
 (33, 'etapa', NULL, 'index.php?educacional/etapa', NULL, 3, 'template/images/icons_menu/bolsas.png', 'etapa'),
 (34, 'professor', NULL, 'index.php?admin/teacher', NULL, 3, 'template/images/icons_menu/bolsas.png', 'professor'),
-(35, 'teste', NULL, 'index.php?biblioteca/teste', NULL, 4, 'template/images/icons_menu/bolsas.png', 'professor'),
+(35, 'livro', NULL, 'index.php?biblioteca/livro', NULL, 4, 'template/images/icons_menu/bolsas.png', 'professor'),
 (36, 'turma', NULL, 'index.php?educacional/turma', NULL, 3, 'template/images/icons_menu/bolsas.png', 'turma'),
-(37, 'aluno', NULL, 'index.php?educacional/aluno', NULL, 3, 'template/images/icons_menu/bolsas.png', 'cadastro_aluno');
+(37, 'aluno', NULL, 'index.php?educacional/aluno', NULL, 3, 'template/images/icons_menu/bolsas.png', 'cadastro_aluno'),
+(38, 'emprestimo', NULL, 'index.php?biblioteca/emprestimo', NULL, 4, 'template/images/icons_menu/bolsas.png', 'professor');
 
 -- --------------------------------------------------------
 
@@ -3430,6 +3544,20 @@ CREATE TABLE IF NOT EXISTS `pais` (
   `codigo` varchar(4) NOT NULL DEFAULT '',
   `nome` varchar(150) NOT NULL DEFAULT '',
   PRIMARY KEY (`pais_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `palavra_chave`
+--
+
+CREATE TABLE IF NOT EXISTS `palavra_chave` (
+  `pc_nb_codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `pc_tx_descricao` varchar(150) NOT NULL,
+  `liv_nb_codigo` int(11) NOT NULL,
+  PRIMARY KEY (`pc_nb_codigo`),
+  KEY `fk_palavra_chave_livro1` (`liv_nb_codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -3587,6 +3715,18 @@ INSERT INTO `settings` (`settings_id`, `type`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `status_livro`
+--
+
+CREATE TABLE IF NOT EXISTS `status_livro` (
+  `sl_nb_codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `sl_tx_descricao` varchar(150) NOT NULL,
+  PRIMARY KEY (`sl_nb_codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `student`
 --
 
@@ -3666,6 +3806,18 @@ CREATE TABLE IF NOT EXISTS `teacher` (
 INSERT INTO `teacher` (`teacher_id`, `name`, `birthday`, `sex`, `religion`, `blood_group`, `address`, `phone`, `email`, `password`) VALUES
 (9, 'Israel Frota Araujo', '05/28/2015', 'male', '', '', 'Emílio Moreira 2176', '92982319913', 'iaraujo.israel@gmail.com', '123456'),
 (12, 'professor 2', '05/29/2015', 'male', '', '', 'Emílio Moreira 2176', '92982319913', 'iaraujo.israel@gmail.com', '123456');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tipo_obra`
+--
+
+CREATE TABLE IF NOT EXISTS `tipo_obra` (
+  `to_nb_codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `to_tx_descricao` varchar(150) NOT NULL,
+  PRIMARY KEY (`to_nb_codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -3852,6 +4004,13 @@ ALTER TABLE `disciplina`
   ADD CONSTRAINT `fk_disciplina_cursos1` FOREIGN KEY (`cursos_id`) REFERENCES `cursos` (`cursos_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
+-- Limitadores para a tabela `emprestimo_livro_itens`
+--
+ALTER TABLE `emprestimo_livro_itens`
+  ADD CONSTRAINT `fk_emprestimo_livro_itens_livro_emprestimo1` FOREIGN KEY (`le_nb_codigo`) REFERENCES `livro_emprestimo` (`le_nb_codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_emprestimo_livro_itens_livro1` FOREIGN KEY (`liv_nb_codigo`) REFERENCES `livro` (`liv_nb_codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
 -- Limitadores para a tabela `etapa`
 --
 ALTER TABLE `etapa`
@@ -3862,6 +4021,14 @@ ALTER TABLE `etapa`
 --
 ALTER TABLE `etapa_periodo`
   ADD CONSTRAINT `fk_etapa_periodo_periodo_letivo1` FOREIGN KEY (`periodo_letivo_id`) REFERENCES `periodo_letivo` (`periodo_letivo_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `livro`
+--
+ALTER TABLE `livro`
+  ADD CONSTRAINT `fk_livro_categoria1` FOREIGN KEY (`cat_nb_codigo`) REFERENCES `categoria` (`cat_nb_codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_livro_status_livro1` FOREIGN KEY (`sl_nb_codigo`) REFERENCES `status_livro` (`sl_nb_codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_livro_tipo_obra1` FOREIGN KEY (`to_nb_codigo`) REFERENCES `tipo_obra` (`to_nb_codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `logs`
@@ -3914,6 +4081,12 @@ ALTER TABLE `menus`
 --
 ALTER TABLE `pagamentos`
   ADD CONSTRAINT `fk_pagamentos_mensalidades1` FOREIGN KEY (`mensalidades_id`) REFERENCES `mensalidades` (`mensalidades_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Limitadores para a tabela `palavra_chave`
+--
+ALTER TABLE `palavra_chave`
+  ADD CONSTRAINT `fk_palavra_chave_livro1` FOREIGN KEY (`liv_nb_codigo`) REFERENCES `livro` (`liv_nb_codigo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Limitadores para a tabela `professor_turma`
