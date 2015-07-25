@@ -34,11 +34,11 @@
                                 <thead>
                                     <tr>
                                         <th><div>ID</div></th>
-                                <th><div><?php echo get_phrase('Número de Registro'); ?></div></th>
-                                <th><div><?php echo get_phrase('Título do Livro '); ?></div></th>
-                                <th><div><?php echo get_phrase('Autor'); ?></div></th>
-                                <th><div><?php echo get_phrase('Categoria'); ?></div></th>
-                                <th><div><?php echo get_phrase('Tipo de Obra'); ?></div></th>
+                                <th><div><?php echo get_phrase('num_registro'); ?></div></th>
+                                <th><div><?php echo get_phrase('titulo_livro'); ?></div></th>
+                                <th><div><?php echo get_phrase('autor'); ?></div></th>
+                                <th><div><?php echo get_phrase('categoria'); ?></div></th>
+                                <th><div><?php echo get_phrase('tipo_obra'); ?></div></th>
                                 
 
                                 </tr>
@@ -47,28 +47,7 @@
                                     <?php
                                     $count = 1;
                                     foreach ($turma as $row):
-                                        $periodo = $row['periodo_id'];
-                                        if ($periodo == 1) {
-                                            $periodo = 'I';
-                                        } else if ($periodo == 2) {
-                                            $periodo = 'II';
-                                        } else if ($periodo == 3) {
-                                            $periodo = 'III';
-                                        } else if ($periodo == 4) {
-                                            $periodo = 'IV';
-                                        } else if ($periodo == 5) {
-                                            $periodo = 'V';
-                                        } else if ($periodo == 6) {
-                                            $periodo = 'VI';
-                                        } else if ($periodo == 7) {
-                                            $periodo = 'VII';
-                                        } else if ($periodo == 8) {
-                                            $periodo = 'VIII';
-                                        } else if ($periodo == 9) {
-                                            $periodo = 'IX';
-                                        } else if ($periodo == 10) {
-                                            $periodo = 'X';
-                                        }
+                                       
                                         ?>
                                         <tr>
                                             <td><?php echo $count++; ?></td>
@@ -154,7 +133,7 @@
                                             <label class="control-label"><?php echo get_phrase('Título'); ?></label>
 
                                             <div class="controls">
-                                                <input type="text" class="validate[required]" name="titulo"/>
+                                                <input type="text" class="validate[required]" name="titulo_livro"/>
                                             </div>
 
                                         </div>
