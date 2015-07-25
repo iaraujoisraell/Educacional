@@ -59,12 +59,14 @@ class biblioteca extends CI_Controller {
             redirect(base_url() . 'index.php?educacional/bolsas/', 'refresh');
         }
 
-        $page_data['bolsas'] = $this->db->get('bolsas')->result_array();
+        $page_data['livro'] = $this->db->get('livro')->result_array();
         //SELECT ABAIXO PARA MONTAR O MENU ACESSO, DEVE SER INCLUIDO EM TODOS OS MENUS
         $page_data['acesso'] = $this->db->get('acessos')->result_array();
         $page_data['page_name'] = 'teste';
         $page_data['page_title'] = get_phrase('<a href="index.php?admin/dashboard">Painel Geral</a> > <a href="index.php?admin/educacional">Painel_educacional </a><b>></b> <a href="">Gerenciar_bolsas</a>');
         $this->load->view('../views/biblioteca/index', $page_data);
+        
+        
     }
 
 }
