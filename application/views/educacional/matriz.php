@@ -24,7 +24,8 @@
                 <div class="action-nav-normal">
                     <div class=" action-nav-button" style="width:300px;">
                         <a href="#" title="Users">
-                            <img src="<?php echo base_url(); ?>template/images/icons_menu/vestibular.png" />
+                            <i id="colorb" class="fa fa-sitemap"></i>
+                            <!--<img src="<?php echo base_url(); ?>template/images/icons_menu/vestibular.png" />-->
                             <span>Total <?php echo count($matriz); ?> Matriz</span>
                         </a>
                     </div>

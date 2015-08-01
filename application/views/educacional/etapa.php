@@ -22,7 +22,8 @@
                 <div class="action-nav-normal">
                     <div class=" action-nav-button" style="width:300px;">
                         <a href="#" title="Users">
-                            <img src="<?php echo base_url(); ?>template/images/icons_menu/periodo_letivo.png" />
+                            <i id="colorb" class="fa fa-list-ol"></i>
+                            <!--<img src="<?php echo base_url(); ?>template/images/icons_menu/periodo_letivo.png" />-->
                             <span>Total <?php echo count($periodo); ?> Periodo Letivo</span>
                         </a>
                     </div>
