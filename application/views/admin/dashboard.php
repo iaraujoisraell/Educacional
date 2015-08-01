@@ -20,8 +20,8 @@
                         endforeach;
                     }else {
 
-                         $usuarios_id = $this->session->userdata('login');
-                        $menusArray = $this->db->query("select menus.nome as nome, men_tx_url, men_tx_url_image, men_tx_tabela from usuarios
+                        $usuarios_id = $this->session->userdata('login');
+                        $menusArray = $this->db->query("select menus.nome as nome, men_tx_url, men_tx_url_image, men_tx_tabela, men_tx_img from usuarios
                                         INNER JOIN perfis  ON usuarios.perfis_id = perfis.perfis_id
                                         INNER JOIN acessos ON perfis.perfis_id = acessos.perfis_id
                                         INNER JOIN menus   ON acessos.menus_id = menus.menus_id
@@ -33,7 +33,9 @@
                             ?>
                             <div class="span2 action-nav-button">
                                 <a href="<?php echo base_url(); ?><?php echo $rowMenus['men_tx_url'] ?>">
-                                    <img src="<?php echo base_url(); ?><?php echo $rowMenus['men_tx_url_image']; ?>" />
+                                    
+                                    <i id="colorb" class="fa <?php echo $rowMenus['men_tx_img']; ?>"></i>
+        <!--                                    <img src="<?php echo base_url(); ?><?php echo $rowMenus['men_tx_url_image']; ?>" />-->
                                     <span><?php echo get_phrase($rowMenus['nome']); ?></span>
                                     <span class="label label-blue"><?php echo $this->db->count_all_results($rowMenus['men_tx_tabela']); ?></span>
                                 </a>
