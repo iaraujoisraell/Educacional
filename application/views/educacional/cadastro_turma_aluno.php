@@ -3,14 +3,18 @@
 
         <!------CONTROL TABS START------->
         <ul class="nav nav-tabs nav-tabs-left">
-            <li class="active">
+
+            <li>
                 <a href="#list" data-toggle="tab"><i class="icon-align-justify"></i> 
                     <?php echo get_phrase('lista_aluno'); ?>
-                </a></li>
-            <li>
+                </a>
+            </li>
+
+            <li class="active">
                 <a href="#add" data-toggle="tab"><i class="icon-plus"></i>
                     <?php echo get_phrase('novo_aluno'); ?>
-                </a></li>
+                </a>
+            </li>
         </ul>
         <!------CONTROL TABS END------->
 
@@ -141,7 +145,7 @@
                         </table>
 
                         </br>
-                        <b>DADOS PESSOAIS</b>
+                        <b>DADOS PESSOAIS KAROLINEHUASDHAUDH</b>
                         <hr/>
 
                         <table width="100%" class="responsive">
@@ -255,17 +259,11 @@
                                             <label class="control-label"><?php echo get_phrase('sexo'); ?></label>
 
                                             <div class="controls">
-
-
                                                 <select name="sexo">
-
                                                     <option>Selecione o Sexo</option>
                                                     <option value="0">Feminino</option>
                                                     <option value="1">Masculino</option>
-
                                                 </select>
-
-
                                             </div>
                                         </div>
                                     </td>
@@ -292,7 +290,7 @@
                         </table>
 
                         </br>
-                    </b>ENDEREÇO</b>
+                        </b>ENDEREÇO</b>
                         <hr/>
 
                         <table width="100%" class="responsive">
