@@ -19,7 +19,7 @@
                         endforeach;
                     }else {
 
-                        $usuarios_id = $this->session->userdata('login');
+                         $usuarios_id = $this->session->userdata('login');
                         $menusArray = $this->db->query("select menus.nome as nome, men_tx_url, men_tx_url_image, men_tx_tabela from usuarios
                                         INNER JOIN perfis  ON usuarios.perfis_id = perfis.perfis_id
                                         INNER JOIN acessos ON perfis.perfis_id = acessos.perfis_id
