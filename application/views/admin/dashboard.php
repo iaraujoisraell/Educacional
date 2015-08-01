@@ -11,7 +11,8 @@
                             ?>
                             <div class="span2 action-nav-button">
                                 <a href="<?php echo base_url(); ?><?php echo $row['mod_tx_url'] ?>">
-                                    <img src="<?php echo base_url(); ?><?php echo $row['mod_tx_url_imagem']; ?>" />
+                                    <i id="colorb" class="fa <?php echo $row['mod_tx_img']; ?>"></i>
+                                <!--<img src="<?php echo base_url(); ?><?php echo $row['mod_tx_url_imagem']; ?>" />-->
                                     <span><?php echo get_phrase($row['nome']); ?></span>
                                 </a>
                             </div>
@@ -178,7 +179,7 @@
             </div>
             <!---TO DO LIST ENDS-->
         </div>
-        
+
         <?php
         if ($nome_modulo == "Educacional") {
             include 'application/views/graficos/graficos_educacional.php';

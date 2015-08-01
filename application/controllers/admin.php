@@ -790,7 +790,7 @@ function manage_profile($param1 = '', $param2 = '', $param3 = '') {
 function carregaModulos() {
 //pegando id do usuario por sessao.
     $usuarios_id = $this->session->userdata('login');
-    $page_data['modulos'] = $this->db->query("select modulos.nome as nome, mod_tx_url_imagem, mod_tx_url from usuarios
+    $page_data['modulos'] = $this->db->query("select modulos.nome as nome, mod_tx_url_imagem, mod_tx_url, mod_tx_img from usuarios
                                         INNER JOIN perfis  ON usuarios.perfis_id = perfis.perfis_id
                                         INNER JOIN acessos ON perfis.perfis_id = acessos.perfis_id
                                         INNER JOIN menus   ON acessos.menus_id = menus.menus_id
