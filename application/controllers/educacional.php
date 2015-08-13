@@ -792,8 +792,8 @@ WHERE c.cursos_id = $param1")->result_array();
             $data['cel_responsavel'] = $this->input->post('celular_responsavel');
             $data['obs_doc'] = $this->input->post('obs_documento');
             $data['obs_doc'] = $this->input->post('obs_documento');
-          
-            
+
+
             $this->db->insert('cadastro_aluno', $data);
             $aluno_id = mysql_insert_id();
 
@@ -806,18 +806,23 @@ WHERE c.cursos_id = $param1")->result_array();
                 $semestre = 02;
             }
 
+            //VERIFICAR SITUACAO DA MATRIZ.
+
             $data_matricula['registro_academico'] = "1"; //VERIFICAR DEPOIS
             $data_matricula['data_matricula'] = date('Y-m-d');
             $data_matricula['situacao'] = '1';
             $data_matricula['semestre_ano_ingresso'] = $semestre . date('Y');
-            $data_matricula['forma_ingresso'] = '11';//VERIFICAR
+            $data_matricula['forma_ingresso'] = '11'; //VERIFICAR
             $data_matricula['cadastro_aluno_id'] = $aluno_id;
             $data_matricula['curso_id'] = $this->input->post('curso');
             $this->db->insert('matricula_aluno', $data_matricula);
-            
+
+
+
+
 
             $this->session->set_flashdata('flash_message', get_phrase('aluno_cadastro_com_sucesso'));
-            redirect(base_url() . 'index.php?educacional/aluno/', 'refresh');
+            redirect(base_url() . 'index.php?educacional/aluno_turma/' . $aluno_id, 'refresh');
         }
         if ($param1 == 'do_update') {
             $data['name'] = $this->input->post('name');
@@ -862,6 +867,86 @@ WHERE c.cursos_id = $param1")->result_array();
         $page_data['matriz'] = $this->db->get('matriz')->result_array();
 
         $page_data['page_name'] = 'aluno';
+        $page_data['page_title'] = get_phrase('Educacional->');
+
+        $this->load->view('../views/educacional/index', $page_data);
+    }
+
+    function aluno_turma($param1 = '', $param2 = '', $param3 = '') {
+
+        if ($this->session->userdata('admin_login') != 1)
+            redirect(base_url(), 'refresh');
+
+        if ($param1 == 'create') {
+
+            $data['situacao_aluno_turma'] = "1"; //VERIFICAR DEPOIS ESSE CAMPO
+            $data['data_matricula_aluno_turma'] = "";
+            $data['matricula_aluno_id'] = $this->input->post('matricula_id');
+            $data['turma_id'] = $this->input->post('turma');
+
+
+            $this->db->insert('matricula_aluno_turma', $data);
+            $matricula_aluno_turma = mysql_insert_id();
+
+
+            //INSERE NA TABELA MENSALIDADES
+
+            $data_mensalidade['data_vencimento'] = "1"; //VERIFICAR DEPOIS ESSE CAMPO
+            $data_mensalidade['parcela'] = "";
+            $data_mensalidade['status'] = $this->input->post('matricula_id');
+            $data_mensalidade['valor'] = $this->input->post('turma');
+            $data_mensalidade['mes'] = $this->input->post('turma');
+            $data_mensalidade['referente'] = $this->input->post('turma');
+            $data_mensalidade['matricula_aluno_turma_id'] = $matricula_aluno_turma;
+            $this->db->insert('mensalidades', $data_mensalidade);
+            $this->session->set_flashdata('flash_message', get_phrase('aluno_cadastro_com_sucesso'));
+            redirect(base_url() . 'index.php?educacional/aluno/', 'refresh');
+            
+                        
+        }
+        if ($param1 == 'do_update') {
+            $data['name'] = $this->input->post('name');
+            $data['birthday'] = $this->input->post('birthday');
+            $data['sex'] = $this->input->post('sex');
+            $data['address'] = $this->input->post('address');
+            $data['phone'] = $this->input->post('phone');
+            $data['email'] = $this->input->post('email');
+            $data['password'] = $this->input->post('password');
+
+            $this->db->where('teacher_id', $param2);
+            $this->db->update('teacher', $data);
+            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/teacher_image/' . $param2 . '.jpg');
+            redirect(base_url() . 'index.php?admin/teacher/', 'refresh');
+        } else if ($param1 == 'personal_profile') {
+            $page_data['personal_profile'] = true;
+            $page_data['current_teacher_id'] = $param2;
+        } else if ($param1 == 'edit') {
+            $page_data['edit_data'] = $this->db->get_where('teacher', array(
+                        'teacher_id' => $param2
+                    ))->result_array();
+        }
+        if ($param1 == 'delete') {
+            $this->db->where('periodo_letivo_id', $param2);
+            $this->db->delete('periodo_letivo');
+
+            $this->session->set_flashdata('flash_message', get_phrase('turma_deletado_com_sucesso'));
+            redirect(base_url() . 'index.php?educacional/periodo/', 'refresh');
+        }
+
+
+        //SELECT ABAIXO PARA MONTAR O MENU ACESSO, DEVE SER INCLUIDO EM TODOS OS MENUS
+        $page_data['acesso'] = $this->db->get('acessos')->result_array();
+
+
+        $page_data['turma_aluno'] = $this->db->query("SELECT * FROM cadastro_aluno
+                                                JOIN matricula_aluno ON cadastro_aluno.cadastro_aluno_id = matricula_aluno.cadastro_aluno_id
+                                                JOIN cursos ON cursos.cursos_id = matricula_aluno.curso_id
+                                                WHERE cadastro_aluno.cadastro_aluno_id = $param1 group by nome")->result_array();
+
+        $page_data['turma'] = $this->db->get('turma')->result_array();
+
+
+        $page_data['page_name'] = 'cadastro_turma_aluno';
         $page_data['page_title'] = get_phrase('Educacional->');
 
         $this->load->view('../views/educacional/index', $page_data);
