@@ -33634,7 +33634,7 @@ function (e) {
             e.validationEngineLanguage.allRules = {
                 required: {
                     regex: "none",
-                    alertText: "* This field is required",
+                    alertText: "* Campo Obrigatório",
                     alertTextCheckboxMultiple: "* Please select an option",
                     alertTextCheckboxe: "* This checkbox is required",
                     alertTextDateRange: "* Both date range fields are required"
@@ -37417,7 +37417,7 @@ function (e) {
         title: "Enter username"
     }), $("#firstname").editable({
         validate: function (e) {
-            if ($.trim(e) == "") return "This field is required"
+            if ($.trim(e) == "") return "Campo Obrigatório"
         }
     }), $("#sex").editable({
         prepend: "not selected",

@@ -5760,8 +5760,12 @@ h1,h2,h3,h4,h5,h6,th {
     border-radius: 3px;
     margin-bottom: 20px;
 }
+
+
+
+
 .box .box-header,.box .box-footer {
-    background: #7087A3;
+    background: #4291A6;
     background-size: 100%;
     border-bottom: 1px solid #F1F2F7;
     color: #EBEBEB;
@@ -8300,11 +8304,12 @@ label {
 }
 .sidebar-background .primary-sidebar-background {
     width:200px;
-    background:#2A3542;
+    //background: #1F2B42;
     height:100%;
     top:0;
     left:0;
-    position:absolute
+    position:absolute;
+    
 }
 .primary-sidebar {
     width:200px;
@@ -9499,7 +9504,7 @@ button.btn {
     -ms-border-radius: 4px;
     -o-border-radius: 4px;
     border-radius: 4px;
-    background: #8CA3B6;
+    background: #4291a6 ; //#8CA3B6
     background-size: 100%;
     padding: 10px 0;
     display: block;

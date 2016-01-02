@@ -1,7 +1,7 @@
 <div class="tab-pane box active" id="edit">
     <div class="box-content">
         <?php foreach ($edit_data as $row): ?>
-            <?php echo form_open('educacional/periodo/do_update/' . $row['periodo_letivo_id'], array('class' => 'form-horizontal validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
+            <?php echo form_open('educacional/periodo_letivo/do_update/' . $row['periodo_letivo_id'], array('class' => 'form-horizontal validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
             <div class="padded">
                 <div class="control-group">
                     <label class="control-label"><?php echo get_phrase('periodo_letivo'); ?></label>

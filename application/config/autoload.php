@@ -55,6 +55,8 @@ $autoload['packages'] = array();
 $autoload['libraries'] = array('session','pagination', 'xmlrpc' , 'form_validation', 'email','upload','encrypt','paypal');
 
 
+$autoload['plugin'] = array("mpdf");
+
 /*
 | -------------------------------------------------------------------
 |  Auto-load Helper Files

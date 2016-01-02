@@ -9,17 +9,38 @@
         <title><?php echo get_phrase('login');?> | <?php echo $system_title;?></title>
         
         <style>
-            body{
+           body{
                  width: 100%;
                 height: 100%;
                 background-image:url(template/images/background.png); 
                 background-repeat: no-repeat;
                 background-size: 100% 100%;
             }
+            
+            top{
+                height: 150px;
+                width: 600px;
+                background-color: #006dcc;
+                margin: auto;
+                z-index: 1;
+                position: fixed;
+                
+            }
         </style>
     </head>
+    <div style="height: 40px;
+                width: 100%;
+                background-color: #006dcc;
+                margin: auto;
+                z-index: 1;
+                position: fixed;">
+       
+        <h3 style="margin-top: 0px; margin-left: 10px;">Bem vindo ao Portal Acadêmico da Faculdade Boas Novas!</h3>
+            </div>
+    
 	<body>
-        <div id="main_body">
+            
+            <div id="main_body">
             
             <?php if($this->session->flashdata('flash_message') != ""):?>
             <script>
@@ -29,17 +50,15 @@
             </script>
             <?php endif;?>
             
-            
+            <br><br><br><br><br><br>
             <div class="container">
                 <div class="span4 offset4">
                     <div class="padded">
                         <center>
-                            <img src="<?php echo base_url();?>uploads/logo.png" style="max-height:100px;margin:20px 0px;" />
+                            <img src="<?php echo base_url();?>uploads/logo_login.png" style="max-height:100px;margin:20px 0px;" />
                         </center>
-                        <div class="login box" style="margin-top: 10px;">
-                            <div class="box-header">
-                                <span class="title"><?php echo get_phrase('login');?></span>
-                            </div>
+                        <div class="login box_login" style="margin-top: 10px;">
+                            
                             <div class="box-content padded">
                             <script>
                                 function check_account_type()
@@ -54,28 +73,10 @@
                                         return true;
                                 }
                             </script>
-                                <?php echo form_open('login' , array('class' => 'separate-sections', 'onsubmit' => 'return check_account_type()'));?>
-                                    <center>
-                                        <div style="height:100px;">
-                                            <div id="avatar" class="avatar">
-                                                <img src="<?php echo base_url();?>template/images/icons_big/account.png" class="avatar-big"  id="account_img" style=""/>
-                                            </div>
-                                        </div>
-                                        
-                                                <img src="<?php echo base_url();?>template/images/icons_big/admin.png" style="display:none;"/>
-                                                <img src="<?php echo base_url();?>template/images/icons_big/teacher.png" style="display:none;"/>
-                                                <img src="<?php echo base_url();?>template/images/icons_big/student.png" style="display:none;"/>
-                                                <img src="<?php echo base_url();?>template/images/icons_big/parent.png" style="display:none;"/>
-                                    </center>
-<!--                                    <div class="">
-                                        <select id="account_selector" class="validate[required]" name="login_type" style="width:100%;margin-bottom:0px !important;" >
-                                            <option value=""><?php echo get_phrase('account_type');?></option>
-                                            <option value="admin"><?php echo get_phrase('admin');?></option>
-                                            <option value="teacher"><?php echo get_phrase('teacher');?></option>
-                                            <option value="student"><?php echo get_phrase('student');?></option>
-                                            <option value="parent"><?php echo get_phrase('parent');?></option>
-                                        </select>
-                                    </div>-->
+                                       <?php echo form_open('login/valida_login/' , array('class' => 'form-horizontal validatable', 'onsubmit', 'separate-sections', 'target' => '_top', 'enctype' => 'multipart/form-data'));?>
+                             <form method="post" action="<?php echo base_url(); ?>index.php?login/valida_login/" class="form-horizontal validatable" enctype="multipart/form-data">
+                             
+
                                     <style>
                                     .flip_in{
                                         opacity:0;
@@ -132,24 +133,25 @@
                                     </script>
                                     
                                     
-                                    
+
                                     
                                     <div class="input-prepend">
                                         <span class="add-on" href="#">
                                         <i class="icon-envelope"></i>
                                         </span>
-                                        <input name="email" type="text" placeholder="<?php echo get_phrase('email');?>" autocomplete="off">
+                                        <input name="email" type="text" placeholder="<?php echo get_phrase('login');?>" autocomplete="off">
                                     </div>
                                     <div class="input-prepend">
                                         <span class="add-on" href="#">
                                         <i class="icon-key"></i>
                                         </span>
-                                        <input name="password" type="password" placeholder="<?php echo get_phrase('password');?>" autocomplete="off">
+                                        <input name="password" type="password" placeholder="<?php echo get_phrase('senha');?>" autocomplete="off">
                                     </div>
+                                 <br><br>
                                     <div class="row-fluid">
                                         <div class="span6">
                                             <a  data-toggle="modal" href="#modal-simple"  class="btn btn-blue btn-block" >
-                                                <?php echo get_phrase('forgot_password ?');?> 
+                                                <?php echo get_phrase('esqueceu_sua_senha ?');?> 
                                             </a>
                                         </div>
                                         <div class="span6">
@@ -160,9 +162,9 @@
                             </div>
                         </div>
                         <hr />
-                        <div style="color:#a5a5a5;">
+                        <div style="color:#006dcc;">
                         	
-                        		<center>&copy; 2013, School Manager Pro
+                        		<center>&copy; 2015, Amazonia Global - Faculdade Boas Novas
                         		</center>
                             
                         </div>

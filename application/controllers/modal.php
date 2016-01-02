@@ -68,11 +68,25 @@ class Modal extends CI_Controller {
         } else if ($param1 == 'edit_vestibular') {
             $page_data['edit_data'] = $this->db->get_where('vestibular', array('vestibular_id' => $param2))->result_array();
         } else if ($param1 == 'candidato_profile') {
-            $page_data['current_candidato_id'] = $param2;
+            //$page_data['current_candidato_id'] = $param2;  
+
+            $page_data['edit_data'] = $this->db->select("*");
+            $page_data['edit_data'] = $this->db->join('vestibular', 'vestibular.vestibular_id = candidato.vest_nb_codigo');
+            //   $page_data['edit_data'] = $this->db->join('chamada_vestibular', 'chamada_vestibular.vest_nb_codigo = vestibular.vestibular_id and chamada_vestibular.can_nb_codigo = candidato.candidato_id');
+            $page_data['edit_data'] = $this->db->get_where('candidato', array('candidato_id' => $param2
+                    ))->result_array();
+        } else if ($param1 == 'candidato_editar') {
+            //$page_data['current_candidato_id'] = $param2;  modal_candidato_editar
+            $page_data['vestibular'] = $this->db->get_where('vestibular')->result_array();
+
+            $page_data['edit_data'] = $this->db->join('vestibular', 'vestibular.vestibular_id = candidato.vest_nb_codigo');
+            $page_data['edit_data'] = $this->db->get_where('candidato', array('candidato_id' => $param2
+                    ))->result_array();
         } else if ($param1 == 'chamada_vestibular') {
             $page_data['current_chamada_vestibular_id'] = $param2;
         } else if ($param1 == 'pontuacao_vestibular') {
-            $page_data['current_pontuacao_vestibular_id'] = $param2;
+            //  $page_data['current_pontuacao_vestibular_id'] = $param2;
+            $page_data['current_chamada_vestibular_id'] = $param2;
         } else if ($param1 == 'editar_curso') {
             $page_data['edit_data'] = $this->db->get_where('cursos', array('cursos_id' => $param2))->result_array();
         } else if ($param1 == 'editar_disciplina') {
@@ -82,25 +96,76 @@ class Modal extends CI_Controller {
                     ))->result_array();
         } else if ($param1 == 'editar_periodo') {
             $page_data['edit_data'] = $this->db->get_where('periodo_letivo', array('periodo_letivo_id' => $param2))->result_array();
-        }else if ($param1 == 'editar_disciplina_professor') {
+        } else if ($param1 == 'editar_disciplina_professor') {
             $page_data['edit_data'] = $this->db->select("*");
             $page_data['edit_data'] = $this->db->join('turma', 'turma.turma_id = professor_turma.turma_id');
-           $page_data['edit_data'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
-           $page_data['edit_data'] = $this->db->join('cursos', 'cursos.cursos_id = matriz.cursos_id');    
-           $page_data['edit_data'] = $this->db->join('matriz_disciplina', 'matriz_disciplina.matriz_disciplina_id = professor_turma.matriz_disciplina_id');
-           $page_data['edit_data'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id'); 
+            $page_data['edit_data'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
+            $page_data['edit_data'] = $this->db->join('cursos', 'cursos.cursos_id = matriz.cursos_id');
+            $page_data['edit_data'] = $this->db->join('matriz_disciplina', 'matriz_disciplina.matriz_disciplina_id = professor_turma.matriz_disciplina_id');
+            $page_data['edit_data'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
             $page_data['edit_data'] = $this->db->get_where('professor_turma', array('professor_turma_id' => $param2
                     ))->result_array();
-            
+
             $page_data['edit_data1'] = $this->db->select("*");
-             $page_data['edit_data1'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
-             $page_data['edit_data1'] = $this->db->get_where('turma', array('cursos_id' => $param3
+            $page_data['edit_data1'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
+            $page_data['edit_data1'] = $this->db->get_where('turma', array('cursos_id' => $param3
                     ))->result_array();
-            
+
             $page_data['edit_data2'] = $this->db->select("*");
-             $page_data['edit_data2'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
+            $page_data['edit_data2'] = $this->db->join('disciplina', 'disciplina.disciplina_id = matriz_disciplina.disciplina_id');
             $page_data['edit_data2'] = $this->db->get_where('matriz_disciplina', array('periodo' => $param4
                     ))->result_array();
+        } else if ($param1 == 'periodo_bolsa') {
+            $page_data['bolsa'] = $this->db->get_where('bolsas')->result_array();
+
+            $page_data['bolsa_periodo'] = $this->db->select("bolsas.descricao as descricao");
+            $page_data['bolsa_periodo'] = $this->db->join('bolsas', 'bolsas.bolsas_id = bolsa_periodo.bolsas_id');
+            $page_data['bolsa_periodo'] = $this->db->get_where('bolsa_periodo', array('periodo_letivo_id' => $param2
+                    ))->result_array();
+
+            $page_data['edit_data'] = $this->db->get_where('periodo_letivo', array('periodo_letivo_id' => $param2))->result_array();
+        } else if ($param1 == 'editar_turma') {
+
+
+            $page_data['edit_data'] = $this->db->select("*");
+            $page_data['edit_data'] = $this->db->join('cursos', 'cursos.cursos_id = turma.curso_id');
+            $page_data['edit_data'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
+            $page_data['edit_data'] = $this->db->join('turno', 'turno.turno_id = turma.turno_id');
+            $page_data['edit_data'] = $this->db->join('periodo_letivo', 'periodo_letivo.periodo_letivo_id = turma.periodo_letivo_id');
+            $page_data['edit_data'] = $this->db->get_where('turma', array('turma_id' => $param2))->result_array();
+
+            $page_data['curso_turma'] = $this->db->get_where('cursos')->result_array();
+            
+        }else if ($param1 == 'ficha_aluno') {
+
+            $page_data['edit_data'] = $this->db->select("*");
+            $page_data['edit_data'] = $this->db->join('cursos', 'cursos.cursos_id = turma.curso_id');
+            $page_data['edit_data'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
+            $page_data['edit_data'] = $this->db->join('turno', 'turno.turno_id = turma.turno_id');
+            $page_data['edit_data'] = $this->db->join('periodo_letivo', 'periodo_letivo.periodo_letivo_id = turma.periodo_letivo_id');
+            $page_data['edit_data'] = $this->db->get_where('turma', array('turma_id' => $param2))->result_array();
+
+            $page_data['curso_turma'] = $this->db->get_where('cursos')->result_array();
+            
+            //$page_data['edit_data'] = $this->db->select("*");
+            //$page_data['edit_data'] = $this->db->join('cadastro_aluno', 'cadastro_aluno.cadastro_aluno_id = matricula_aluno.cadastro_aluno_id');
+           // $page_data['edit_data'] = $this->db->get_where('matricula_aluno', array('matricula_aluno_id' => $param2))->result_array();
+
+           // $page_data['curso_turma'] = $this->db->get_where('cursos')->result_array();
+        }else if ($param1 == 'demonstrativo_nota') {
+            $page_data['current_matricula_aluno_turma_id'] = $param2;
+           /* $page_data['edit_data'] = $this->db->select("*");
+            $page_data['edit_data'] = $this->db->join('disciplina_aluno_nota', 'disciplina_aluno_nota.disciplina_aluno_id = disciplina_aluno.disciplina_aluno_id');
+            $page_data['edit_data'] = $this->db->join('disciplina', 'disciplina.disciplina_id = disciplina_aluno.disciplina_id');
+            $page_data['edit_data'] = $this->db->get_where('disciplina_aluno', array('matricula_aluno_turma_id' => $param2))->result_array();
+*/
+          //  $page_data['curso_turma'] = $this->db->get_where('cursos')->result_array();
+            
+            //$page_data['edit_data'] = $this->db->select("*");
+            //$page_data['edit_data'] = $this->db->join('cadastro_aluno', 'cadastro_aluno.cadastro_aluno_id = matricula_aluno.cadastro_aluno_id');
+           // $page_data['edit_data'] = $this->db->get_where('matricula_aluno', array('matricula_aluno_id' => $param2))->result_array();
+
+           // $page_data['curso_turma'] = $this->db->get_where('cursos')->result_array();
         }
 
         $page_data['page_name'] = $param1;

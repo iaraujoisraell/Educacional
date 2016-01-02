@@ -114,6 +114,23 @@ class Crud_model extends CI_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
+    
+        function get_pontuacao_info($chamada_vestibular_id) {
+
+        $this->db->select("*");
+        $this->db->where('vestibular_id', $chamada_vestibular_id);
+        $this->db->where('cv_nb_resposta', 0);
+        $this->db->group_by('vestibular_id');
+        $this->db->order_by("vest_dt_realizacao", "desc");
+        $this->db->order_by("vest_nb_ano", "desC");
+        $this->db->from('vestibular');
+        $this->db->join('candidato', 'vestibular.vestibular_id = candidato.vest_nb_codigo');
+        $this->db->join('chamada_vestibular', 'chamada_vestibular.can_nb_codigo = candidato.candidato_id');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+    
+    
 
     function get_candidato_pontuacao_info($chamada_vestibular_id) {
 
@@ -123,7 +140,7 @@ class Crud_model extends CI_Model {
         $this->db->from('candidato');
         $this->db->order_by("nome");
         $this->db->join('vestibular', 'candidato.vest_nb_codigo = vestibular.vestibular_id');
-        $this->db->join('chamada_vestibular', 'chamada_vestibular.vest_nb_codigo = vestibular.vestibular_id');
+        $this->db->join('chamada_vestibular', 'chamada_vestibular.can_nb_codigo = candidato.candidato_id');
         $query = $this->db->get();
         return $query->result_array();
     }
@@ -131,6 +148,16 @@ class Crud_model extends CI_Model {
     function get_resultado_chamada_info($chamada_vestibular_id, $candidatoChamada) {
 
         $this->db->select("count(*) as qtd, cv_nb_resposta ");
+        $this->db->where('vest_nb_codigo', $chamada_vestibular_id);
+        $this->db->where('can_nb_codigo', $candidatoChamada);
+        $this->db->from('chamada_vestibular');
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+      function get_resultado_aprovado_info($chamada_vestibular_id, $candidatoChamada) {
+
+        $this->db->select("count(*) as qtd, cv_nb_aprovado ");
         $this->db->where('vest_nb_codigo', $chamada_vestibular_id);
         $this->db->where('can_nb_codigo', $candidatoChamada);
         $this->db->from('chamada_vestibular');
@@ -148,6 +175,31 @@ class Crud_model extends CI_Model {
         $query = $this->db->get();
         return $query->result_array();
     }
+    
+    
+    function get_demonstrativo_nota($matricula_aluno_turma_id) {
+
+           $this->db->select("*");
+           $this->db->where('matricula_aluno_turma_id', $matricula_aluno_turma_id);
+           $this->db->from('disciplina_aluno');
+           $this->db->join('disciplina_aluno_nota', 'disciplina_aluno_nota.disciplina_aluno_id = disciplina_aluno.disciplina_aluno_id');
+           $this->db->join('disciplina', 'disciplina.disciplina_id = disciplina_aluno.disciplina_id');
+           $query = $this->db->get();
+           return $query->result_array();
+
+          
+/*
+        $this->db->select("*");
+        $this->db->where('vestibular_id', $chamada_vestibular_id);
+        $this->db->from('candidato');
+        $this->db->order_by("nome");
+        $this->db->join('vestibular', 'candidato.vest_nb_codigo = vestibular.vestibular_id');
+        $query = $this->db->get();
+        return $query->result_array();
+ * 
+ */
+    }
+    
 
     //////////SUBJECT/////////////
     function get_subjects() {

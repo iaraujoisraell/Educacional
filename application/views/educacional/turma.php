@@ -35,11 +35,12 @@
                                 <thead>
                                     <tr>
                                         <th><div>ID</div></th>
+                                <th><div><?php echo get_phrase('curso'); ?></div></th>
                                 <th><div><?php echo get_phrase('descrição'); ?></div></th>
                                 <th><div><?php echo get_phrase('periodo_letivo'); ?></div></th>
-                                <th><div><?php echo get_phrase('curso'); ?></div></th>
+
                                 <th><div><?php echo get_phrase('matriz'); ?></div></th>
-                            <th><div><?php echo get_phrase('periodo'); ?></div></th>
+                                <th><div><?php echo get_phrase('periodo'); ?></div></th>
                                 <th><div><?php echo get_phrase('options'); ?></div></th>
 
                                 </tr>
@@ -49,46 +50,51 @@
                                     $count = 1;
                                     foreach ($turma as $row):
                                         $periodo = $row['periodo_id'];
-                                        if($periodo==1){
-                                           $periodo='I'; 
-                                        }else if($periodo==2){
-                                           $periodo='II'; 
-                                        }else if($periodo==3){
-                                           $periodo='III'; 
-                                        }else if($periodo==4){
-                                           $periodo='IV'; 
-                                        }else if($periodo==5){
-                                           $periodo='V'; 
-                                        }else if($periodo==6){
-                                           $periodo='VI'; 
-                                        }else if($periodo==7){
-                                           $periodo='VII'; 
-                                        }else if($periodo==8){
-                                           $periodo='VIII'; 
-                                        }else if($periodo==9){
-                                           $periodo='IX'; 
-                                        }else if($periodo==10){
-                                           $periodo='X'; 
+                                        if ($periodo == 1) {
+                                            $periodo = 'I';
+                                        } else if ($periodo == 2) {
+                                            $periodo = 'II';
+                                        } else if ($periodo == 3) {
+                                            $periodo = 'III';
+                                        } else if ($periodo == 4) {
+                                            $periodo = 'IV';
+                                        } else if ($periodo == 5) {
+                                            $periodo = 'V';
+                                        } else if ($periodo == 6) {
+                                            $periodo = 'VI';
+                                        } else if ($periodo == 7) {
+                                            $periodo = 'VII';
+                                        } else if ($periodo == 8) {
+                                            $periodo = 'VIII';
+                                        } else if ($periodo == 9) {
+                                            $periodo = 'IX';
+                                        } else if ($periodo == 10) {
+                                            $periodo = 'X';
+                                        }
+
+                                        $status = $row['status'];
+                                        if ($status == '0') {
+                                            $status_descricao = 'Fechada';
+                                        } else if ($status == '1') {
+                                            $status_descricao = 'Aberta';
                                         }
                                         ?>
                                         <tr>
                                             <td><?php echo $count++; ?></td>
-                                            <td><?php echo $row['tur_tx_descricao']; ?></td>
-                                            <td><?php echo $this->crud_model->get_type_periodo_by_id('periodo_letivo', $row['periodo_letivo_id']); ?></td>
                                             <td><?php echo $row['cur_tx_descricao']; ?></td>
-                                           <td><?php echo $row['mat_tx_ano']; ?>/<?php echo $row['mat_tx_semestre']; ?></td>                                          
+                                            <td><?php echo $row['tur_tx_descricao']; ?> - <?php echo $row['descricao']; ?> - <?php echo $status_descricao; ?></td>
+                                            <td><?php echo $this->crud_model->get_type_periodo_by_id('periodo_letivo', $row['periodo_letivo_id']); ?></td>
+                                            <td><?php echo $row['mat_tx_ano']; ?>/<?php echo $row['mat_tx_semestre']; ?></td>                                          
                                             <td><?php echo $periodo; ?> </td>
-
                                             <td align="center">
-                                                <a data-toggle="modal" href="#modal-form" onclick="modal('edit_vestibular',<?php echo $row['bolsas_id']; ?>)"	class="btn btn-gray btn-small">
+                                                <a data-toggle="modal" href="#modal-form" onclick="modal('editar_turma',<?php echo $row['turma_id']; ?>)"	class="btn btn-gray btn-small">
                                                     <i class="icon-wrench"></i> <?php echo get_phrase('editar'); ?>
                                                 </a>
                                                 <a data-toggle="modal" href="#modal-delete" onclick="modal_delete('<?php echo base_url(); ?>index.php?educacional/bolsas/delete/<?php echo $row['bolsas_id']; ?>')"
                                                    class="btn btn-red btn-small">
                                                     <i class="icon-trash"></i> <?php echo get_phrase('deletar'); ?>
                                                 </a>
-                                            </td>
-
+                                            </td>                                            
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -231,7 +237,7 @@
 
 
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-gray"><?php echo get_phrase('add_turma'); ?></button>
+                        <button type="submit" class="btn btn-gray"><?php echo get_phrase('criar_turma'); ?></button>
                     </div>
                     </form>                
                 </div>                

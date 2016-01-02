@@ -5,15 +5,20 @@ if (!defined('BASEPATH'))
 
 class Login extends CI_Controller {
 
-    function __construct() {
+   function __construct() {
         parent::__construct();
-        $this->load->model('crud_model');
         $this->load->database();
-        /* cash control */
-        $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT');
+        /* cache control */
         $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
         $this->output->set_header('Pragma: no-cache');
-        $this->output->set_header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+    }
+
+    public function index2() {
+
+        if ($this->session->userdata('admin_login') != 1)
+              $this->load->view('login');
+        if ($this->session->userdata('admin_login') == 1)
+            redirect(base_url() . 'index.php?educacional/dashboard', 'refresh');
     }
 
     /*     * *default functin, redirects to login page if no admin logged in yet** */
@@ -22,7 +27,7 @@ class Login extends CI_Controller {
 
 
         if ($this->session->userdata('admin_login') == 1)
-            redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
+            redirect(base_url() . 'index.php?admin/educacional', 'refresh');
         if ($this->session->userdata('teacher_login') == 1)
             redirect(base_url() . 'index.php?teacher/dashboard', 'refresh');
         if ($this->session->userdata('student_login') == 1)
@@ -34,13 +39,11 @@ class Login extends CI_Controller {
         $config = array(
             array(
                 'field' => 'email',
-                'label' => 'Email',
-                'rules' => 'required|xss_clean|valid_email'
+                'label' => 'Email'
             ),
             array(
                 'field' => 'password',
-                'label' => 'Password',
-                'rules' => 'required|xss_clean|callback__validate_login'
+                'label' => 'Password'
             )
         );
 
@@ -52,22 +55,13 @@ class Login extends CI_Controller {
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('login');
         } else {
-            if ($this->session->userdata('admin_login') == 1)
-                redirect(base_url() . 'index.php?admin/dashboard', 'refresh');
-            if ($this->session->userdata('teacher_login') == 1)
-                redirect(base_url() . 'index.php?teacher/dashboard', 'refresh');
-            if ($this->session->userdata('student_login') == 1)
-                redirect(base_url() . 'index.php?student/dashboard', 'refresh');
-            if ($this->session->userdata('parent_login') == 1)
-                redirect(base_url() . 'index.php?parents/dashboard', 'refresh');
+            
         }
     }
 
     /*     * *validate login*** */
 
-    function _validate_login($str) {
-
-
+    function valida_login() {
         $query = $this->db->get_where("usuarios", array(
             'usu_tx_login' => $this->input->post('email'),
             'usu_tx_senha' => $this->input->post('password')
@@ -81,11 +75,14 @@ class Login extends CI_Controller {
             $this->session->set_userdata('perfis_id', $row->perfis_id);
             $this->session->set_userdata('login_type', 'admin');
 
-            return TRUE;
+           // redirect(base_url() . 'index.php?admin/educacional/', 'refresh');
+        $page_data['page_name'] = 'aluno';
+        $page_data['page_title'] = get_phrase('<a href="index.php?admin/dashboard">Home</a> > <a href="index.php?admin/educacional">educacional </a><b>></b> <a href="">professor(a)</a>');
+         redirect(base_url() . 'index.php?/admin/dashboard', 'refresh');
         } else {
             $this->session->set_flashdata('flash_message', get_phrase('login_failed'));
-            redirect(base_url() . 'index.php?login', 'refresh');
-            return FALSE;
+            redirect(base_url() . 'index.php?/login', 'refresh');
+           
         }
     }
 
@@ -119,7 +116,7 @@ class Login extends CI_Controller {
         $this->session->unset_userdata();
         $this->session->sess_destroy();
         $this->session->set_flashdata('logout_notification', 'logged_out');
-        redirect(base_url() . 'index.php?login', 'refresh');
+        redirect(base_url() . 'index.php?/login', 'refresh');
     }
 
 }

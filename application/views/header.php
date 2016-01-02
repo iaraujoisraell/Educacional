@@ -1,8 +1,13 @@
 <div class="navbar navbar-top navbar-inverse">
 	<div class="navbar-inner">
 		<div class="container-fluid">
-			<a class="brand" href="<?php echo base_url();?>"><?php echo $system_name;?>
-			</a>
+                      <div style="text-align:left; float: left;">
+    	<a href="<?php echo base_url();?>index.php?admin/dashboard">
+        	<img src="<?php echo base_url();?>uploads/logo_1.png"  style="max-height:100%; max-width:200px;"/>
+                 
+        </a>
+    </div>
+		
 			<!-- the new toggle buttons -->
 			<ul class="nav pull-right">
 				<li class="toggle-primary-sidebar hidden-desktop" data-toggle="collapse" data-target=".nav-collapse-primary"><button type="button" class="btn btn-navbar"><i class="icon-th-list"></i></button></li>

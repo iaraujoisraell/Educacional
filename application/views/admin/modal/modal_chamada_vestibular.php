@@ -20,7 +20,7 @@ foreach ($vestibularChamada_info as $row):
             </div>
         </div>
         <br />
-        <?php echo form_open('admin/vestibularChamada/do_update/' . $row['vestibular_id'], array('class' => 'form-vertical validatable', 'target' => '_top')); ?>
+        <?php echo form_open('admin/Chamada/do_update/' . $row['vest_nb_codigo'], array('class' => 'form-vertical validatable', 'target' => '_top')); ?>
         <table  class="table table-normal">
             <?php echo "Tipo do Vestibular: " ?><?php
             if ($row['vest_nb_tipo']) {
