@@ -15,7 +15,7 @@
 
 
     
-  <li style="background-color: #b3b3b3" class="<?php if ($page_name == 'dashboard') echo 'dark-nav active'; ?>">
+  <li  class="<?php if ($page_name == 'dashboard') echo 'dark-nav active'; ?>">
             <span class="glow"></span>
             <a href="<?php echo base_url(); ?>index.php?admin/dashboard" rel="tooltip" data-placement="right" 
                data-original-title="<?php echo get_phrase('dashboard_help'); ?>">
@@ -24,6 +24,8 @@
                 <span><?php echo get_phrase('HOME'); ?></span>
             </a>
         </li>
+        
+        
 
 
         <?php
@@ -50,7 +52,7 @@
             ?>
             
 
-            <li style="background-color: #b3b3b3" class="<?php if ($page_name == $row2['nome']) echo 'dark-nav active'; ?>">
+        <li  class="<?php if ($page_name == $row2['nome']) echo 'dark-nav active'; ?>">
                 <span class="glow"></span>
                 <a href="<?php echo base_url(); ?><?php echo $row2['men_tx_url'] ?>" rel="tooltip" data-placement="right" >
                                    <!--<i class="icon-desktop icon-1x"></i>-->
@@ -58,6 +60,9 @@
                     <span><?php echo get_phrase($row2['nome']); ?></span>
                 </a>
             </li>
+            
+            
+            
 
 
     <?php

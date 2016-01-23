@@ -77,8 +77,8 @@ class Login extends CI_Controller {
 
            // redirect(base_url() . 'index.php?admin/educacional/', 'refresh');
         $page_data['page_name'] = 'aluno';
-        $page_data['page_title'] = get_phrase('<a href="index.php?admin/dashboard">Home</a> > <a href="index.php?admin/educacional">educacional </a><b>></b> <a href="">professor(a)</a>');
-         redirect(base_url() . 'index.php?/admin/dashboard', 'refresh');
+        $page_data['page_title'] = get_phrase('<a href="index.php?educacional/dashboard">Home</a> > <a href="index.php?admin/educacional">educacional </a><b>></b> <a href="">professor(a)</a>');
+         redirect(base_url() . 'index.php?/educacional/dashboard', 'refresh');
         } else {
             $this->session->set_flashdata('flash_message', get_phrase('login_failed'));
             redirect(base_url() . 'index.php?/login', 'refresh');

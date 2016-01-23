@@ -1,5 +1,5 @@
-<div class="tab-pane box active" id="edit" style="padding: 5px">
-    <div class="box-content">
+<div class="tab-pane box active" id="edit" style="padding: 5px; width: 100%">
+    <div class="box-content" >
         <?php foreach ($edit_data as $row): 
             /*$disciplina = $row['disc_tx_descricao'];
             $n1 = $row['dan_fl_nota_1bim'];
@@ -46,9 +46,12 @@
         <tr>
             <td><b>Nº</b></td>
             <td><b>Disciplina</b></td>
-            <td><b>N1</b></td>
-            <td><b>N2</b></td>
+            <td><b>N1</b></td>           
+            <td><b>N2</b></td>                       
             <td><b>N3</b></td>
+            <td><b>Média</b></td>
+            <td><b>T.Falta</b></td>
+            <td><b>Situação</b></td>
         </tr>
 
         <?php
@@ -60,10 +63,12 @@
             <tr>
                 <td><?php echo $cont2++; ?></td>
                 <td><?php echo $row_candidato['disc_tx_descricao']; ?></td>
-                <td><?php echo $row_candidato['dan_fl_nota_1bim']; ?></td>
+                <td><?php echo $row_candidato['dan_fl_nota_1bim']; ?></td>               
                 <td><?php echo $row_candidato['dan_fl_nota_2bim']; ?></td>
                 <td><?php echo $row_candidato['dan_fl_nota_3bim']; ?></td>
-
+                 <td><?php echo $row_candidato['dan_fl_media_final']; ?></td>
+                  <td><?php echo $row_candidato['dan_nb_total_falta']; ?></td>
+                  <td><?php echo $row_candidato['dan_nb_situacao_final']; ?></td>
             </tr>
                  <?php
         endforeach;

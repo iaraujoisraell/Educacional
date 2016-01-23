@@ -16,7 +16,7 @@
            
             <li  class="active">
                 <a href="#add" data-toggle="tab"><i class="icon-plus"></i>
-                    <?php echo get_phrase('novo_aluno(a)'); ?>
+                    <?php echo get_phrase('Matrícula via Vestibular'); ?>
                 </a></li>
 
         </ul>

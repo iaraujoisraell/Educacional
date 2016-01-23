@@ -2,7 +2,7 @@
 	<div class="navbar-inner">
 		<div class="container-fluid">
                       <div style="text-align:left; float: left;">
-    	<a href="<?php echo base_url();?>index.php?admin/dashboard">
+    	<a href="<?php echo base_url();?>index.php?educacional/dashboard">
         	<img src="<?php echo base_url();?>uploads/logo_1.png"  style="max-height:100%; max-width:200px;"/>
                  
         </a>
