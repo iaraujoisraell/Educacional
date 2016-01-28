@@ -835,29 +835,28 @@ class educacional extends CI_Controller {
 group by ano, semestre
 order by periodo_letivo desc, ano desc, semestre asc")->result_array();
 
-       
 
-            echo "<select name='periodo_letivo_busca' id='periodo_letivo_busca' onchange='buscar_turma()'  >";
-            echo "<option value='0'> Escolha uma opção</option>";
 
-            foreach ($periodoArray as $row) {
-                $id_turma = $row['turma_id'];
-                $turma = $row['tur_tx_descricao'];
-                $periodo_letivo = $row['periodo_letivo'];
-                if ($periodo_letivo != null) {
-                    $periodo_letivo_descricao = $row['periodo_letivo'];
-                } else {
-                    $periodo_letivo_descricao = $row['ano'] . '/' . $row['semestre'];
-                }
-                
+        echo "<select name='periodo_letivo_busca' id='periodo_letivo_busca' onchange='buscar_turma()'  >";
+        echo "<option value='0'> Escolha uma opção</option>";
 
-               
-                echo "<option value='$periodo_letivo_descricao'> $periodo_letivo_descricao</option>";
+        foreach ($periodoArray as $row) {
+            $id_turma = $row['turma_id'];
+            $turma = $row['tur_tx_descricao'];
+            $periodo_letivo = $row['periodo_letivo'];
+            if ($periodo_letivo != null) {
+                $periodo_letivo_descricao = $row['periodo_letivo'];
+            } else {
+                $periodo_letivo_descricao = $row['ano'] . '/' . $row['semestre'];
             }
-            echo " </select>";
-      
+
+
+
+            echo "<option value='$periodo_letivo_descricao'> $periodo_letivo_descricao</option>";
+        }
+        echo " </select>";
     }
-    
+
     function carrega_turma($param1 = '', $param2 = '', $param3 = '') {
 
         $query = "SELECT x.turma_id, x.tur_tx_descricao as turma,x.periodo_id as periodo, x.turno as turno,  x.periodo_letivo, x.periodo_letivo_turma
@@ -867,46 +866,45 @@ CONCAT(t.ano,'/',t.semestre) AS periodo_letivo_turma FROM turma t
             inner join turno tu on tu.turno_id = t.turno_id
             left join periodo_letivo pl on pl.periodo_letivo_id = t.periodo_letivo_id)  X
 WHERE x.curso_id = $param1 and (x.periodo_letivo_turma = '$param2/$param3' or x.periodo_letivo = '$param2/$param3') ";
-       // echo $query;
+        // echo $query;
         $MatrizArray = $this->db->query($query)->result_array();
 
-       
-            echo "<select name='turma_busca' id='turma_busca'   >";
+
+        echo "<select name='turma_busca' id='turma_busca'   >";
 
 
-            foreach ($MatrizArray as $row) {
-                $id_turma = $row['turma_id'];
-                $turma = $row['turma'];
-                $periodo_letivo = $row['periodo_letivo'];
-                
-                $turno = $row['turno'];
-                $periodo2 = $row['periodo'];
+        foreach ($MatrizArray as $row) {
+            $id_turma = $row['turma_id'];
+            $turma = $row['turma'];
+            $periodo_letivo = $row['periodo_letivo'];
 
-                if ($periodo2 == 1) {
-                    $periodo = 'I';
-                } else if ($periodo2 == 2) {
-                    $periodo = 'II';
-                } else if ($periodo2 == 3) {
-                    $periodo = 'III';
-                } else if ($periodo2 == 4) {
-                    $periodo = 'IV';
-                } else if ($periodo2 == 5) {
-                    $periodo = 'V';
-                } else if ($periodo2 == 6) {
-                    $periodo = 'VI';
-                } else if ($periodo2 == 7) {
-                    $periodo = 'VII';
-                } else if ($periodo2 == 8) {
-                    $periodo = 'VIII';
-                } else if ($periodo2 == 9) {
-                    $periodo = 'IX';
-                } else if ($periodo2 == 10) {
-                    $periodo = 'X';
-                }
-                echo "<option value='$id_turma'> $turma /  $turno  </option>";
+            $turno = $row['turno'];
+            $periodo2 = $row['periodo'];
+
+            if ($periodo2 == 1) {
+                $periodo = 'I';
+            } else if ($periodo2 == 2) {
+                $periodo = 'II';
+            } else if ($periodo2 == 3) {
+                $periodo = 'III';
+            } else if ($periodo2 == 4) {
+                $periodo = 'IV';
+            } else if ($periodo2 == 5) {
+                $periodo = 'V';
+            } else if ($periodo2 == 6) {
+                $periodo = 'VI';
+            } else if ($periodo2 == 7) {
+                $periodo = 'VII';
+            } else if ($periodo2 == 8) {
+                $periodo = 'VIII';
+            } else if ($periodo2 == 9) {
+                $periodo = 'IX';
+            } else if ($periodo2 == 10) {
+                $periodo = 'X';
             }
-            echo " </select>";
-       
+            echo "<option value='$id_turma'> $turma /  $turno  </option>";
+        }
+        echo " </select>";
     }
 
     function carrega_turma_matricula($param1 = '', $param2 = '', $param3 = '') {
@@ -1020,6 +1018,1228 @@ WHERE x.curso_id = $param1 and (x.periodo_letivo_turma = '$param2/$param3' or x.
             echo "</select>";
         }
     }
+
+    function carrega_table_candidatos($param1 = '', $param2 = '', $param3 = '') {
+
+
+        //   $this->db->from('cadastro_aluno');
+        //   $this->db->where('cadastro_aluno_id', $param1);
+        //   $numrows = $this->db->count_all_results();
+
+        $sql = "SELECT c.candidato_id as candidato_id, c.nome as nome, c.can_tx_cpf as cpf, c.can_dt_dtNasc as data_nascimento, v.vest_dt_realizacao as dt_vestibular,
+                c.can_tx_op01 as opcao01, c.can_tx_turno01 as turno01, c.can_tx_op02 as opcao02, c.can_tx_turno02 as turno02
+FROM siga_vest.candidato c
+inner join siga_vest.vestibular v on v.vestibular_id = c.vest_nb_codigo
+inner join siga_vest.chamada_vestibular cv on cv.vest_nb_codigo = v.vestibular_id and cv.can_nb_codigo = c.candidato_id
+where  cv.cv_nb_aprovado = 1 ";
+        if ($param1 != 0) {
+            $sql.=" and v.vestibular_id = '$param1' ";
+        }
+
+        if ($param2) {
+            $param2 = explode("%20", $param2); // separando pelo espaço
+            $param2 = implode(" ", $param2); // unindo os valores pelo |
+
+            $sql.=" and c.nome LIKE '%$param2%' ";
+        }
+
+        // echo $sql;
+        $MatrizArray = $this->db->query($sql)->result_array(); //WHERE ca.cadastro_aluno_id = $param1
+        //   if ($numrows >= 1) {
+        $count = 1;
+        ?>
+        <div class="tab-content">
+
+            <div class="tab-pane  active" id="list">
+                <div class="action-nav-normal">
+                    <div class="box">
+                        <div class="box-content">
+                            <div id="dataTables">
+                                <table width="100%" style="border: 5px;" cellpadding="0" cellspacing="0" border="0"  >
+                                    <thead  >
+                                        <tr >
+                                            <td ><div>ID</div></td>
+                                            <td align="left"><div><?php echo get_phrase('Nome'); ?></div></td>
+                                            <td align="left"><div><?php echo get_phrase('CPF'); ?></div></td>
+                                            <td align="left"><div><?php echo get_phrase('Dt Vestib'); ?></div></td>
+                                            <td align="left"><div><?php echo get_phrase('Op 01 / Turno'); ?></div></td>
+                                            <td align="left"><div><?php echo get_phrase('Op 02 / Turno'); ?></div></td>
+                                            <td><div><?php echo get_phrase('opções'); ?></div></td>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($MatrizArray as $row):
+                                            $candidato_id = $row['candidato_id'];
+                                            $opcao1 = $row['opcao01'];
+                                            $turno1 = $row['turno01'];
+                                            $opcao2 = $row['opcao02'];
+                                            $turno2 = $row['turno02'];
+
+                                            if ($opcao1 == '1') {
+                                                $opcao1_tx = 'CT';
+                                            } else if ($opcao1 == '2') {
+                                                $opcao1_tx = 'PED';
+                                            } else if ($opcao1 == '3') {
+                                                $opcao1_tx = 'ADM';
+                                            } else if ($opcao1 == '4') {
+                                                $opcao1_tx = 'JOR';
+                                            } else if ($opcao1 == '5') {
+                                                $opcao1_tx = 'PP';
+                                            }
+
+                                            if ($opcao2 == '1') {
+                                                $opcao2_tx = 'CT';
+                                            } else if ($opcao2 == '2') {
+                                                $opcao2_tx = 'PED';
+                                            } else if ($opcao2 == '3') {
+                                                $opcao2_tx = 'ADM';
+                                            } else if ($opcao2 == '4') {
+                                                $opcao1_tx = 'JOR';
+                                            } else if ($opcao2 == '5') {
+                                                $opcao1_tx = 'PP';
+                                            }
+
+                                            if ($turno1 == '1') {
+                                                $turno1_tx = 'MAT';
+                                            } else if ($turno1 == '3') {
+                                                $turno1_tx = 'NOT';
+                                            }
+
+                                            if ($turno2 == '1') {
+                                                $turno2_tx = 'MAT';
+                                            } else if ($turno2 == '3') {
+                                                $turno2_tx = 'NOT';
+                                            }
+                                            ?>
+
+                                            <tr >
+                                                <td><?php echo $count++; ?></td>
+                                                <td align="left"><?php echo $row['nome']; ?></td>
+                                                <td align="left"><?php echo $row['cpf']; ?></td>
+                                                <td align="left"><?php echo date('d/m/Y', strtotime($row['dt_vestibular'])); ?> </td>
+                                                <td align="left"><?php echo $opcao1_tx; ?> / <?php echo $turno1_tx; ?> </td>
+                                                <td align="left"><?php echo $opcao2_tx; ?> / <?php echo $turno2_tx; ?> </td>
+
+                                                <td align="center">
+                                                    <a  href="#" onclick="buscar_candidato(<?php echo $candidato_id; ?>);" class="btn btn-green btn-small" >
+                                                        <?php echo get_phrase('Realizar Matricula'); ?>
+                                                    </a>
+
+                                                </td>
+
+                                            </tr>
+                                            <?php
+                                        endforeach;
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <?php
+        //  }
+    }
+
+    function carrega_candidatos($param1 = '', $param2 = '', $param3 = '') {
+
+
+        $sql = "SELECT *
+FROM siga_vest.candidato c
+where  c.candidato_id = $param1  ";
+        $MatrizArray = $this->db->query($sql)->result_array();
+
+        $count = 1;
+
+        foreach ($MatrizArray as $row):
+            $candidato_id = $row['candidato_id'];
+            $opcao1 = $row['can_tx_op01'];
+            $turno1 = $row['can_tx_turno01'];
+
+            $sexo = $row['can_ch_sexo'];
+            if ($sexo == 'M') {
+                $sexo_descricao = 'Masculino';
+                $sexo_valor = '0';
+            } else if ($sexo == 'F') {
+                $sexo_descricao = 'Feminino';
+                $sexo_valor = '1';
+            }
+
+
+            $ec = $row['can_ch_estvic'];
+            if ($ec == '1') {
+                $ec_descricao = 'Solteiro(a)';
+            } else if ($ec == '2') {
+                $ec_descricao = 'Casado(a)';
+            } else if ($ec == '3') {
+                $ec_descricao = 'Separado(a)/Divorciado(a)';
+            } else if ($ec == '4') {
+                $ec_descricao = 'Viuvo(a)';
+            } else if ($ec == '5') {
+                $ec_descricao = 'Outro';
+            }
+
+
+            if ($opcao1 == '1') {
+                $opcao1_tx = 'CIÊNCIAS TEOLÓGICAS';
+                $opcao1_valor = '0000001';
+            } else if ($opcao1 == '2') {
+                $opcao1_tx = 'PEDAGOGIA';
+                $opcao1_valor = '0000004';
+            } else if ($opcao1 == '3') {
+                $opcao1_tx = 'ADMINISTRAÇÃO';
+                $opcao1_valor = '0000003';
+            } else if ($opcao1 == '4') {
+                $opcao1_tx = 'COMUNICAÇÃO SOCIAL: JORNALISMO';
+                $opcao1_valor = '0000002';
+            } else if ($opcao1 == '5') {
+                $opcao1_tx = 'PUBLICIDADE E PROPAGANDA';
+                $opcao1_valor = '0000009';
+            }
+
+
+            if ($turno1 == '1') {
+                $turno1_tx = 'MAT';
+            } else if ($turno1 == '3') {
+                $turno1_tx = 'NOT';
+            }
+
+
+            $se1 = $row['can_tx_se_irmaos'];
+            if ($se1 == '1') {
+                $se1_descricao = 'Nenhum';
+            } else if ($se1 == '2') {
+                $se1_descricao = 'Um';
+            } else if ($se1 == '3') {
+                $se1_descricao = 'Dois';
+            } else if ($se1 == '4') {
+                $se1_descricao = 'Três';
+            } else if ($se1 == '5') {
+                $se1_descricao = 'Quatro ou Mais';
+            }
+
+            $se2 = $row['can_tx_se_filhos'];
+            if ($se2 == '1') {
+                $se2_descricao = 'Nenhum';
+            } else if ($se2 == '2') {
+                $se2_descricao = 'Um';
+            } else if ($se2 == '3') {
+                $se2_descricao = 'Dois';
+            } else if ($se2 == '4') {
+                $se2_descricao = 'Três';
+            } else if ($se2 == '5') {
+                $se2_descricao = 'Quatro ou Mais';
+            }
+
+            $se3 = $row['can_tx_se_etnia'];
+            $se4 = $row['can_tx_se_moradia'];
+            if ($se4 == '1') {
+                $se4_descricao = 'Com pais e(ou) parentes';
+            } else if ($se4 == '2') {
+                $se4_descricao = 'Esposo(a) e(ou) com os filho(s)';
+            } else if ($se4 == '3') {
+                $se4_descricao = 'Com amigos(compartilhando despesas ou de favor)';
+            } else if ($se4 == '4') {
+                $se4_descricao = 'Com colegas, em alojamento universit&aacute;rio';
+            } else if ($se4 == '5') {
+                $se4_descricao = 'Sozinho(a)';
+            }
+
+            $se5 = $row['can_tx_se_renda'];
+            if ($se5 == '1') {
+                $se5_descricao = 'At&eacute; 3 sal&aacute;rios m&iacute;nimos';
+            } else if ($se5 == '2') {
+                $se5_descricao = 'Mais de 3 At&eacute; 10 sal&aacute;rios m&iacute;nimos';
+            } else if ($se5 == '3') {
+                $se5_descricao = 'Mais de 10 At&eacute; 20 sal&aacute;rios m&iacute;nimos';
+            } else if ($se5 == '4') {
+                $se5_descricao = 'Mais de 20 At&eacute; 30 sal&aacute;rios m&iacute;nimos';
+            } else if ($se5 == '5') {
+                $se5_descricao = 'Mais de 30 sal&aacute;rios m&iacute;nimos';
+            }
+
+
+
+            $se6 = $row['can_tx_se_membros'];
+            if ($se6 == '1') {
+                $se6_descricao = 'Nenhum';
+            } else if ($se6 == '2') {
+                $se6_descricao = 'Um ou dois';
+            } else if ($se6 == '3') {
+                $se6_descricao = 'Tr&ecirc;s ou quatro';
+            } else if ($se6 == '4') {
+                $se6_descricao = 'Cinco ou seis';
+            } else if ($se6 == '5') {
+                $se6_descricao = 'Mais de seis';
+            }
+
+            $se7 = $row['can_tx_se_trabalhando'];
+            if ($se7 == '1') {
+                $se7_descricao = 'N&atilde;o trabalho e meus gastos s&atilde;o financiados pela fam&iacute;lia';
+            } else if ($se7 == '2') {
+                $se7_descricao = 'Trabalho e recebo ajuda da fam&iacute;lia';
+            } else if ($se7 == '3') {
+                $se7_descricao = 'Trabalho e me sustento';
+            } else if ($se7 == '4') {
+                $se7_descricao = 'Trabalho e contribuo com o sustento da fam&iacute;lia';
+            } else if ($se7 == '5') {
+                $se7_descricao = 'Trabalho e sou o principal respons&aacute;vel pelo sustento da fam&iacute;lia';
+            }
+
+            $se8 = $row['can_tx_se_bolsa'];
+            if ($se8 == '1') {
+                $se8_descricao = 'Financiamento Estudantil';
+            } else if ($se8 == '2') {
+                $se8_descricao = 'Prouni integral';
+            } else if ($se8 == '3') {
+                $se8_descricao = 'Prouni parcial';
+            } else if ($se8 == '4') {
+                $se8_descricao = 'Bolsa integral ou pacial oferecida pela propria institui&ccedil;&atilde;o';
+            } else if ($se8 == '5') {
+                $se8_descricao = 'Bolsa integral ou parcial oferecida porentidadesexternas';
+            } else if ($se8 == '6') {
+                $se8_descricao = 'Outro(s)';
+            } else if ($se8 == '7') {
+                $se8_descricao = 'Nenhum';
+            }
+            ?>
+
+
+            <div class="tab-pane box" id="add" style="padding: 5px">
+                <div class="box-content">
+                    <?php echo form_open('educacional/matricula/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
+                    <div class="padded">
+                        <table width="100%" class="responsive">
+                            <tbody>
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('curso_do_candidato'); ?></label>
+                                            <div class="controls">
+                                                <select name="curso" id="curso" onchange="buscar_turma_matricula_vestibular()">
+                                                    <option value="<?php echo $opcao1_valor; ?>"><?php echo $opcao1_tx; ?></option>
+
+                                                    <?php
+                                                    $sql = "SELECT *
+                                                            FROM cursos cur
+                                                            where  cur.cur_tx_coordenador != '' 
+                                                            and cur.cursos_id not in (SELECT cursos_id
+                                                            FROM cursos
+                                                            where  cursos_id = $opcao1_valor)";
+                                                    $CursosArray = $this->db->query($sql)->result_array();
+                                                    foreach ($CursosArray as $row_c):
+                                                        ?>
+                                                        <option value="<?php echo $row_c['cursos_id']; ?>"><?php echo $row_c['cur_tx_descricao']; ?></option>
+                                                        <?php
+                                                    endforeach;
+                                                    ?>                                                
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                            <script>
+                                buscar_turma_matricula_vestibular();
+                            </script>
+                            <td>
+                                <div class="control-group">
+                                    <label class="control-label"><?php echo get_phrase('Turma'); ?></label>
+                                    <div class="controls">
+                                        <div  id="load_turma_matricula_vestibular">
+                                            <select name="turma" id="turma">
+                                                <option>Selecione um Curso</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            </tr>
+
+
+
+                            </tbody>
+                        </table>
+
+                        </br>
+                        <b><font style="color: #0044cc">DADOS PESSOAIS</font></b>
+                        <hr/>
+                        <table width="100%" class="responsive">
+                            <tbody>
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('nome'); ?></label>
+                                            <div class="controls">
+                                                <input type="text"  readonly="true" class="validate[required]" minlength="8" onkeypress="this.value.toUpperCase();" value="<?php echo $row['nome']; ?>" name="nome"/>
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('data_nascimento'); ?></label>
+                                            <div class="controls">
+                                                <input type="text"  class="validate[required]" minlength="10" onkeypress="mascara(this, '##/##/####')" value="<?php echo date('d/m/Y', strtotime($row['can_dt_dtNasc'])); ?>" maxlength="10" id="data_nascimento"  name="data_nascimento"/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('pais_origem'); ?></label>
+
+                                            <div class="controls">
+                                                <select name="pais_origem">
+                                                    <option value="BRA">Brasil </option>
+                                                    <?php
+                                                    foreach ($pais as $row_pais):
+                                                        ?>
+                                                        <option value="<?php echo $row_pais['codigo']; ?>"><?php echo $row_pais['nome']; ?></option>
+                                                        <?php
+                                                    endforeach;
+                                                    ?> 
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('UF_nascimento'); ?></label>
+
+                                            <div class="controls">
+                                                <select name="uf_nascimento" id="uf_nascimento" onchange="buscar_municipio_matricula_vestibular()">
+                                                    <option value="13">AMAZONAS</option>
+                                                    <?php
+                                                    $sql = "SELECT * FROM uf";
+                                                    $uf = $this->db->query($sql)->result_array();
+                                                    foreach ($uf as $row_uf):
+                                                        ?>
+                                                        <option value="<?php echo $row_uf['codigo']; ?>"><?php echo $row_uf['nome']; ?></option>
+                                                        <?php
+                                                    endforeach;
+                                                    ?> 
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('cidade_origem'); ?></label>
+
+                                            <div class="controls">
+                                                <div  id="load_muncipio_matricula_vestibular">
+                                                    <select>
+                                                        <option value="1302603">MANAUS</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('sexo'); ?></label>
+
+                                            <div class="controls">
+
+
+                                                <select name="sexo">
+
+                                                    <option value="<?php echo $sexo_valor; ?>"><?php echo $sexo_descricao; ?></option>
+                                                    <option value="0">Masculino</option>
+                                                    <option value="1">Feminino</option>
+
+                                                </select>
+
+
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('estado_civil'); ?></label>
+
+                                            <div class="controls">
+                                                <select name="estado_civil">
+                                                    <option value="<?php echo $ec; ?>"><?php echo $ec_descricao; ?></option>    
+                                                    <option value="1">Solteiro(a)</option>
+                                                    <option value="2">Casado(a)</option>
+                                                    <option value="3">Divorciado(a)</option>
+                                                    <option value="4">Viuvo(a)</option>
+                                                    <option value="5">Outro</option>
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+
+
+                            </tbody>
+                        </table>
+
+                        </br>
+                        <b><font style="color: #468847">DOCUMENTOS</font></b>
+                        <hr/>
+                        <table width="100%" class="responsive">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('cpf'); ?></label>
+                                            <div class="controls">
+                                                <input type="text"  readonly="true" class="validate[required]" minlength="12" onkeypress="mascara(this, '#########-##')" value="<?php echo $row['can_tx_cpf']; ?>" maxlength="12" id="cpf" name="cpf"/>
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('RG'); ?></label>
+                                            <div class="controls">
+                                                <input type="text"  readonly="true" class="validate[required]"  name="rg"/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('RG_UF'); ?></label>
+
+                                            <div class="controls" id="load_matriz">
+
+                                                <select name="rg_uf" id="rg_uf" >
+                                                    <option value="0">Selecione o UF</option>
+                                                    <?php
+                                                    foreach ($uf as $row_uf):
+                                                        ?>
+                                                        <option value="<?php echo $row_uf['codigo']; ?>"><?php echo $row_uf['nome']; ?></option>
+                                                        <?php
+                                                    endforeach;
+                                                    ?> 
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('RG_orgão_expeditor'); ?></label>
+                                            <div class="controls">
+                                                <input type="text"  readonly="true" class="validate[required]" name="rg_orgao_expeditor"/>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('titulo'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <input type="text"  readonly="true"  name="titulo"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('uf_titulo'); ?></label>
+
+                                            <div class="controls">
+                                                <select name="uf_titulo" id="uf_titulo" >
+                                                    <option value="0">Selecione o UF</option>
+                                                    <?php
+                                                    foreach ($uf as $row_uf):
+                                                        ?>
+                                                        <option value="<?php echo $row_uf['codigo']; ?>"><?php echo $row_uf['nome']; ?></option>
+                                                        <?php
+                                                    endforeach;
+                                                    ?> 
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('documento_estrangeiro'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text"  readonly="true" name="documento_estrangeiro"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('certidão_reservista'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <input type="text"  readonly="true"  name="certidao_reservista"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <TR>
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('uf_certidão_reservista'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <select name="uf_certidao" id="uf_certidao" >
+                                                        <option value="0">Selecione o UF</option>
+                                                        <?php
+                                                        foreach ($uf as $row_uf):
+                                                            ?>
+                                                            <option value="<?php echo $row_uf['codigo']; ?>"><?php echo $row_uf['nome']; ?></option>
+                                                            <?php
+                                                        endforeach;
+                                                        ?> 
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </TR>
+                            </tbody>
+                        </table>
+
+                        </br>
+                        <b><font style="color: #F09900">INFORMAÇÕES SOCIOECONOMICO</font></b>
+                        <hr/>
+
+                        <table width="100%" class="responsive">
+                            <tbody>
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Quantos_irmãos_você_tem? '); ?></label>
+                                            <div class="controls">
+                                                <div class="controls">
+                                                    <SELECT   NAME="SE_txIrmaos">
+                                                        <OPTION value="<?php echo $se1; ?>" ><?php echo $se1_descricao; ?></OPTION>
+                                                        <OPTION value="1" >Nenhum</OPTION>
+                                                        <OPTION value="2">Um</OPTION>
+                                                        <OPTION value="3">Dois</OPTION>
+                                                        <OPTION value="4">Tr&ecirc;s</OPTION>
+                                                        <OPTION value="5">Quatro ou Mais</OPTION>
+                                                    </SELECT>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Quantos filhos voc&ecirc; tem?'); ?></label>
+
+                                            <div class="controls">
+                                                <div class="controls">
+                                                    <div class="controls">
+                                                        <SELECT   NAME="SE_txFilhos">
+                                                            <OPTION value="<?php echo $se2; ?>" ><?php echo $se2_descricao; ?></OPTION>
+                                                            <OPTION value="1" >Nenhum</OPTION>
+                                                            <OPTION value="2">Um</OPTION>
+                                                            <OPTION value="3">Dois</OPTION>
+                                                            <OPTION value="4">Tr&ecirc;s</OPTION>
+                                                            <OPTION value="5">Quatro ou Mais</OPTION>
+                                                        </SELECT>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('voc&ecirc; mora com quem?'); ?></label>
+                                            <div class="controls">
+                                                <div class="controls">
+                                                    <SELECT   NAME="SE_txReside">
+                                                        <OPTION value="<?php echo $se4; ?>" ><?php echo $se4_descricao; ?></OPTION>
+                                                        <OPTION value="1" >Com pais e(ou) parentes</OPTION>
+                                                        <OPTION value="2">Esposo(a) e(ou) com os filho(s)</OPTION>
+                                                        <OPTION value="3">Com amigos(compartilhando despesas ou de favor)</OPTION>
+                                                        <OPTION value="4">Com colegas, em alojamento universit&aacute;rio</OPTION>
+                                                        <OPTION value="5">Sozinho(a)</OPTION>
+                                                    </SELECT>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Faixa de renda mensal? '); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <SELECT   NAME="SE_txRenda">
+                                                        <OPTION value="<?php echo $se5; ?>" ><?php echo $se5_descricao; ?></OPTION>
+                                                        <OPTION value="1" >At&eacute; 3 sal&aacute;rios m&iacute;nimos</OPTION>
+                                                        <OPTION value="2">Mais de 3 At&eacute; 10 sal&aacute;rios m&iacute;nimos</OPTION>
+                                                        <OPTION value="3">Mais de 10 At&eacute; 20 sal&aacute;rios m&iacute;nimos</OPTION>
+                                                        <OPTION value="4">Mais de 20 At&eacute; 30 sal&aacute;rios m&iacute;nimos</OPTION>
+                                                        <OPTION value="5">Mais de 30 sal&aacute;rios m&iacute;nimos</OPTION>
+                                                    </SELECT>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Quantas pessoas moram com voc&ecirc;?'); ?></label>
+                                            <div class="controls">
+                                                <div class="controls">
+                                                    <SELECT   NAME="SE_txMembros">
+                                                        <OPTION value="<?php echo $se6; ?>" ><?php echo $se6_descricao; ?></OPTION>
+                                                        <OPTION value="1" >Nenhuma</OPTION>
+                                                        <OPTION value="2">Um ou dois</OPTION>
+                                                        <OPTION value="3">Tr&ecirc;s ou quatro</OPTION>
+                                                        <OPTION value="4">Cinco ou seis</OPTION>
+                                                        <OPTION value="5">Mais de seis</OPTION>
+                                                    </SELECT>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Qual situa&ccedil;&atilde;o descreve seu caso?'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <SELECT  NAME="SE_txTrabalho">
+                                                        <OPTION value="<?php echo $se7; ?>" ><?php echo $se7_descricao; ?></OPTION>
+                                                        <OPTION value="1" >N&atilde;o trabalho e meus gastos s&atilde;o financiados pela fam&iacute;lia</OPTION>
+                                                        <OPTION value="2">Trabalho e recebo ajuda da fam&iacute;lia</OPTION>
+                                                        <OPTION value="3">Trabalho e me sustento</OPTION>
+                                                        <OPTION value="4">Trabalho e contribuo com o sustento da fam&iacute;lia</OPTION>
+                                                        <OPTION value="5">Trabalho e sou o principal respons&aacute;vel pelo sustento da fam&iacute;lia</OPTION>
+                                                    </SELECT>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                        </table>
+                        <table width="100%" class="responsive">
+                            <tr>
+                                <td >
+                                    <div class="control-group">
+                                        <label class="control-label"><?php echo get_phrase('Você tem bolsa ou financiamento estudantil?'); ?></label>
+                                        <div class="controls">
+                                            <div class="controls">
+                                                <SELECT   NAME="SE_txBolsa">
+                                                    <OPTION value="<?php echo $se8; ?>" ><?php echo $se8_descricao; ?></OPTION>
+                                                    <OPTION value="1" >Financiamento Estudantil</OPTION>
+                                                    <OPTION value="2">Prouni integral</OPTION>
+                                                    <OPTION value="3">Prouni parcial</OPTION>
+                                                    <OPTION value="4">Bolsa integral ou pacial oferecida pela propria institui&ccedil;&atilde;o</OPTION>
+                                                    <OPTION value="5">Bolsa integral ou parcial oferecida porentidadesexternas</OPTION>
+                                                    <OPTION value="6">Outro(s)</OPTION>
+                                                    <OPTION value="7">Nenhum</OPTION>
+                                                </SELECT>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+
+
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+
+                        </br>
+                        <b><font style="color: #cb2027">ENDEREÇO</font></b>
+                        <hr/>
+
+                        <table width="100%" class="responsive">
+                            <tbody>
+
+                            <td>
+                                <div class="control-group">
+                                    <label class="control-label"><?php echo get_phrase('cep'); ?></label>
+                                    <div class="controls">
+                                        <input type="text"  readonly="true" class="validate[required]" minlength="9" onkeypress="mascara(this, '#####-###')" value="<?php echo $row['can_tx_cep']; ?>" maxlength="9" id="cep" name="cep"/>
+                                    </div>
+                                </div>
+                            </td>
+                            <td >
+                                <div class="control-group">
+                                    <label class="control-label"><?php echo get_phrase('endereco'); ?></label>
+
+                                    <div class="controls">
+                                        <input type="text"  readonly="true" class="validate[required]" value="<?php echo $row['can_tx_endereco']; ?>" minlength="8" onkeypress="this.value.toUpperCase();" name="endereco"/>
+                                    </div>
+
+                                </div>
+                            </td>
+
+                            </tr>
+
+
+
+                            <tr>
+
+
+                                <td>
+                                    <div class="control-group">
+                                        <label class="control-label"><?php echo get_phrase('bairro'); ?></label>
+
+                                        <div class="controls">
+
+                                            <input type="text"  readonly="true" class="validate[required]" value="<?php echo $row['can_tx_bairro']; ?>" minlength="5" onkeypress="this.value.toUpperCase();" name="bairro"/>
+
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="control-group">
+                                        <label class="control-label"><?php echo get_phrase('UF'); ?></label>
+
+                                        <div class="controls">
+
+                                            <div class="controls">
+                                                <select name="uf" id="uf" onchange="buscar_cidade()">
+                                                    <option value="13">AM</option>
+                                                    <?php
+                                                    foreach ($uf as $row_uf):
+                                                        ?>
+                                                        <option value="<?php echo $row_uf['codigo']; ?>"><?php echo $row_uf['nome']; ?></option>
+                                                        <?php
+                                                    endforeach;
+                                                    ?> 
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+
+                            </tr>
+
+                            <tr>
+                                <td >
+                                    <div class="control-group">
+                                        <label class="control-label"><?php echo get_phrase('cidade'); ?></label>
+
+                                        <div class="controls">
+                                            <div  id="load_cidade">
+                                                <select>
+                                                    <option value="1302603">Manaus</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </td>
+                                <td >
+                                    <div class="control-group">
+                                        <label class="control-label"><?php echo get_phrase('complemento'); ?></label>
+
+                                        <div class="controls">
+                                            <input type="text"  readonly="true"  onkeypress="this.value.toUpperCase();" value="<?php echo $row['can_tx_compemento']; ?>" name="complemento"/>
+                                        </div>
+
+                                    </div>
+                                </td>
+
+
+
+                            </tr>
+
+                            </tbody>
+                        </table>
+
+
+                        </br>
+                        <b><font style="color: cadetblue">CONTATOS</font></b>
+                        <hr/>
+
+                        <table width="100%" class="responsive">
+                            <tbody>
+
+                                <tr>
+
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('fone'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <input type="text"  readonly="true" value="<?php echo $row['can_tx_telefone']; ?>" onkeypress="mascara(this, '#####-####')" maxlength="10"  id="fone" name="fone"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('celular'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text"  readonly="true" value="<?php echo $row['can_tx_celular']; ?>" onkeypress="mascara(this, '#####-####')" maxlength="10"  id="celular" name="celular"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+
+
+
+                                <tr>
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('email'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <input type="email" minlength="10" value="<?php echo $row['can_tx_email']; ?>" name="email"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+
+                        </br>
+                        <b><font style="color: maroon">INFORMAÇÕES</font></b>
+                        <hr />
+
+                        <table width="100%" class="responsive">
+                            <tbody>
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('nacionalidade'); ?></label>
+
+                                            <div class="controls">
+                                                <select name="nacionalidade">
+
+                                                    <option value="1">Brasileiro(a)</option>
+                                                    <option value="2">Brasileiro(a) nascido no exterior ou naturalizado</option>
+                                                    <option value="3">Extrangeiro</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('cor/raça'); ?></label>
+
+                                            <div class="controls">
+                                                <div class="controls">
+                                                    <select class="validate[required]" name="cor">
+                                                        <option value="99">Selecione uma cor/raça</option>
+                                                        <option value="1">Branca</option>
+                                                        <option value="2">Preta</option>
+                                                        <option value="3">Parda</option>
+                                                        <option value="4">Amarela</option>
+                                                        <option value="5">Indígena</option>
+                                                        <option value="0">Não quis declarar</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('mae'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text"  readonly="true" class="validate[required]" minlength="8" onkeypress="this.value.toUpperCase();" name="mae"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('pai'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <input type="text"   onkeypress="this.value.toUpperCase();" name="pai"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('conjuge'); ?></label>
+                                            <div class="controls">
+                                                <input type="text"    style="text-transform:uppercase;" name="conjuge"/>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Tem Alguma Deficiência?'); ?></label>
+
+                                            <div class="controls">
+                                                <select name="deficiencia" id="deficiencia" onchange="buscar_deficiencia()">
+                                                    <option value="0">NÃO</option>
+                                                    <option value="1">SIM</option>
+                                                    <option value="2">NÃO INFORMADO</option>
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+
+                                </tr>
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Tipo de escola que concluiu o Ens. Médio'); ?></label>
+
+                                            <div class="controls">
+                                                <select name="tipo_escola" id="tipo_escola" >
+                                                    <option value="0">PRIVADO</option>
+                                                    <option value="1">PUBLICO</option>
+                                                    <option value="2">NÃO DISPÕE DA INFORMAÇÃO</option>
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Forma de Ingresso'); ?></label>
+
+                                            <div class="controls">
+                                                <select name="forma_ingresso" id="forma_ingresso" >
+                                                    <option value="1">VESTIBULAR</option>
+                                                    <option value="2">ENEM</option>
+                                                    <option value="3">AVALIAÇÃO SERIADA</option>
+                                                    <option value="4">SELEÇÃO SIMPLIFICADA</option>
+                                                    <option value="5">TRANSFERÊNCIA</option>
+                                                    <option value="6">DECISÃO JUDICIAL</option>
+                                                    <option value="7">VAGAS REMANESCENTE</option>
+                                                    <option value="8">PROGRAMAS ESPECIAIS</option>
+
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+
+
+                        <div  id="load_doencas">
+
+                        </div>
+
+
+                        </br>
+                        <b><font style="color: teal">INFORMAÇÕES DO RESPONSÁVEL</font></b>
+                        <hr/>
+
+
+
+                        <table width="100%" class="responsive">
+                            <tbody>
+
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('responsavel'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text"  name="responsavel"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('fone_responsavel'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <input type="text"  name="fone_responsavel"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('RG_responsavel'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text"  name="rg_responsavel"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('CPF_responsável'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <input type="text"  name="cpf_responsavel"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('celular_responsável'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text"  name="celular_responsavel"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        </br>
+                        <b><font style="color: darkgreen">OBSERVAÇÕES GERAIS</font></b>
+                        <hr/>
+
+                        <table width="100%" class="responsive">
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('OBSERVAÇÕES'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <textarea name="obs_documento" style="width: 62%; height: 120px;"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-gray"><?php echo get_phrase('Matricular'); ?></button>
+                    </div>
+                    </form>                
+                </div>                
+            </div>
+
+
+            <?php
+        endforeach;
+    }
+
     function carrega_table_paginacao($param1 = '', $param2 = '', $param3 = '') {
 
 
@@ -1080,7 +2300,7 @@ where  ca.cadastro_aluno_id != '' ";
 
                                             <tr >
                                                 <td><?php echo $count++; ?></td>
-                                                <td><?php echo $row['registro_academico']; ?></td>
+                                                <td align="left"><?php echo $row['registro_academico']; ?></td>
                                                 <td align="left"><?php echo $row['cur_tx_abreviatura']; ?></td>
                                                 <td align="left"><?php echo $row['nome']; ?></td>
                                                 <td align="left"><?php echo $row['cpf']; ?></td>
@@ -1492,6 +2712,1091 @@ where  ca.cadastro_aluno_id != '' ";
         $this->load->view('../views/educacional/index', $page_data);
     }
 
+    function carrega_ficha_aluno($param1 = '', $param2 = '', $param3 = '') {
+
+
+        $sql = "SELECT *
+                FROM matricula_aluno ma
+                inner join cadastro_aluno ca on ca.cadastro_aluno_id = ma.cadastro_aluno_id
+                inner join cursos cur on cur.cursos_id = ma.curso_id
+                left join dados_censo_aluno dca on dca.cadastro_aluno_id = ca.cadastro_aluno_id
+                where  ma.matricula_aluno_id = $param1  ";
+        //echo $sql;
+        $MatrizArray = $this->db->query($sql)->result_array();
+
+        $count = 1;
+
+        foreach ($MatrizArray as $row):
+            $matricula_aluno_id = $row['matricula_aluno_id'];
+            $curso = $row['cur_tx_descricao'];
+            if ($row['uf_nascimento']) {
+                $uf_nascimento = $row['uf_nascimento'];
+            } else {
+                $uf_nascimento = 0;
+            }
+
+            if ($row['municipio_nascimento']) {
+                $cidade_nascimento = $row['municipio_nascimento'];
+            } else {
+                $cidade_nascimento = 0;
+            }
+
+            //  $turno1 = $row['can_tx_turno01'];
+
+            /*** UF nascimento***/
+            $sql_uf_nascimento = "SELECT * FROM uf where codigo = $uf_nascimento ";
+            $uf_nasc = $this->db->query($sql_uf_nascimento)->result_array();
+
+            foreach ($uf_nasc as $row_uf):
+                $uf_nome = $row_uf['nome'];
+            endforeach;
+            
+            /*** UF RG***/
+            if ($row['rg_uf']) {
+                $uf_rg = $row['rg_uf'];
+            } else {
+                $uf_rg = 0;
+            }
+             $sql_uf_rg = "SELECT * FROM uf where codigo = $uf_rg ";
+            $uf_rg2 = $this->db->query($sql_uf_rg)->result_array();
+
+            foreach ($uf_rg2 as $row_rg):
+                $uf_rg_nome = $row_rg['nome'];
+            endforeach;
+            
+            /*** UF TÍTULO***/
+            if ($row['uf_titulo']) {
+                $uf_titulo = $row['uf_titulo'];
+            } else {
+                $uf_titulo = 0;
+            }
+             $sql_uf_titulo = "SELECT * FROM uf where codigo = $uf_nascimento ";
+            $uf_tit = $this->db->query($sql_uf_titulo)->result_array();
+
+            foreach ($uf_tit as $row_tit):
+                $uf_tit_nome = $row_tit['nome'];
+            endforeach;
+
+            /*** UF CERTIDÃO DE RESERVISTA***/
+            if ($row['uf_cert_reservista']) {
+                $uf_cert_reservista = $row['uf_cert_reservista'];
+            } else {
+                $uf_cert_reservista = 0;
+            }
+             $sql_uf_reservista = "SELECT * FROM uf where codigo = $uf_cert_reservista ";
+            $uf_reservista = $this->db->query($sql_uf_reservista)->result_array();
+
+            foreach ($uf_reservista as $row_reservista):
+                $uf_reservista_nome = $row_reservista['nome'];
+            endforeach;
+            
+            
+             /*** UF ENDEREÇO - MORADIA***/
+            if ($row['uf']) {
+                $uf_endereco = $row['uf'];
+            } else {
+                $uf_endereco = 0;
+            }
+             $sql_uf_endereco = "SELECT * FROM uf where codigo = $uf_endereco ";
+            $uf_end = $this->db->query($sql_uf_endereco)->result_array();
+
+            foreach ($uf_end as $row_endereco):
+                $uf_endereco_nome = $row_endereco['nome'];
+            endforeach;
+            
+            
+            /* município nascimento**/
+            
+            $sql = "SELECT * FROM municipio where codigo = $cidade_nascimento  ";
+            $mun = $this->db->query($sql)->result_array();
+            foreach ($mun as $row_mun):
+                $mun_nome = $row_mun['nome'];
+            endforeach;
+
+            $sexo = $row['sexo'];
+            if ($sexo == 'M') {
+                $sexo_descricao = 'Masculino';
+                $sexo_valor = '0';
+            } else if ($sexo == 'F') {
+                $sexo_descricao = 'Feminino';
+                $sexo_valor = '1';
+            } else {
+                $sexo_descricao = 'Não Informado';
+            }
+
+
+            $ec = $row['estado_civil'];
+            if ($ec == '1') {
+                $ec_descricao = 'Solteiro(a)';
+            } else if ($ec == '2') {
+                $ec_descricao = 'Casado(a)';
+            } else if ($ec == '3') {
+                $ec_descricao = 'Separado(a)/Divorciado(a)';
+            } else if ($ec == '4') {
+                $ec_descricao = 'Viuvo(a)';
+            } else if ($ec == '5') {
+                $ec_descricao = 'Outro';
+            } else {
+                $ec_descricao = 'Não Informado';
+            }
+
+            $nacionalidade = $row['nacionalidade'];
+            if ($nacionalidade == '1') {
+                $nacionalidade_tx = 'Brasileiro(a)';
+            } else if ($nacionalidade == '2') {
+                $nacionalidade_tx = 'Brasileiro(a) nascido no exterior ou naturalizado';
+            } else if ($nacionalidade == '3') {
+                $nacionalidade_tx = 'Estrangeiro';
+            } else {
+                $nacionalidade_tx = 'Não Informado';
+            }
+
+            $cor = $row['cor'];
+            if ($cor == '1') {
+                $cor_tx = 'Branca';
+            } else if ($cor == '2') {
+                $cor_tx = 'Preta';
+            } else if ($cor == '3') {
+                $cor_tx = 'Parda';
+            } else if ($cor == '4') {
+                $cor_tx = 'Amarela';
+            } else if ($cor == '5') {
+                $cor_tx = 'Não quis declarar';
+            } else {
+                $cor_tx = 'Não Informado';
+            }
+
+            $deficiencia = $row['aluno_deficiencia'];
+            if ($deficiencia == '0') {
+                $deficiencia_tx = 'Não';
+            } else if ($deficiencia == '1') {
+                $deficiencia_tx = 'sim';
+            } else if ($deficiencia == '2') {
+                $deficiencia_tx = 'Não Informado';
+            } else {
+                $deficiencia_tx = 'Não Informado';
+            }
+
+            $tipo_escola = $row['tipo_escola'];
+            if ($tipo_escola == '0') {
+                $tipo_escola_tx = 'PRIVADA';
+            } else if ($tipo_escola == '1') {
+                $tipo_escola_tx = 'PÚBLICA';
+            } else if ($tipo_escola == '2') {
+                $tipo_escola_tx = 'NÃO INFORMADO';
+            } else {
+                $tipo_escola_tx = 'NÃO INFORMADO';
+            }
+            
+            $forma_ingresso = $row['forma_ingresso'];
+            if ($forma_ingresso == '1') {
+                $forma_ingresso_tx = 'VESTIBULAR';
+            } else if ($forma_ingresso == '2') {
+                $forma_ingresso_tx = 'ENEM';
+            } else if ($forma_ingresso == '3') {
+                $forma_ingresso_tx = 'AVALIAÇÃO SERIADA';
+            } else if ($forma_ingresso == '4') {
+                $forma_ingresso_tx = 'SELEÇÃO SIMPLIFICADA';
+            } else if ($forma_ingresso == '5') {
+                $forma_ingresso_tx = 'TRANSFERÊNCIA';
+            } else if ($forma_ingresso == '6') {
+                $forma_ingresso_tx = 'DECISÃO JUDICIAL';
+            } else if ($forma_ingresso == '7') {
+                $forma_ingresso_tx = 'VAGAS REMANESCENTE';
+            } else if ($forma_ingresso == '8') {
+                $forma_ingresso_tx = 'PROGRAMAS ESPECIAIS';
+            } else {
+                $forma_ingresso_tx = 'NÃO INFORMADO';
+            }
+            /*
+             *  
+             * 
+              if ($opcao1 == '1') {
+              $opcao1_tx = 'CIÊNCIAS TEOLÓGICAS';
+              $opcao1_valor = '0000001';
+              } else if ($opcao1 == '2') {
+              $opcao1_tx = 'PEDAGOGIA';
+              $opcao1_valor = '0000004';
+              } else if ($opcao1 == '3') {
+              $opcao1_tx = 'ADMINISTRAÇÃO';
+              $opcao1_valor = '0000003';
+              } else if ($opcao1 == '4') {
+              $opcao1_tx = 'COMUNICAÇÃO SOCIAL: JORNALISMO';
+              $opcao1_valor = '0000002';
+              } else if ($opcao1 == '5') {
+              $opcao1_tx = 'PUBLICIDADE E PROPAGANDA';
+              $opcao1_valor = '0000009';
+              }
+
+
+              if ($turno1 == '1') {
+              $turno1_tx = 'MAT';
+              } else if ($turno1 == '3') {
+              $turno1_tx = 'NOT';
+              }
+             */
+
+            $se1 = $row['SE_txIrmaos'];
+            if ($se1 == '1') {
+                $se1_descricao = 'Nenhum';
+            } else if ($se1 == '2') {
+                $se1_descricao = 'Um';
+            } else if ($se1 == '3') {
+                $se1_descricao = 'Dois';
+            } else if ($se1 == '4') {
+                $se1_descricao = 'Três';
+            } else if ($se1 == '5') {
+                $se1_descricao = 'Quatro ou Mais';
+            }
+
+            $se2 = $row['SE_txFilhos'];
+            if ($se2 == '1') {
+                $se2_descricao = 'Nenhum';
+            } else if ($se2 == '2') {
+                $se2_descricao = 'Um';
+            } else if ($se2 == '3') {
+                $se2_descricao = 'Dois';
+            } else if ($se2 == '4') {
+                $se2_descricao = 'Três';
+            } else if ($se2 == '5') {
+                $se2_descricao = 'Quatro ou Mais';
+            }
+
+            // $se3 = $row['can_tx_se_etnia'];
+            $se4 = $row['SE_txReside'];
+            if ($se4 == '1') {
+                $se4_descricao = 'Com pais e(ou) parentes';
+            } else if ($se4 == '2') {
+                $se4_descricao = 'Esposo(a) e(ou) com os filho(s)';
+            } else if ($se4 == '3') {
+                $se4_descricao = 'Com amigos(compartilhando despesas ou de favor)';
+            } else if ($se4 == '4') {
+                $se4_descricao = 'Com colegas, em alojamento universit&aacute;rio';
+            } else if ($se4 == '5') {
+                $se4_descricao = 'Sozinho(a)';
+            }
+
+            $se5 = $row['SE_tx_Renda'];
+            if ($se5 == '1') {
+                $se5_descricao = 'At&eacute; 3 sal&aacute;rios m&iacute;nimos';
+            } else if ($se5 == '2') {
+                $se5_descricao = 'Mais de 3 At&eacute; 10 sal&aacute;rios m&iacute;nimos';
+            } else if ($se5 == '3') {
+                $se5_descricao = 'Mais de 10 At&eacute; 20 sal&aacute;rios m&iacute;nimos';
+            } else if ($se5 == '4') {
+                $se5_descricao = 'Mais de 20 At&eacute; 30 sal&aacute;rios m&iacute;nimos';
+            } else if ($se5 == '5') {
+                $se5_descricao = 'Mais de 30 sal&aacute;rios m&iacute;nimos';
+            }
+
+
+
+            $se6 = $row['SE_txMembros'];
+            if ($se6 == '1') {
+                $se6_descricao = 'Nenhum';
+            } else if ($se6 == '2') {
+                $se6_descricao = 'Um ou dois';
+            } else if ($se6 == '3') {
+                $se6_descricao = 'Tr&ecirc;s ou quatro';
+            } else if ($se6 == '4') {
+                $se6_descricao = 'Cinco ou seis';
+            } else if ($se6 == '5') {
+                $se6_descricao = 'Mais de seis';
+            }
+
+            $se7 = $row['SE_txTrabalho'];
+            if ($se7 == '1') {
+                $se7_descricao = 'N&atilde;o trabalho e meus gastos s&atilde;o financiados pela fam&iacute;lia';
+            } else if ($se7 == '2') {
+                $se7_descricao = 'Trabalho e recebo ajuda da fam&iacute;lia';
+            } else if ($se7 == '3') {
+                $se7_descricao = 'Trabalho e me sustento';
+            } else if ($se7 == '4') {
+                $se7_descricao = 'Trabalho e contribuo com o sustento da fam&iacute;lia';
+            } else if ($se7 == '5') {
+                $se7_descricao = 'Trabalho e sou o principal respons&aacute;vel pelo sustento da fam&iacute;lia';
+            }
+
+            $se8 = $row['SE_txBolsa'];
+            if ($se8 == '1') {
+                $se8_descricao = 'Financiamento Estudantil';
+            } else if ($se8 == '2') {
+                $se8_descricao = 'Prouni integral';
+            } else if ($se8 == '3') {
+                $se8_descricao = 'Prouni parcial';
+            } else if ($se8 == '4') {
+                $se8_descricao = 'Bolsa integral ou pacial oferecida pela propria institui&ccedil;&atilde;o';
+            } else if ($se8 == '5') {
+                $se8_descricao = 'Bolsa integral ou parcial oferecida porentidadesexternas';
+            } else if ($se8 == '6') {
+                $se8_descricao = 'Outro(s)';
+            } else if ($se8 == '7') {
+                $se8_descricao = 'Nenhum';
+            }
+            ?>
+
+
+            <div class="tab-pane box" id="add" style="padding: 5px">
+                <div class="box-content">
+            <?php echo form_open('educacional/matricula/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
+                    <div class="padded">
+                        <div style="width: 400px; margin: auto;">
+                           
+                        <b><font style="color: #000000; font-size: 24px;">FICHA DE CADASTRO DO ALUNO</font></b>
+                        <hr/>
+                        </div>
+
+                        </br>
+                        <b><font style="color: #0044cc">DADOS PESSOAIS</font></b>
+                        <hr/>
+                        <table width="100%" class="responsive">
+                            <tbody>
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('nome'); ?></label>
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" class="validate[required]" minlength="8" onkeypress="this.value.toUpperCase();" value="<?php echo $row['nome']; ?>" name="nome"/>
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('data_nascimento'); ?></label>
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" class="validate[required]" minlength="10" onkeypress="mascara(this, '##/##/####')" value="<?php echo date($row['data_nascimento']); ?>" maxlength="10" id="data_nascimento"  name="data_nascimento"/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('pais_origem'); ?></label>
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" class="validate[required]"  onkeypress="this.value.toUpperCase();" value="<?php echo $row['pais_origem']; ?>" name="pais_origem"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('UF_nascimento'); ?></label>
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" class="validate[required]"  onkeypress="this.value.toUpperCase();" value="<?php echo $uf_nome; ?>" name="uf_nascimento"/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('cidade_origem'); ?></label>
+                                            <div class="controls">
+
+                                                <input type="text" readonly="true" readonly="true" class="validate[required]"  onkeypress="this.value.toUpperCase();" value="<?php echo $mun_nome; ?>" name="cidade_origem"/>
+
+
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('sexo'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" class="validate[required]"  onkeypress="this.value.toUpperCase();" value="<?php echo $sexo_descricao; ?>" name="sexo"/>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('estado_civil'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" class="validate[required]"  onkeypress="this.value.toUpperCase();" value="<?php echo $ec_descricao; ?>" name="estado_civil"/>
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+
+                            </tbody>
+                        </table>
+
+                        </br>
+                        <b><font style="color: #468847">DOCUMENTOS</font></b>
+                        <hr/>
+                        <table width="100%" class="responsive">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('cpf'); ?></label>
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" class="validate[required]" minlength="12" onkeypress="mascara(this, '#########-##')" value="<?php echo $row['cpf']; ?>" maxlength="12" id="cpf" name="cpf"/>
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('RG'); ?></label>
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" class="validate[required]" value="<?php echo $row['rg']; ?>" name="rg"/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('RG_UF'); ?></label>
+
+                                            <div class="controls" id="load_matriz">
+
+                                                <select name="rg_uf" id="rg_uf" >
+                                                 
+                                                    <option value="<?php echo $uf_rg;  ?>"><?php echo $uf_rg_nome;  ?></option>
+                                                    
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('RG_orgão_expeditor'); ?></label>
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" class="validate[required]" value="<?php echo $row['rg_orgao_expeditor']; ?>" name="rg_orgao_expeditor"/>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('titulo'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <input type="text" readonly="true" readonly="true" value="<?php echo $row['titulo']; ?>" name="titulo"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('uf_titulo'); ?></label>
+
+                                            <div class="controls">
+                                                <select name="uf_titulo" id="uf_titulo" >
+                                                    <option value="<?php echo $uf_titulo;  ?>"><?php echo $uf_tit_nome;  ?></option>
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('documento_estrangeiro'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" value="<?php echo $row['documento_estrangeiro']; ?>" name="documento_estrangeiro"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('certidão_reservista'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <input type="text" readonly="true" readonly="true" value="<?php echo $row['cert_reservista']; ?>"  name="certidao_reservista"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <TR>
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('uf_certidão_reservista'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <select name="uf_certidao" id="uf_certidao" >
+                                                        <option value="0">Selecione o UF</option>
+           
+                                                        <option value="<?php echo $uf_cert_reservista;  ?>"><?php echo $uf_reservista_nome;  ?></option>
+                                                        
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </TR>
+                            </tbody>
+                        </table>
+
+                        </br>
+                        <b><font style="color: #F09900">INFORMAÇÕES SOCIOECONOMICO</font></b>
+                        <hr/>
+
+                        <table width="100%" class="responsive">
+                            <tbody>
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Quantos_irmãos_você_tem? '); ?></label>
+                                            <div class="controls">
+                                                <div class="controls">
+                                                    <SELECT   NAME="SE_txIrmaos">
+                                                        <OPTION value="<?php echo $se1; ?>" ><?php echo $se1_descricao; ?></OPTION>
+
+                                                    </SELECT>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Quantos filhos voc&ecirc; tem?'); ?></label>
+
+                                            <div class="controls">
+                                                <div class="controls">
+                                                    <div class="controls">
+                                                        <SELECT   NAME="SE_txFilhos">
+                                                            <OPTION value="<?php echo $se2; ?>" ><?php echo $se2_descricao; ?></OPTION>
+
+                                                        </SELECT>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('voc&ecirc; mora com quem?'); ?></label>
+                                            <div class="controls">
+                                                <div class="controls">
+                                                    <SELECT   NAME="SE_txReside">
+                                                        <OPTION value="<?php echo $se4; ?>" ><?php echo $se4_descricao; ?></OPTION>
+
+                                                    </SELECT>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Faixa de renda mensal? '); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <SELECT   NAME="SE_txRenda">
+                                                        <OPTION value="<?php echo $se5; ?>" ><?php echo $se5_descricao; ?></OPTION>
+
+                                                    </SELECT>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Quantas pessoas moram com voc&ecirc;?'); ?></label>
+                                            <div class="controls">
+                                                <div class="controls">
+                                                    <SELECT   NAME="SE_txMembros">
+                                                        <OPTION value="<?php echo $se6; ?>" ><?php echo $se6_descricao; ?></OPTION>
+
+                                                    </SELECT>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Qual situa&ccedil;&atilde;o descreve seu caso?'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <SELECT  NAME="SE_txTrabalho">
+                                                        <OPTION value="<?php echo $se7; ?>" ><?php echo $se7_descricao; ?></OPTION>
+
+                                                    </SELECT>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                        </table>
+                        <table width="100%" class="responsive">
+                            <tr>
+                                <td >
+                                    <div class="control-group">
+                                        <label class="control-label"><?php echo get_phrase('Você tem bolsa ou financiamento estudantil?'); ?></label>
+                                        <div class="controls">
+                                            <div class="controls">
+                                                <SELECT   NAME="SE_txBolsa">
+                                                    <OPTION value="<?php echo $se8; ?>" ><?php echo $se8_descricao; ?></OPTION>
+
+                                                </SELECT>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+
+
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+
+                        </br>
+                        <b><font style="color: #cb2027">ENDEREÇO</font></b>
+                        <hr/>
+
+                        <table width="100%" class="responsive">
+                            <tbody>
+
+                            <td>
+                                <div class="control-group">
+                                    <label class="control-label"><?php echo get_phrase('cep'); ?></label>
+                                    <div class="controls">
+                                        <input type="text" readonly="true" readonly="true" class="validate[required]" minlength="9" onkeypress="mascara(this, '#####-###')" value="<?php echo $row['cep']; ?>" maxlength="9" id="cep" name="cep"/>
+                                    </div>
+                                </div>
+                            </td>
+                            <td >
+                                <div class="control-group">
+                                    <label class="control-label"><?php echo get_phrase('endereco'); ?></label>
+
+                                    <div class="controls">
+                                        <input type="text" readonly="true" readonly="true" class="validate[required]" value="<?php echo $row['endereco']; ?>" minlength="8" onkeypress="this.value.toUpperCase();" name="endereco"/>
+                                    </div>
+
+                                </div>
+                            </td>
+
+                            </tr>
+
+
+
+                            <tr>
+
+
+                                <td>
+                                    <div class="control-group">
+                                        <label class="control-label"><?php echo get_phrase('bairro'); ?></label>
+
+                                        <div class="controls">
+
+                                            <input type="text" readonly="true" readonly="true" class="validate[required]" value="<?php echo $row['bairro']; ?>" minlength="5" onkeypress="this.value.toUpperCase();" name="bairro"/>
+
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="control-group">
+                                        <label class="control-label"><?php echo get_phrase('UF'); ?></label>
+
+                                        <div class="controls">
+
+                                            <div class="controls">
+                                                <select name="uf" id="uf" >
+                                                    <option value="<?php echo $uf_endereco;  ?>"><?php echo $uf_endereco_nome;  ?></option>
+                                                    
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+
+                            </tr>
+
+                            <tr>
+                                <td >
+                                    <div class="control-group">
+                                        <label class="control-label"><?php echo get_phrase('cidade'); ?></label>
+
+                                        <div class="controls">
+                                            <div  id="load_cidade">
+                                                <select>
+                                                    <option value="1302603">Manaus</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td >
+                                    <div class="control-group">
+                                        <label class="control-label"><?php echo get_phrase('complemento'); ?></label>
+
+                                        <div class="controls">
+                                            <input type="text" readonly="true" readonly="true"  onkeypress="this.value.toUpperCase();" value="<?php echo $row['compemento']; ?>" name="complemento"/>
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        </br>
+                        <b><font style="color: cadetblue">CONTATOS</font></b>
+                        <hr/>
+
+                        <table width="100%" class="responsive">
+                            <tbody>
+
+                                <tr>
+
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('fone'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <input type="text" readonly="true" readonly="true" value="<?php echo $row['fone']; ?>" onkeypress="mascara(this, '#####-####')" maxlength="10"  id="fone" name="fone"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('celular'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" value="<?php echo $row['celular']; ?>" onkeypress="mascara(this, '#####-####')" maxlength="10"  id="celular" name="celular"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+
+
+
+                                <tr>
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('email'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <input type="email" minlength="10" value="<?php echo $row['email']; ?>" name="email"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+
+                        </br>
+                        <b><font style="color: maroon">INFORMAÇÕES</font></b>
+                        <hr />
+
+                        <table width="100%" class="responsive">
+                            <tbody>
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('nacionalidade'); ?></label>
+
+                                            <div class="controls">
+                                                <select name="nacionalidade">
+
+                                                    <option value="<?php echo $nacionalidade; ?>"><?php echo $nacionalidade_tx; ?></option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('cor/raça'); ?></label>
+
+                                            <div class="controls">
+                                                <div class="controls">
+                                                    <select class="validate[required]" name="cor">
+                                                          <option value="<?php echo $cor; ?>"><?php echo $cor_tx; ?></option>
+                                                        
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('mae'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" class="validate[required]" minlength="8" value="<?php echo $row['mae']; ?>" onkeypress="this.value.toUpperCase();" name="mae"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('pai'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <input type="text" readonly="true" readonly="true" value="<?php echo $row['pai']; ?>"  onkeypress="this.value.toUpperCase();" name="pai"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('conjuge'); ?></label>
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" value="<?php echo $row['conjuge']; ?>"  style="text-transform:uppercase;" name="conjuge"/>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Tem Alguma Deficiência?'); ?></label>
+
+                                            <div class="controls">
+                                                <select name="deficiencia" id="deficiencia" onchange="buscar_deficiencia()">
+                                                    <option value="<?php echo $deficiencia; ?>"><?php echo $deficiencia_tx; ?></option>
+                                                   
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+
+                                </tr>
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Tipo de escola que concluiu o Ens. Médio'); ?></label>
+
+                                            <div class="controls">
+                                                <select name="tipo_escola" id="tipo_escola" >
+                                                     <option value="<?php echo $tipo_escola; ?>"><?php echo $tipo_escola_tx; ?></option>
+                                                 
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Forma de Ingresso'); ?></label>
+
+                                            <div class="controls">
+                                                <select name="forma_ingresso" id="forma_ingresso" >
+                                                    <option value="<?php echo $forma_ingresso; ?>"><?php echo $forma_ingresso_tx; ?></option>
+
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+
+
+                        <div  id="load_doencas">
+
+                        </div>
+
+
+                        </br>
+                        <b><font style="color: teal">INFORMAÇÕES DO RESPONSÁVEL</font></b>
+                        <hr/>
+
+
+
+                        <table width="100%" class="responsive">
+                            <tbody>
+
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('responsavel'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" value="<?php echo $row['responsavel']; ?>" name="responsavel"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('fone_responsavel'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <input type="text" readonly="true" readonly="true" value="<?php echo $row['fone_responsavel']; ?>" name="fone_responsavel"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('RG_responsavel'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" value="<?php echo $row['rg_responsavel']; ?>" name="rg_responsavel"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('CPF_responsável'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <input type="text" readonly="true" readonly="true" value="<?php echo $row['cpf_responsavel']; ?>" name="cpf_responsavel"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('celular_responsável'); ?></label>
+
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" value="<?php echo $row['cel_responsavel']; ?>" name="celular_responsavel"/>
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        </br>
+                        <b><font style="color: darkgreen">OBSERVAÇÕES GERAIS</font></b>
+                        <hr/>
+
+                        <table width="100%" class="responsive">
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('OBSERVAÇÕES'); ?></label>
+
+                                            <div class="controls">
+
+                                                <div class="controls">
+                                                    <textarea name="obs_documento" style="width: 62%; height: 120px;"><?php echo $row['observacao']; ?></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-gray"><?php echo get_phrase('Matricular'); ?></button>
+                    </div>
+                    </form>                
+                </div>                
+            </div>
+
+
+            <?php
+        endforeach;
+    }
+
     function aluno_turma($param1 = '', $param2 = '', $param3 = '') {
 
         if ($this->session->userdata('admin_login') != 1)
@@ -1569,7 +3874,7 @@ where  ca.cadastro_aluno_id != '' ";
 
         $this->load->view('../views/educacional/index', $page_data);
     }
-    
+
     function matricula($param1 = '', $param2 = '', $param3 = '') {
 
         if ($this->session->userdata('admin_login') != 1)
@@ -1754,7 +4059,7 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
             $this->session->set_flashdata('flash_message', get_phrase('aluno_cadastro_com_sucesso'));
             redirect(base_url() . 'index.php?educacional/aluno/' . $aluno_id, 'refresh');
         }
-        
+
 
         $page_data['turma'] = $this->db->select("*");
         $page_data['turma'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
@@ -1958,7 +4263,7 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
             $this->session->set_flashdata('flash_message', get_phrase('aluno_cadastro_com_sucesso'));
             redirect(base_url() . 'index.php?educacional/aluno/' . $aluno_id, 'refresh');
         }
-        
+
 
         $page_data['turma'] = $this->db->select("*");
         $page_data['turma'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
@@ -1970,6 +4275,7 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
         //SELECT ABAIXO PARA MONTAR O MENU ACESSO, DEVE SER INCLUIDO EM TODOS OS MENUS
         $page_data['acesso'] = $this->db->get('acessos')->result_array();
         $page_data['cursos'] = $this->db->get('cursos')->result_array();
+        $page_data['vestibular'] = $this->db->get('siga_vest.vestibular')->result_array();
         $page_data['matriz'] = $this->db->get('matriz')->result_array();
         $page_data['pais'] = $this->db->get('pais')->result_array();
         $page_data['uf'] = $this->db->get('uf')->result_array();
@@ -1977,15 +4283,14 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
         $page_data['page_title'] = get_phrase('Educacional->');
         $this->load->view('../views/educacional/index', $page_data);
     }
-    
-    
+
     function rematricula($param1 = '', $param2 = '', $param3 = '') {
 
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
         if ($param1 == 'create') {
             //DADOS PESSOAIS
-            
+
 
             /*             * ******** REGISTRA NA TABELA MATRICULA_ALUNO_TURMA SALVANDO A TURMA DO ALUNO ************* */
             $data_matriculat['data_turma'] = date('Y-m-d'); //VERIFICAR
@@ -2030,7 +4335,7 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
             $this->session->set_flashdata('flash_message', get_phrase('aluno_cadastro_com_sucesso'));
             redirect(base_url() . 'index.php?educacional/matricula/' . $aluno_id, 'refresh');
         }
-        
+
 
         $page_data['turma'] = $this->db->select("*");
         $page_data['turma'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');

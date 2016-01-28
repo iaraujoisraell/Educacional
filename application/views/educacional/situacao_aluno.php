@@ -1,4 +1,4 @@
-<div class="box">
+<div id="box" class="box">
     <div class="box-header">
 
         <!------CONTROL TABS START------->
@@ -7,7 +7,9 @@
                 <a href="#list" data-toggle="tab"><i class="icon-align-justify"></i> 
                     <?php echo get_phrase('situação_aluno'); ?>
                 </a></li>
-
+            <a  href="index.php?educacional/aluno" 	class="btn btn-info btn-small">
+                <i class="icon-user"></i> <?php echo get_phrase('voltar_para_consulta_aluno'); ?>
+            </a>
         </ul>
         <!------CONTROL TABS END------->
 
@@ -15,6 +17,7 @@
     <div class="box-content padded">
         <div class="tab-content">
             <!----TABLE LISTING STARTS--->
+
 
 
             <?php
@@ -64,11 +67,11 @@
                 <table>
                     <tr>
                         <td align="center">
-                            <a  href="index.php?educacional/situacao_aluno/<?php echo $row2['matricula_aluno_id']; ?>" 	class="btn btn-green btn-small">
+                            <a  href="#" onclick="buscar_ficha_aluno(<?php echo $row['matricula_aluno_id']; ?>);" class="btn btn-green btn-small" >
                                 <i class="icon-wrench"></i> <?php echo get_phrase('Ficha_aluno'); ?>
                             </a>
                             <a data-toggle="modal" href="#modal-form" onclick="modal('ficha_aluno',<?php echo $row2['bolsas_id']; ?>)"	class="btn btn-info btn-small">
-                                <i class="icon-wrench"></i> <?php echo get_phrase('Histórico_Aluno'); ?>
+                                <i class="icon-align-justify"></i> <?php echo get_phrase('Histórico_Aluno'); ?>
                             </a>
 
                             <a  href="index.php?educacional/situacao_aluno/<?php echo $row2['matricula_aluno_id']; ?>" 	class="btn btn-brown btn-small">
@@ -109,7 +112,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                    $sql = "SELECT mat.matricula_aluno_turma_id, t.turma_id, t.ano as ano, t.semestre as semestre,
+                                                    $sql = "SELECT mat.matricula_aluno_turma_id as matricula_aluno_turma_id, t.turma_id, t.ano as ano, t.semestre as semestre,
                                                         mat.periodo as periodo_mat, t.periodo_letivo_id,tur_tx_descricao,tu.turno_id, tu.descricao as turno, p.periodo_id, p.periodo as periodo, pl.periodo_letivo as periodo_letivo
                                                         FROM matricula_aluno_turma mat
                                                     inner join matricula_aluno m on m.matricula_aluno_id = mat.matricula_aluno_id
@@ -147,9 +150,9 @@
 
 
                                                             <td align="center">
-                                                               
 
-                                                                <a  data-toggle="modal" href="#modal-form" onclick="modal('demonstrativo_nota','7120')" 	class="btn btn-gray btn-small">
+
+                                                                <a  data-toggle="modal" href="#modal-form" onclick="modal('demonstrativo_nota', '<?php echo $row2['matricula_aluno_turma_id']; ?>')" 	class="btn btn-gray btn-small">
                                                                     <i class="icon-wrench"></i> <?php echo get_phrase('demonstrativo_notas_faltas'); ?>
                                                                 </a>
                                                             </td>
@@ -175,596 +178,7 @@
 
             <!----TABLE LISTING ENDS--->
 
-            <!----CREATION FORM STARTS---->
-            <div class="tab-pane box" id="add" style="padding: 5px">
-                <div class="box-content">
 
-
-                    <?php echo form_open('educacional/aluno/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
-                    <div class="padded">
-                        <table width="100%" class="responsive">
-                            <tbody>
-
-                                <tr>
-                                    <td width="40%">
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('curso'); ?></label>
-                                            <div class="controls">
-                                                <select name="curso">
-                                                    <option>Selecione o curso</option>
-                                                    <?php
-                                                    foreach ($cursos as $row):
-                                                        ?>
-                                                        <option value="<?php echo $row['cursos_id']; ?>"><?php echo $row['cur_tx_descricao']; ?></option>
-                                                        <?php
-                                                    endforeach;
-                                                    ?>                                                
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-
-
-                                    <td>
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('matriz'); ?></label>
-                                            <div class="controls">
-                                                <select name="matriz">
-                                                    <option>Selecione a Matriz</option>
-                                                    <?php
-                                                    foreach ($matriz as $row_matriz):
-                                                        ?>
-                                                        <option value="<?php echo $row_matriz['matriz_id']; ?>"><?php echo $row_matriz['mat_tx_ano']; ?></option>
-                                                        <?php
-                                                    endforeach;
-                                                    ?> 
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-
-                        </br>
-                        <b>DADOS PESSOAIS</b>
-                        <hr/>
-
-                        <table width="100%" class="responsive">
-                            <tbody>
-
-                                <tr>
-                                    <td width="40%">
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('nome'); ?></label>
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="nome"/>
-                                            </div>
-                                        </div>
-                                    </td>
-
-
-                                    <td>
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('cpf'); ?></label>
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="cpf"/>
-
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-
-                                <tr>
-                                    <td width="40%">
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('RG'); ?></label>
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="rg"/>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('RG_UF'); ?></label>
-
-                                            <div class="controls" id="load_matriz">
-                                                <input type="text" class="validate[required]" name="rg_uf"/>
-                                            </div>
-
-                                        </div>
-                                    </td>
-
-                                </tr>
-
-                                <tr>
-                                    <td width="40%">
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('RG_orgão_expeditor'); ?></label>
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="rg_orgao_expeditor"/>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('data_nascimento'); ?></label>
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="data_nascimento"/>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td width="40%">
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('pais_origem'); ?></label>
-
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="pais_origem"/>
-                                            </div>
-
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('UF_nascimento'); ?></label>
-
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="uf_nascimento"/>
-                                            </div>
-
-                                        </div>
-                                    </td>
-                                </tr>
-
-
-                                <tr>
-                                    <td width="40%">
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('cidade_origem'); ?></label>
-
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="cidade_origem"/>
-                                            </div>
-
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('sexo'); ?></label>
-
-                                            <div class="controls">
-
-
-                                                <select name="sexo">
-
-                                                    <option>Selecione o Sexo</option>
-                                                    <option value="0">Feminino</option>
-                                                    <option value="1">Masculino</option>
-
-                                                </select>
-
-
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                </tr>
-
-
-
-                                <tr>
-                                    <td width="40%">
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('estado_civil'); ?></label>
-
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="estado_civil"/>
-                                            </div>
-
-                                        </div>
-                                    </td>
-
-
-
-                            </tbody>
-                        </table>
-
-                        </br>
-                        </b>ENDEREÇO</b>
-                        <hr/>
-
-                        <table width="100%" class="responsive">
-                            <tbody>
-
-                            <td>
-                                <div class="control-group">
-                                    <label class="control-label"><?php echo get_phrase('cep'); ?></label>
-
-                                    <div class="controls">
-
-
-                                        <input type="text" class="validate[required]" name="cep"/>
-
-
-                                    </div>
-                                </div>
-                            </td>
-
-                            </tr>
-
-
-
-                            <tr>
-                                <td width="40%">
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('endereco'); ?></label>
-
-                                        <div class="controls">
-                                            <input type="text" class="validate[required]" name="endereco"/>
-                                        </div>
-
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('bairro'); ?></label>
-
-                                        <div class="controls">
-
-                                            <input type="text" class="validate[required]" name="bairro"/>
-
-                                        </div>
-                                    </div>
-                                </td>
-
-                            </tr>
-
-                            <tr>
-                                <td width="40%">
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('complemento'); ?></label>
-
-                                        <div class="controls">
-                                            <input type="text" class="validate[required]" name="complemento"/>
-                                        </div>
-
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('UF'); ?></label>
-
-                                        <div class="controls">
-
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="uf"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-
-                            </tr>
-
-
-                            <tr>
-                                <td width="40%">
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('cidade'); ?></label>
-
-                                        <div class="controls">
-                                            <input type="text" class="validate[required]" name="cidade"/>
-                                        </div>
-
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('titulo'); ?></label>
-
-                                        <div class="controls">
-
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="titulo"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-
-                            </tr>
-
-
-
-                            <tr>
-                                <td width="40%">
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('uf_titulo'); ?></label>
-
-                                        <div class="controls">
-                                            <input type="text" class="validate[required]" name="uf_titulo"/>
-                                        </div>
-
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('fone'); ?></label>
-
-                                        <div class="controls">
-
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="fone"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-
-                            </tr>
-
-
-
-
-                            <tr>
-                                <td width="40%">
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('celular'); ?></label>
-
-                                        <div class="controls">
-                                            <input type="text" class="validate[required]" name="celular"/>
-                                        </div>
-
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('email'); ?></label>
-
-                                        <div class="controls">
-
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="email"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-
-                            </tr>
-
-
-                            <tr>
-                                <td width="40%">
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('nacionalidade'); ?></label>
-
-                                        <div class="controls">
-                                            <input type="text" class="validate[required]" name="nacionalidade"/>
-                                        </div>
-
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('cor'); ?></label>
-
-                                        <div class="controls">
-
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="cor"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-
-
-                            <tr>
-                                <td width="40%">
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('mae'); ?></label>
-
-                                        <div class="controls">
-                                            <input type="text" class="validate[required]" name="mae"/>
-                                        </div>
-
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('pai'); ?></label>
-
-                                        <div class="controls">
-
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="pai"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td width="40%">
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('conjuge'); ?></label>
-
-                                        <div class="controls">
-                                            <input type="text" class="validate[required]" name="conjuge"/>
-                                        </div>
-
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('uf_certidão_reservista'); ?></label>
-
-                                        <div class="controls">
-
-                                            <div class="controls">
-                                                <input type="text" class="validate[required]" name="uf_certidao"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td width="40%">
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('documento_estrangeiro'); ?></label>
-
-                                        <div class="controls">
-                                            <input type="text" name="documento_estrangeiro"/>
-                                        </div>
-
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div class="control-group">
-                                        <label class="control-label"><?php echo get_phrase('certidão_reservista'); ?></label>
-
-                                        <div class="controls">
-
-                                            <div class="controls">
-                                                <input type="text"  name="certidao_reservista"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-
-
-
-                        </br>
-                        <b>DADOS DO RESPONSÁVEL</b>
-                        <hr/>
-
-                        <table width="100%" class="responsive">
-                            <tbody>
-
-
-                                <tr>
-                                    <td width="40%">
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('responsavel'); ?></label>
-
-                                            <div class="controls">
-                                                <input type="text" name="responsavel"/>
-                                            </div>
-
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('fone_responsavel'); ?></label>
-
-                                            <div class="controls">
-
-                                                <div class="controls">
-                                                    <input type="text" name="fone_responsavel"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-
-                                <tr>
-                                    <td width="40%">
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('RG_responsavel'); ?></label>
-
-                                            <div class="controls">
-                                                <input type="text" name="rg_responsavel"/>
-                                            </div>
-
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('CPF_responsável'); ?></label>
-
-                                            <div class="controls">
-
-                                                <div class="controls">
-                                                    <input type="text" name="cpf_responsavel"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-
-                                <tr>
-                                    <td width="40%">
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('celular_responsável'); ?></label>
-
-                                            <div class="controls">
-                                                <input type="text" name="celular_responsavel"/>
-                                            </div>
-
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        </br>
-                        <b>DOCUMENTOS</b>
-                        <hr/>
-
-                        <table width="100%" class="responsive">
-                            <tbody>
-
-                                <tr>
-                                    <td>
-                                        <div class="control-group">
-                                            <label class="control-label"><?php echo get_phrase('OBS_documento'); ?></label>
-
-                                            <div class="controls">
-
-                                                <div class="controls">
-                                                    <textarea style="width: 62%; height: 120px;"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-gray"><?php echo get_phrase('avançar'); ?></button>
-                    </div>
-                    </form>                
-                </div>                
-            </div>
-            <!----CREATION FORM ENDS--->
 
         </div>
     </div>
@@ -780,6 +194,19 @@
             }
 
             reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    function buscar_ficha_aluno(matricula) {
+         var matricula_id = matricula;//$('#candidato_id').val(); 
+         //se encontrou o estado
+        if (matricula_id) {
+            var url = 'index.php?educacional/carrega_ficha_aluno/' + matricula_id ;  //caminho do arquivo php que irá buscar as cidades no BD
+            $.get(url, function (dataReturn) {
+                $('#box').html(dataReturn);  //coloco na div o retorno da requisicao
+            });
+        }else{
+            alert('Selecione um aluno');
         }
     }
 
