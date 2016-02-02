@@ -8,7 +8,7 @@
         }
     }
 </script>
-<div class="box">
+<div id="box_rematricula" class="box">
     <div class="box-header">
 
         <!------CONTROL TABS START------->
@@ -232,6 +232,19 @@
             var url = 'index.php?educacional/carrega_table_paginacao_rematricula/' + curso + '/' + turma + '/' + aluno;  //caminho do arquivo php que irá buscar as cidades no BD
             $.get(url, function (dataReturn) {
                 $('#load_paginacao').html(dataReturn);  //coloco na div o retorno da requisicao
+            });
+        }else{
+            alert('Selecione um curso e turma');
+        }
+    }
+    
+        function buscar_ficha_rematricula(candidato_id) {
+         var candidato = candidato_id;//$('#candidato_id').val(); 
+         //se encontrou o estado
+        if (candidato) {
+            var url = 'index.php?educacional/carrega_ficha_rematricula/' + candidato ;  //caminho do arquivo php que irá buscar as cidades no BD
+            $.get(url, function (dataReturn) {
+                $('#box_rematricula').html(dataReturn);  //coloco na div o retorno da requisicao
             });
         }else{
             alert('Selecione um curso e turma');

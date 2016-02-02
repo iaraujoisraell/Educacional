@@ -526,11 +526,11 @@ class educacional extends CI_Controller {
                     ))->result_array();
         }
         if ($param1 == 'delete') {
-            $this->db->where('periodo_letivo_id', $param2);
-            $this->db->delete('periodo_letivo');
+            $this->db->where('turma_id', $param2);
+            $this->db->delete('turma');
 
             $this->session->set_flashdata('flash_message', get_phrase('turma_deletado_com_sucesso'));
-            redirect(base_url() . 'index.php?educacional/periodo/', 'refresh');
+            redirect(base_url() . 'index.php?educacional/turma/', 'refresh');
         }
 
         $page_data['turma'] = $this->db->select("*");
@@ -553,7 +553,7 @@ class educacional extends CI_Controller {
         $this->db->where('cursos_id', $param1);
         $numrows = $this->db->count_all_results();
 
-        $MatrizArray = $this->db->query("SELECT *FROM matriz WHERE cursos_id = $param1")->result_array();
+        $MatrizArray = $this->db->query("SELECT *FROM matriz WHERE cursos_id = $param1 order by mat_tx_ano desc")->result_array();
 
 
         if ($numrows >= 1) {
@@ -833,7 +833,7 @@ class educacional extends CI_Controller {
             left join periodo_letivo pl on pl.periodo_letivo_id = t.periodo_letivo_id
         WHERE t.curso_id =  $param1
 group by ano, semestre
-order by periodo_letivo desc, ano desc, semestre asc")->result_array();
+order by periodo_letivo desc, ano desc, semestre desc")->result_array();
 
 
 
@@ -1043,7 +1043,7 @@ where  cv.cv_nb_aprovado = 1 ";
             $sql.=" and c.nome LIKE '%$param2%' ";
         }
 
-        // echo $sql;
+        $sql.=" order by nome asc ";
         $MatrizArray = $this->db->query($sql)->result_array(); //WHERE ca.cadastro_aluno_id = $param1
         //   if ($numrows >= 1) {
         $count = 1;
@@ -1160,6 +1160,7 @@ where  c.candidato_id = $param1  ";
             $candidato_id = $row['candidato_id'];
             $opcao1 = $row['can_tx_op01'];
             $turno1 = $row['can_tx_turno01'];
+            $data_nascimento = $row['can_dt_dtNasc'];
 
             $sexo = $row['can_ch_sexo'];
             if ($sexo == 'M') {
@@ -1307,9 +1308,31 @@ where  c.candidato_id = $param1  ";
             } else if ($se8 == '7') {
                 $se8_descricao = 'Nenhum';
             }
+
+            //  $data_nascimentoMask = "%s%s/%s%s/%s%s%s%s";
             ?>
+            <script>
 
+            </script>
+            <?php
+            /*
+             * $cnpj = '17804682000198';
+              echo Mask("##.###.###/####-##",$cnpj).'<BR>';
 
+              $cpf = '21450479480';
+              echo Mask("###.###.###-##",$cpf).'<BR>';
+
+              $cep = '36970000';
+              echo Mask("#####-###",$cep).'<BR>';
+
+              $telefone = '3391922727';
+              echo Mask("(##)####-####",$telefone).'<BR>';
+
+              $data = '21072014';
+              echo Mask("##/##/####",$data);
+             * 
+             */
+            ?>
             <div class="tab-pane box" id="add" style="padding: 5px">
                 <div class="box-content">
                     <?php echo form_open('educacional/matricula/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
@@ -1376,7 +1399,7 @@ where  c.candidato_id = $param1  ";
                                         <div class="control-group">
                                             <label class="control-label"><?php echo get_phrase('nome'); ?></label>
                                             <div class="controls">
-                                                <input type="text"  readonly="true" class="validate[required]" minlength="8" onkeypress="this.value.toUpperCase();" value="<?php echo $row['nome']; ?>" name="nome"/>
+                                                <input type="text"  class="validate[required]" minlength="8" onkeypress="this.value.toUpperCase();" value="<?php echo $row['nome']; ?>" name="nome"/>
                                             </div>
                                         </div>
                                     </td>
@@ -1386,7 +1409,7 @@ where  c.candidato_id = $param1  ";
                                         <div class="control-group">
                                             <label class="control-label"><?php echo get_phrase('data_nascimento'); ?></label>
                                             <div class="controls">
-                                                <input type="text"  class="validate[required]" minlength="10" onkeypress="mascara(this, '##/##/####')" value="<?php echo date('d/m/Y', strtotime($row['can_dt_dtNasc'])); ?>" maxlength="10" id="data_nascimento"  name="data_nascimento"/>
+                                                <input type="text"  class="validate[required]" minlength="10" onkeypress="mascara(this, '##/##/####')" value="<?php echo ($data_nascimento); ?>" maxlength="10" id="data_nascimento"  name="data_nascimento"/>
                                             </div>
                                         </div>
                                     </td>
@@ -1514,7 +1537,7 @@ where  c.candidato_id = $param1  ";
                                         <div class="control-group">
                                             <label class="control-label"><?php echo get_phrase('cpf'); ?></label>
                                             <div class="controls">
-                                                <input type="text"  readonly="true" class="validate[required]" minlength="12" onkeypress="mascara(this, '#########-##')" value="<?php echo $row['can_tx_cpf']; ?>" maxlength="12" id="cpf" name="cpf"/>
+                                                <input type="text"   class="validate[required]" minlength="12" onkeypress="mascara(this, '#########-##')" value="<?php echo $row['can_tx_cpf']; ?>" maxlength="12" id="cpf" name="cpf"/>
 
                                             </div>
                                         </div>
@@ -1523,7 +1546,7 @@ where  c.candidato_id = $param1  ";
                                         <div class="control-group">
                                             <label class="control-label"><?php echo get_phrase('RG'); ?></label>
                                             <div class="controls">
-                                                <input type="text"  readonly="true" class="validate[required]"  name="rg"/>
+                                                <input type="text"   class="validate[required]"  name="rg"/>
                                             </div>
                                         </div>
                                     </td>
@@ -1555,7 +1578,7 @@ where  c.candidato_id = $param1  ";
                                         <div class="control-group">
                                             <label class="control-label"><?php echo get_phrase('RG_orgão_expeditor'); ?></label>
                                             <div class="controls">
-                                                <input type="text"  readonly="true" class="validate[required]" name="rg_orgao_expeditor"/>
+                                                <input type="text"   class="validate[required]" name="rg_orgao_expeditor"/>
                                             </div>
                                         </div>
                                     </td>
@@ -1569,7 +1592,7 @@ where  c.candidato_id = $param1  ";
                                             <div class="controls">
 
                                                 <div class="controls">
-                                                    <input type="text"  readonly="true"  name="titulo"/>
+                                                    <input type="text"   name="titulo"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -1603,7 +1626,7 @@ where  c.candidato_id = $param1  ";
                                             <label class="control-label"><?php echo get_phrase('documento_estrangeiro'); ?></label>
 
                                             <div class="controls">
-                                                <input type="text"  readonly="true" name="documento_estrangeiro"/>
+                                                <input type="text"   name="documento_estrangeiro"/>
                                             </div>
 
                                         </div>
@@ -1616,7 +1639,7 @@ where  c.candidato_id = $param1  ";
                                             <div class="controls">
 
                                                 <div class="controls">
-                                                    <input type="text"  readonly="true"  name="certidao_reservista"/>
+                                                    <input type="text"    name="certidao_reservista"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -1817,7 +1840,7 @@ where  c.candidato_id = $param1  ";
                                 <div class="control-group">
                                     <label class="control-label"><?php echo get_phrase('cep'); ?></label>
                                     <div class="controls">
-                                        <input type="text"  readonly="true" class="validate[required]" minlength="9" onkeypress="mascara(this, '#####-###')" value="<?php echo $row['can_tx_cep']; ?>" maxlength="9" id="cep" name="cep"/>
+                                        <input type="text"   class="validate[required]" minlength="9" onkeypress="mascara(this, '#####-###')" value="<?php echo $row['can_tx_cep']; ?>" maxlength="9" id="cep" name="cep"/>
                                     </div>
                                 </div>
                             </td>
@@ -1826,7 +1849,7 @@ where  c.candidato_id = $param1  ";
                                     <label class="control-label"><?php echo get_phrase('endereco'); ?></label>
 
                                     <div class="controls">
-                                        <input type="text"  readonly="true" class="validate[required]" value="<?php echo $row['can_tx_endereco']; ?>" minlength="8" onkeypress="this.value.toUpperCase();" name="endereco"/>
+                                        <input type="text"   class="validate[required]" value="<?php echo $row['can_tx_endereco']; ?>" minlength="8" onkeypress="this.value.toUpperCase();" name="endereco"/>
                                     </div>
 
                                 </div>
@@ -1845,7 +1868,7 @@ where  c.candidato_id = $param1  ";
 
                                         <div class="controls">
 
-                                            <input type="text"  readonly="true" class="validate[required]" value="<?php echo $row['can_tx_bairro']; ?>" minlength="5" onkeypress="this.value.toUpperCase();" name="bairro"/>
+                                            <input type="text"   class="validate[required]" value="<?php echo $row['can_tx_bairro']; ?>" minlength="5" onkeypress="this.value.toUpperCase();" name="bairro"/>
 
                                         </div>
                                     </div>
@@ -1897,7 +1920,7 @@ where  c.candidato_id = $param1  ";
                                         <label class="control-label"><?php echo get_phrase('complemento'); ?></label>
 
                                         <div class="controls">
-                                            <input type="text"  readonly="true"  onkeypress="this.value.toUpperCase();" value="<?php echo $row['can_tx_compemento']; ?>" name="complemento"/>
+                                            <input type="text"    onkeypress="this.value.toUpperCase();" value="<?php echo $row['can_tx_compemento']; ?>" name="complemento"/>
                                         </div>
 
                                     </div>
@@ -1928,7 +1951,7 @@ where  c.candidato_id = $param1  ";
                                             <div class="controls">
 
                                                 <div class="controls">
-                                                    <input type="text"  readonly="true" value="<?php echo $row['can_tx_telefone']; ?>" onkeypress="mascara(this, '#####-####')" maxlength="10"  id="fone" name="fone"/>
+                                                    <input type="text"   value="<?php echo $row['can_tx_telefone']; ?>" onkeypress="mascara(this, '#####-####')" maxlength="10"  id="fone" name="fone"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -1939,7 +1962,7 @@ where  c.candidato_id = $param1  ";
                                             <label class="control-label"><?php echo get_phrase('celular'); ?></label>
 
                                             <div class="controls">
-                                                <input type="text"  readonly="true" value="<?php echo $row['can_tx_celular']; ?>" onkeypress="mascara(this, '#####-####')" maxlength="10"  id="celular" name="celular"/>
+                                                <input type="text"   value="<?php echo $row['can_tx_celular']; ?>" onkeypress="mascara(this, '#####-####')" maxlength="10"  id="celular" name="celular"/>
                                             </div>
 
                                         </div>
@@ -2023,7 +2046,7 @@ where  c.candidato_id = $param1  ";
                                             <label class="control-label"><?php echo get_phrase('mae'); ?></label>
 
                                             <div class="controls">
-                                                <input type="text"  readonly="true" class="validate[required]" minlength="8" onkeypress="this.value.toUpperCase();" name="mae"/>
+                                                <input type="text"   class="validate[required]" minlength="8" onkeypress="this.value.toUpperCase();" name="mae"/>
                                             </div>
 
                                         </div>
@@ -2266,7 +2289,7 @@ where  ca.cadastro_aluno_id != '' ";
             $sql.=" and ca.nome LIKE '%$param3%' ";
         }
 
-        // echo $sql;
+         $sql.=" order by nome asc ";
         $MatrizArray = $this->db->query($sql)->result_array(); //WHERE ca.cadastro_aluno_id = $param1
         //   if ($numrows >= 1) {
         $count = 1;
@@ -2358,7 +2381,7 @@ where  ca.cadastro_aluno_id != '' ";
             $sql.=" and ca.nome LIKE '%$param3%' ";
         }
 
-        // echo $sql;
+        $sql.=" order by nome asc ";
         $MatrizArray = $this->db->query($sql)->result_array(); //WHERE ca.cadastro_aluno_id = $param1
         //   if ($numrows >= 1) {
         $count = 1;
@@ -2399,13 +2422,17 @@ where  ca.cadastro_aluno_id != '' ";
                                                 <td align="left"><?php echo $row['rg']; ?> </td>
                                                 <td align="left"><?php echo $row['data_nascimento']; ?></td>
 
-
                                                 <td align="center">
-
-                                                    <a  href="index.php?educacional/situacao_aluno/<?php echo $row['matricula']; ?>" 	class="btn btn-gray btn-small">
-                                                        <i class="icon-dashboard"></i> <?php echo get_phrase('rematricular'); ?>
+                                                    <a  href="#" onclick="buscar_ficha_rematricula(<?php
+                                                    echo $row['matricula'];
+                                                    ;
+                                                    ?>);" class="btn btn-green btn-small" >
+            <?php echo get_phrase('Realizar Rematricula'); ?>
                                                     </a>
+
                                                 </td>
+
+
 
                                             </tr>
                                             <?php
@@ -2422,6 +2449,186 @@ where  ca.cadastro_aluno_id != '' ";
         </div>
         <?php
         //  }
+    }
+
+    function carrega_ficha_rematricula($param1 = '', $param2 = '', $param3 = '') {
+        $sql = "SELECT *
+                FROM matricula_aluno ma
+                inner join cadastro_aluno ca on ca.cadastro_aluno_id = ma.cadastro_aluno_id
+                inner join cursos cur on cur.cursos_id = ma.curso_id
+                left join dados_censo_aluno dca on dca.cadastro_aluno_id = ca.cadastro_aluno_id
+                where  ma.matricula_aluno_id = $param1  ";
+        //echo $sql;
+        $MatrizArray = $this->db->query($sql)->result_array();
+        $count = 1;
+
+        foreach ($MatrizArray as $row):
+            $matricula_aluno_id = $row['matricula_aluno_id'];
+            $curso_id = $row['curso_id'];
+            $curso = $row['cur_tx_descricao'];
+            ?>
+
+
+            <div class="tab-pane box" id="add" style="padding: 5px">
+                <div class="box-content">
+            <?php echo form_open('educacional/rematricula/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
+                    <input type="hidden" readonly="true" readonly="true" class="validate[required]" minlength="8" onkeypress="this.value.toUpperCase();" value="<?php echo $matricula_aluno_id; ?>" name="matricula_aluno_id"/>
+                    <input type="hidden" readonly="true" readonly="true" class="validate[required]" minlength="8" onkeypress="this.value.toUpperCase();" value="<?php echo $curso_id; ?>" name="curso"/>
+                                           
+                    <div class="padded">
+                        <div style="width: 400px; margin: auto;">
+
+                            <b><font style="color: #000000; font-size: 24px;">REMATRÍCULA DO ALUNO</font></b>
+                            <hr/>
+                        </div>
+
+                        </br>
+                        <b><font style="color: #0044cc">DADOS DO ALUNO</font></b>
+                        <hr/>
+                        <table width="100%" class="responsive">
+                            <tbody>
+
+                                <tr>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('nome'); ?></label>
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" class="validate[required]" minlength="8" onkeypress="this.value.toUpperCase();" value="<?php echo $row['nome']; ?>" name="nome"/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Curso'); ?></label>
+                                            <div class="controls">
+                                                <input type="text" readonly="true" readonly="true" class="validate[required]" minlength="8" onkeypress="this.value.toUpperCase();" value="<?php echo $curso; ?>" name="curso_nome"/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <b><font style="color: #0044cc">TURMAS DISPONÍVEIS PARA O ALUNO</font></b>
+                       
+                        <table>
+                            <tr>
+                                <td>
+                                    <?php
+                                    $sql_periodo = "SELECT  MAX(x.MAIOR_PERIODO) AS MAIOR_PERIODO, x.periodo_letivo as periodo_letivo FROM
+                                            (SELECT MAX(mat.periodo) AS MAIOR_PERIODO, MAX(CONCAT(t.ano,'/',t.semestre)) AS periodo_letivo
+                                            FROM matricula_aluno_turma mat
+                                            inner join turma t on t.turma_id = mat.turma_id
+                                            inner join matricula_aluno m on m.matricula_aluno_id = mat.matricula_aluno_id
+                                            where  m.matricula_aluno_id = '$param1'
+                                            UNION
+                                            SELECT MAX(p.periodo) AS MAIOR_PERIODO, periodo_letivo AS periodo_letivo
+                                            FROM matricula_aluno_turma mat
+                                            inner join matricula_aluno m on m.matricula_aluno_id = mat.matricula_aluno_id
+                                            inner join turma t on t.turma_id = mat.turma_id
+                                            left join periodo p on p.periodo_id = t.periodo_id
+                                            left join periodo_letivo pl on pl.periodo_letivo_id = mat.periodo_letivo_id
+                                            where  m.matricula_aluno_id = '$param1') as x";
+                                    //echo $sql;
+                                                    $Matrizperiodo = $this->db->query($sql_periodo)->result_array();
+                                                    foreach ($Matrizperiodo as $row_periodo):
+                                                    $maior_periodo_letivo = $row_periodo['periodo_letivo'];
+                                                    $maior_periodo = $row_periodo['MAIOR_PERIODO'];
+                                                    
+                                                    if ($maior_periodo == 'I') {
+                                                        $maior_periodo2 = 1;
+                                                    } else if ($maior_periodo == 'II') {
+                                                        $maior_periodo2 = 2;
+                                                    } else if ($maior_periodo == 'III') {
+                                                        $maior_periodo2 = 3;
+                                                    }else if ($maior_periodo == 'IV') {
+                                                        $maior_periodo2 = 4;
+                                                    }else if ($maior_periodo == 'V') {
+                                                        $maior_periodo2 = 5;
+                                                    }else if ($maior_periodo == 'VI') {
+                                                        $maior_periodo2 = 6;
+                                                    }else if ($maior_periodo == 'VII') {
+                                                        $maior_periodo2 = 7;
+                                                    }else if ($maior_periodo == 'VIII') {
+                                                        $maior_periodo2 = 8;
+                                                    }else if ($maior_periodo == 'IX') {
+                                                        $maior_periodo2 = 9;
+                                                    }else if ($maior_periodo == 'X') {
+                                                        $maior_periodo2 = 10;
+                                                    }
+                                                    endforeach;
+
+
+                                    $query = "SELECT x.turma_id as turma_id, x.tur_tx_descricao as turma,x.periodo_id as periodo, x.turno as turno,  x.periodo_letivo,x.periodo_letivo_id as periodo_letivo_id, x.periodo_letivo_turma
+                                                    from(select curso_id, turma_id,tur_tx_descricao, periodo_id, tu.descricao as turno, pl.periodo_letivo as periodo_letivo, pl.periodo_letivo_id as periodo_letivo_id,
+                                                    CONCAT(t.ano,'/',t.semestre) AS periodo_letivo_turma FROM turma t
+                                                    inner join turno tu on tu.turno_id = t.turno_id
+                                                    left join periodo_letivo pl on pl.periodo_letivo_id = t.periodo_letivo_id)  X
+                                                    WHERE x.curso_id = '$curso_id' and (x.periodo_letivo_turma > '$maior_periodo_letivo' or x.periodo_letivo > '$maior_periodo_letivo') and x.periodo_id > $maior_periodo2";
+                                                        
+                                    // echo $query;
+                                    $MatrizArrayt = $this->db->query($query)->result_array();
+                                    
+                                    ?>          
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <select name='turma_busca' id='turma_busca'>
+                                                <?php
+                                                foreach ($MatrizArrayt as $row_turma):
+                                                    $id_turma = $row_turma['turma_id'];
+                                                    $turma = $row_turma['turma'];
+                                                    $turno = $row_turma['turno'];
+                                                    $periodo2 = $row_turma['periodo'];
+                                                    $periodo_letivo = $row_turma['periodo_letivo'];
+                                                    $periodo_letivo_id = $row_turma['periodo_letivo_id'];
+                                                    
+                                                    if ($periodo2 == 1) {
+                                                        $periodo = 'I';
+                                                    } else if ($periodo2 == 2) {
+                                                        $periodo = 'II';
+                                                    } else if ($periodo2 == 3) {
+                                                        $periodo = 'III';
+                                                    } else if ($periodo2 == 4) {
+                                                        $periodo = 'IV';
+                                                    } else if ($periodo2 == 5) {
+                                                        $periodo = 'V';
+                                                    } else if ($periodo2 == 6) {
+                                                        $periodo = 'VI';
+                                                    } else if ($periodo2 == 7) {
+                                                        $periodo = 'VII';
+                                                    } else if ($periodo2 == 8) {
+                                                        $periodo = 'VIII';
+                                                    } else if ($periodo2 == 9) {
+                                                        $periodo = 'IX';
+                                                    } else if ($periodo2 == 10) {
+                                                        $periodo = 'X';
+                                                    }
+                                                    ?>
+                                                    <option value='<?php echo $id_turma; ?>'><?php echo $row_turma['turma'].'/'.$turno; ?> / <?php echo $periodo.'  Per. '; ?>(<?php echo $periodo_letivo; ?>)</option>
+                                                     <input type="hidden" readonly="true" readonly="true" class="validate[required]" minlength="8" onkeypress="this.value.toUpperCase();" value="<?php echo $periodo_letivo_id; ?>" name="periodo_letivo_id"/>
+                                                     <input type="hidden" readonly="true" readonly="true" class="validate[required]" minlength="8" onkeypress="this.value.toUpperCase();" value="<?php echo $periodo2; ?>" name="periodo"/>
+
+                                                   <?php
+                                                endforeach;
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>         
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-gray"><?php echo get_phrase('Confirmar Rematricular'); ?></button>
+                    </div>
+                    </form>                
+                </div>                
+            </div>
+
+
+            <?php
+        endforeach;
     }
 
     function professor_disciplina($param1 = '', $param2 = '', $param3 = '', $param4 = '') {
@@ -2743,70 +2950,70 @@ where  ca.cadastro_aluno_id != '' ";
 
             //  $turno1 = $row['can_tx_turno01'];
 
-            /*** UF nascimento***/
+            /*             * * UF nascimento** */
             $sql_uf_nascimento = "SELECT * FROM uf where codigo = $uf_nascimento ";
             $uf_nasc = $this->db->query($sql_uf_nascimento)->result_array();
 
             foreach ($uf_nasc as $row_uf):
                 $uf_nome = $row_uf['nome'];
             endforeach;
-            
-            /*** UF RG***/
+
+            /*             * * UF RG** */
             if ($row['rg_uf']) {
                 $uf_rg = $row['rg_uf'];
             } else {
                 $uf_rg = 0;
             }
-             $sql_uf_rg = "SELECT * FROM uf where codigo = $uf_rg ";
+            $sql_uf_rg = "SELECT * FROM uf where codigo = $uf_rg ";
             $uf_rg2 = $this->db->query($sql_uf_rg)->result_array();
 
             foreach ($uf_rg2 as $row_rg):
                 $uf_rg_nome = $row_rg['nome'];
             endforeach;
-            
-            /*** UF TÍTULO***/
+
+            /*             * * UF TÍTULO** */
             if ($row['uf_titulo']) {
                 $uf_titulo = $row['uf_titulo'];
             } else {
                 $uf_titulo = 0;
             }
-             $sql_uf_titulo = "SELECT * FROM uf where codigo = $uf_nascimento ";
+            $sql_uf_titulo = "SELECT * FROM uf where codigo = $uf_nascimento ";
             $uf_tit = $this->db->query($sql_uf_titulo)->result_array();
 
             foreach ($uf_tit as $row_tit):
                 $uf_tit_nome = $row_tit['nome'];
             endforeach;
 
-            /*** UF CERTIDÃO DE RESERVISTA***/
+            /*             * * UF CERTIDÃO DE RESERVISTA** */
             if ($row['uf_cert_reservista']) {
                 $uf_cert_reservista = $row['uf_cert_reservista'];
             } else {
                 $uf_cert_reservista = 0;
             }
-             $sql_uf_reservista = "SELECT * FROM uf where codigo = $uf_cert_reservista ";
+            $sql_uf_reservista = "SELECT * FROM uf where codigo = $uf_cert_reservista ";
             $uf_reservista = $this->db->query($sql_uf_reservista)->result_array();
 
             foreach ($uf_reservista as $row_reservista):
                 $uf_reservista_nome = $row_reservista['nome'];
             endforeach;
-            
-            
-             /*** UF ENDEREÇO - MORADIA***/
+
+
+            /*             * * UF ENDEREÇO - MORADIA** */
             if ($row['uf']) {
                 $uf_endereco = $row['uf'];
             } else {
                 $uf_endereco = 0;
             }
-             $sql_uf_endereco = "SELECT * FROM uf where codigo = $uf_endereco ";
+            $sql_uf_endereco = "SELECT * FROM uf where codigo = $uf_endereco ";
             $uf_end = $this->db->query($sql_uf_endereco)->result_array();
 
             foreach ($uf_end as $row_endereco):
                 $uf_endereco_nome = $row_endereco['nome'];
             endforeach;
-            
-            
-            /* município nascimento**/
-            
+
+
+            /* município nascimento* */
+
             $sql = "SELECT * FROM municipio where codigo = $cidade_nascimento  ";
             $mun = $this->db->query($sql)->result_array();
             foreach ($mun as $row_mun):
@@ -2887,7 +3094,7 @@ where  ca.cadastro_aluno_id != '' ";
             } else {
                 $tipo_escola_tx = 'NÃO INFORMADO';
             }
-            
+
             $forma_ingresso = $row['forma_ingresso'];
             if ($forma_ingresso == '1') {
                 $forma_ingresso_tx = 'VESTIBULAR';
@@ -3041,9 +3248,9 @@ where  ca.cadastro_aluno_id != '' ";
             <?php echo form_open('educacional/matricula/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
                     <div class="padded">
                         <div style="width: 400px; margin: auto;">
-                           
-                        <b><font style="color: #000000; font-size: 24px;">FICHA DE CADASTRO DO ALUNO</font></b>
-                        <hr/>
+
+                            <b><font style="color: #000000; font-size: 24px;">FICHA DE CADASTRO DO ALUNO</font></b>
+                            <hr/>
                         </div>
 
                         </br>
@@ -3169,9 +3376,9 @@ where  ca.cadastro_aluno_id != '' ";
                                             <div class="controls" id="load_matriz">
 
                                                 <select name="rg_uf" id="rg_uf" >
-                                                 
-                                                    <option value="<?php echo $uf_rg;  ?>"><?php echo $uf_rg_nome;  ?></option>
-                                                    
+
+                                                    <option value="<?php echo $uf_rg; ?>"><?php echo $uf_rg_nome; ?></option>
+
                                                 </select>
                                             </div>
 
@@ -3207,7 +3414,7 @@ where  ca.cadastro_aluno_id != '' ";
 
                                             <div class="controls">
                                                 <select name="uf_titulo" id="uf_titulo" >
-                                                    <option value="<?php echo $uf_titulo;  ?>"><?php echo $uf_tit_nome;  ?></option>
+                                                    <option value="<?php echo $uf_titulo; ?>"><?php echo $uf_tit_nome; ?></option>
                                                 </select>
 
                                             </div>
@@ -3251,9 +3458,9 @@ where  ca.cadastro_aluno_id != '' ";
                                                 <div class="controls">
                                                     <select name="uf_certidao" id="uf_certidao" >
                                                         <option value="0">Selecione o UF</option>
-           
-                                                        <option value="<?php echo $uf_cert_reservista;  ?>"><?php echo $uf_reservista_nome;  ?></option>
-                                                        
+
+                                                        <option value="<?php echo $uf_cert_reservista; ?>"><?php echo $uf_reservista_nome; ?></option>
+
                                                     </select>
 
                                                 </div>
@@ -3444,8 +3651,8 @@ where  ca.cadastro_aluno_id != '' ";
 
                                             <div class="controls">
                                                 <select name="uf" id="uf" >
-                                                    <option value="<?php echo $uf_endereco;  ?>"><?php echo $uf_endereco_nome;  ?></option>
-                                                    
+                                                    <option value="<?php echo $uf_endereco; ?>"><?php echo $uf_endereco_nome; ?></option>
+
                                                 </select>
 
                                             </div>
@@ -3572,8 +3779,8 @@ where  ca.cadastro_aluno_id != '' ";
                                             <div class="controls">
                                                 <div class="controls">
                                                     <select class="validate[required]" name="cor">
-                                                          <option value="<?php echo $cor; ?>"><?php echo $cor_tx; ?></option>
-                                                        
+                                                        <option value="<?php echo $cor; ?>"><?php echo $cor_tx; ?></option>
+
                                                     </select>
                                                 </div>
                                             </div>
@@ -3626,7 +3833,7 @@ where  ca.cadastro_aluno_id != '' ";
                                             <div class="controls">
                                                 <select name="deficiencia" id="deficiencia" onchange="buscar_deficiencia()">
                                                     <option value="<?php echo $deficiencia; ?>"><?php echo $deficiencia_tx; ?></option>
-                                                   
+
                                                 </select>
 
                                             </div>
@@ -3644,8 +3851,8 @@ where  ca.cadastro_aluno_id != '' ";
 
                                             <div class="controls">
                                                 <select name="tipo_escola" id="tipo_escola" >
-                                                     <option value="<?php echo $tipo_escola; ?>"><?php echo $tipo_escola_tx; ?></option>
-                                                 
+                                                    <option value="<?php echo $tipo_escola; ?>"><?php echo $tipo_escola_tx; ?></option>
+
                                                 </select>
 
                                             </div>
@@ -3880,184 +4087,254 @@ where  ca.cadastro_aluno_id != '' ";
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
         if ($param1 == 'create') {
-            //DADOS PESSOAIS
-            $data['nome'] = $this->input->post('nome');
-            $data['data_nascimento'] = $this->input->post('data_nascimento');
-            $data['pais_origem'] = $this->input->post('pais_origem');
-            $data['uf_nascimento'] = $this->input->post('uf_nascimento');
-            $data['municipio_nascimento'] = $this->input->post('cidade_origem');
-            $data['sexo'] = $this->input->post('sexo');
-            $data['estado_civil'] = $this->input->post('estado_civil');
-            //DOCUMENTOS
-            $data['cpf'] = $this->input->post('cpf');
-            $data['rg'] = $this->input->post('rg');
-            $data['rg_uf'] = $this->input->post('rg_uf');
-            $data['rg_orgao_expeditor'] = $this->input->post('rg_orgao_expeditor');
-            $data['titulo'] = $this->input->post('titulo');
-            $data['uf_titulo'] = $this->input->post('uf_titulo');
-            $data['documento_estrangeiro'] = $this->input->post('documento_estrangeiro');
-            $data['cert_reservista'] = $this->input->post('certidao_reservista');
-            $data['uf_cert_reservista'] = $this->input->post('uf_certidao');
 
-            //SOCIOECONOMICO
-            $data['SE_txIrmaos'] = $this->input->post('SE_txIrmaos');
-            $data['SE_txFilhos'] = $this->input->post('SE_txFilhos');
-            $data['SE_txReside'] = $this->input->post('SE_txReside');
-            $data['SE_txRenda'] = $this->input->post('SE_txRenda');
-            $data['SE_txMembros'] = $this->input->post('SE_txMembros');
-            $data['SE_txTrabalho'] = $this->input->post('SE_txTrabalho');
-            $data['SE_txBolsa'] = $this->input->post('SE_txBolsa');
-            $data['SE_txCH'] = $this->input->post('SE_txCH');
-
-            //ENDEREÇO
-            $data['cep'] = $this->input->post('cep');
-            $data['endereco'] = $this->input->post('endereco');
-            $data['bairro'] = $this->input->post('bairro');
-            $data['uf'] = $this->input->post('uf');
-            $data['cidade'] = $this->input->post('cidade');
-            $data['complemento'] = $this->input->post('complemento');
-
-            //CONTATOS
-            $data['fone'] = $this->input->post('fone');
-            $data['celular'] = $this->input->post('celular');
-            $data['email'] = $this->input->post('email');
-
-            //INFORMAÇÕES
-            $data['nacionalidade'] = $this->input->post('nacionalidade');
-            $data['cor'] = $this->input->post('cor');
-            $data['mae'] = $this->input->post('mae');
-            $data['pai'] = $this->input->post('pai');
-            $data['conjuge'] = $this->input->post('conjuge');
-
-            //INFORMAÇÕES DO RESPONSÁVEL
-            $data['responsavel'] = $this->input->post('responsavel');
-            $data['fone_responsavel'] = $this->input->post('fone_responsavel');
-            $data['rg_responsavel'] = $this->input->post('rg_responsavel');
-            $data['cpf_responsavel'] = $this->input->post('cpf_responsavel');
-            $data['cel_responsavel'] = $this->input->post('celular_responsavel');
-
-            //OBSERVAÇÃO
-            $data['observacao'] = $this->input->post('obs_documento');
-
-
-            $this->db->insert('cadastro_aluno', $data);
-            $aluno_id = mysql_insert_id();
-
-
-            //DEFICIENCIA
-            $datad['aluno_deficiencia'] = $this->input->post('deficiencia');
-            $datad['ad_cegueira'] = $this->input->post('cegueira');
-            $datad['ad_baixa_visao'] = $this->input->post('baixa_visao');
-            $datad['ad_surdez'] = $this->input->post('surdez');
-            $datad['ad_auditiva'] = $this->input->post('auditiva');
-            $datad['ad_fisica'] = $this->input->post('fisica');
-            $datad['ad_surdocegueira'] = $this->input->post('surdocegueira');
-            $datad['ad_multipla'] = $this->input->post('multipla');
-            $datad['ad_intelectual'] = $this->input->post('intelectual');
-            $datad['ad_autismo'] = $this->input->post('autismo');
-            $datad['ad_asperger'] = $this->input->post('asperger');
-            $datad['ad_rett'] = $this->input->post('rett');
-            $datad['ad_transtorno'] = $this->input->post('transtorno_infancia');
-            $datad['ad_superdotacao'] = $this->input->post('superdotacao');
-            $datad['cadastro_aluno_id'] = $aluno_id;
-            $this->db->insert('dados_censo_aluno', $datad);
-            $doencas_id = mysql_insert_id();
-
-            //INSERE NA TABELA MATRICULA ALUNO
-
+            $cpf2 = preg_replace("/\D+/", "", $this->input->post('cpf')); // remove qualquer caracter não numérico
+            $cpf = $cpf2;
             $turma = $this->input->post('turma');
             $curso = $this->input->post('curso');
             //CONSULTA O PERIODO LETIVO.
-            $PeriodoArray = $this->db->query("SELECT *, pl.ano as ano_pl, pl.semestre as semestre_pl FROM turma t
+            $PeriodoArray2 = $this->db->query("SELECT *, pl.ano as ano_pl, pl.semestre as semestre_pl FROM turma t
                 inner join periodo_letivo pl on pl.periodo_letivo_id = t.periodo_letivo_id
  WHERE turma_id = $turma")->result_array();
-            foreach ($PeriodoArray as $row) {
-                $ano_periodo_letivo = $row['ano_pl'];
-                $ano_periodo_letivo_tratado = substr($ano_periodo_letivo, -2);
-                $semestre_periodo_letivo = $row['semestre_pl'];
-                $periodo = $row['periodo_id'];
-                $matriz_id = $row['matriz_id'];
-                $periodo_letivo_id = $row['periodo_letivo_id'];
+            foreach ($PeriodoArray2 as $row222) {
+                $periodo_letivo_id = $row222['periodo_letivo_id'];
             }
 
-            if ($curso == '01') {
-                $curso_mat = '01';
-            } else if ($curso == '02') {
-                $curso_mat = '02';
-            } else if ($curso == '03') {
-                $curso_mat = '03';
-            } else if ($curso == '04') {
-                $curso_mat = '04';
-            } else if ($curso == '05') {
-                $curso_mat = '05';
-            } else if ($curso == '06') {
-                $curso_mat = '06';
-            } else if ($curso == '07') {
-                $curso_mat = '07';
-            } else if ($curso == '08') {
-                $curso_mat = '08';
-            } else if ($curso == '09') {
-                $curso_mat = '09';
-            } else if ($curso == '10') {
-                $curso_mat = '10';
+            $usuarioArray2 = $this->db->query("SELECT count(*) as cont FROM matricula_aluno ma
+                inner join cadastro_aluno ca on ca.cadastro_aluno_id = ma.cadastro_aluno_id
+                inner join cursos cur on cur.cursos_id = ma.curso_id
+                inner join matricula_aluno_turma mat on mat.matricula_aluno_id = ma.matricula_aluno_id
+                left join dados_censo_aluno dca on dca.cadastro_aluno_id = ca.cadastro_aluno_id
+                where  ca.cpf = $cpf and mat.periodo_letivo_id = $periodo_letivo_id and ma.curso_id = $curso")->result_array();
+            foreach ($usuarioArray2 as $rowusu2) {
+                $cont = $rowusu2['cont'];
             }
+            if ($cont >= 1) {
+                ?>
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                <script>
 
-            /*             * ******** REGISTRA NA TABELA MATRICULA_ALUNO ************* */
-            $ra = $ano_periodo_letivo_tratado . $aluno_id . $curso_mat; //VERIFICAR DEPOIS
-            $data_matricula['registro_academico'] = $ra;
-            $data_matricula['data_matricula'] = date('Y-m-d');
-            $data_matricula['situacao'] = '1';
-            $data_matricula['semestre_ano_ingresso'] = $semestre_periodo_letivo . $ano_periodo_letivo;
-            $data_matricula['forma_ingresso'] = $this->input->post('forma_ingresso'); //VERIFICAR
-            $data_matricula['tipo_escola'] = $this->input->post('tipo_escola'); //VERIFICAR
-            $data_matricula['cadastro_aluno_id'] = $aluno_id;
-            $data_matricula['curso_id'] = $this->input->post('curso');
-            $data_matricula['matriz_id'] = $matriz_id;
-            $this->db->insert('matricula_aluno', $data_matricula);
-            $matricula_aluno_id = mysql_insert_id();
+                    alert('Já Existe um registro para este CPF e para este período letívo - Matrícula Não Realizada!');
+                </script>
+                <?php
+            } else {
 
-            /*             * ******** REGISTRA NA TABELA MATRICULA_ALUNO_TURMA SALVANDO A TURMA DO ALUNO ************* */
-            $data_matriculat['data_turma'] = date('Y-m-d'); //VERIFICAR
-            $data_matriculat['matricula_aluno_id'] = $matricula_aluno_id;
-            $data_matriculat['turma_id'] = $this->input->post('turma');
-            $data_matriculat['periodo_letivo_id'] = $periodo_letivo_id;
-            $this->db->insert('matricula_aluno_turma', $data_matriculat);
-            $matricula_aluno_turma_id = mysql_insert_id();
+                //DADOS PESSOAIS
+                $data['nome'] = $this->input->post('nome');
+                $data['data_nascimento'] = $this->input->post('data_nascimento');
+                $data['pais_origem'] = $this->input->post('pais_origem');
+                $data['uf_nascimento'] = $this->input->post('uf_nascimento');
+                $data['municipio_nascimento'] = $this->input->post('cidade_origem');
+                $data['sexo'] = $this->input->post('sexo');
+                $data['estado_civil'] = $this->input->post('estado_civil');
+                //DOCUMENTOS
+                $cpf = preg_replace("/\D+/", "", $this->input->post('cpf')); // remove qualquer caracter não numérico
+                $data['cpf'] = $cpf;
+                $data['rg'] = $this->input->post('rg');
+                $data['rg_uf'] = $this->input->post('rg_uf');
+                $data['rg_orgao_expeditor'] = $this->input->post('rg_orgao_expeditor');
+                $data['titulo'] = $this->input->post('titulo');
+                $data['uf_titulo'] = $this->input->post('uf_titulo');
+                $data['documento_estrangeiro'] = $this->input->post('documento_estrangeiro');
+                $data['cert_reservista'] = $this->input->post('certidao_reservista');
+                $data['uf_cert_reservista'] = $this->input->post('uf_certidao');
+
+                //SOCIOECONOMICO
+                $data['SE_txIrmaos'] = $this->input->post('SE_txIrmaos');
+                $data['SE_txFilhos'] = $this->input->post('SE_txFilhos');
+                $data['SE_txReside'] = $this->input->post('SE_txReside');
+                $data['SE_txRenda'] = $this->input->post('SE_txRenda');
+                $data['SE_txMembros'] = $this->input->post('SE_txMembros');
+                $data['SE_txTrabalho'] = $this->input->post('SE_txTrabalho');
+                $data['SE_txBolsa'] = $this->input->post('SE_txBolsa');
+                $data['SE_txCH'] = $this->input->post('SE_txCH');
+
+                //ENDEREÇO
+                $data['cep'] = $this->input->post('cep');
+                $data['endereco'] = $this->input->post('endereco');
+                $data['bairro'] = $this->input->post('bairro');
+                $data['uf'] = $this->input->post('uf');
+                $data['cidade'] = $this->input->post('cidade');
+                $data['complemento'] = $this->input->post('complemento');
+
+                //CONTATOS
+                $data['fone'] = $this->input->post('fone');
+                $data['celular'] = $this->input->post('celular');
+                $data['email'] = $this->input->post('email');
+
+                //INFORMAÇÕES
+                $data['nacionalidade'] = $this->input->post('nacionalidade');
+                $data['cor'] = $this->input->post('cor');
+                $data['mae'] = $this->input->post('mae');
+                $data['pai'] = $this->input->post('pai');
+                $data['conjuge'] = $this->input->post('conjuge');
+
+                //INFORMAÇÕES DO RESPONSÁVEL
+                $data['responsavel'] = $this->input->post('responsavel');
+                $data['fone_responsavel'] = $this->input->post('fone_responsavel');
+                $data['rg_responsavel'] = $this->input->post('rg_responsavel');
+                $data['cpf_responsavel'] = $this->input->post('cpf_responsavel');
+                $data['cel_responsavel'] = $this->input->post('celular_responsavel');
+
+                //OBSERVAÇÃO
+                $data['observacao'] = $this->input->post('obs_documento');
 
 
+                $this->db->insert('cadastro_aluno', $data);
+                $aluno_id = mysql_insert_id();
 
-            /*             * ******** CONSULTA AS DISCIPLINA DO ALUNO REFERENTE AO PERÍODO E A MATRIZ DO CURSO, E SALVA NA TABELA ALUNO_dISCIPLINA ************* */
-            $turma = $this->input->post('turma');
-            $curso = $this->input->post('curso');
-            $periodo_turma = '5'; //$periodo_id;
 
-            $MatrizArray = $this->db->query("SELECT max(mat_tx_ano) as matriz, matriz_id FROM matriz WHERE cursos_id = $curso")->result_array();
+                //DEFICIENCIA
+                $datad['aluno_deficiencia'] = $this->input->post('deficiencia');
+                $datad['ad_cegueira'] = $this->input->post('cegueira');
+                $datad['ad_baixa_visao'] = $this->input->post('baixa_visao');
+                $datad['ad_surdez'] = $this->input->post('surdez');
+                $datad['ad_auditiva'] = $this->input->post('auditiva');
+                $datad['ad_fisica'] = $this->input->post('fisica');
+                $datad['ad_surdocegueira'] = $this->input->post('surdocegueira');
+                $datad['ad_multipla'] = $this->input->post('multipla');
+                $datad['ad_intelectual'] = $this->input->post('intelectual');
+                $datad['ad_autismo'] = $this->input->post('autismo');
+                $datad['ad_asperger'] = $this->input->post('asperger');
+                $datad['ad_rett'] = $this->input->post('rett');
+                $datad['ad_transtorno'] = $this->input->post('transtorno_infancia');
+                $datad['ad_superdotacao'] = $this->input->post('superdotacao');
+                $datad['cadastro_aluno_id'] = $aluno_id;
+                $this->db->insert('dados_censo_aluno', $datad);
+                $doencas_id = mysql_insert_id();
 
-            foreach ($MatrizArray as $row) {
-                $matriz = $row['matriz'];
-                $matriz_id = $row['matriz_id'];
-            }
+                //INSERE NA TABELA MATRICULA ALUNO
 
-            //CONSULTA O PERIODO LETIVO.
-            $DisciplinaArray = $this->db->query("SELECT * FROM matriz m
+                $turma = $this->input->post('turma');
+                $curso = $this->input->post('curso');
+                //CONSULTA O PERIODO LETIVO.
+                $PeriodoArray = $this->db->query("SELECT *, pl.ano as ano_pl, pl.semestre as semestre_pl FROM turma t
+                inner join periodo_letivo pl on pl.periodo_letivo_id = t.periodo_letivo_id
+ WHERE turma_id = $turma")->result_array();
+                foreach ($PeriodoArray as $row) {
+                    $ano_periodo_letivo = $row['ano_pl'];
+                    $ano_periodo_letivo_tratado = substr($ano_periodo_letivo, -2);
+                    $semestre_periodo_letivo = $row['semestre_pl'];
+                    $periodo = $row['periodo_id'];
+                    $matriz_id = $row['matriz_id'];
+                    $periodo_letivo_id = $row['periodo_letivo_id'];
+                }
+
+                if ($curso == '01') {
+                    $curso_mat = '01';
+                } else if ($curso == '02') {
+                    $curso_mat = '02';
+                } else if ($curso == '03') {
+                    $curso_mat = '03';
+                } else if ($curso == '04') {
+                    $curso_mat = '04';
+                } else if ($curso == '05') {
+                    $curso_mat = '05';
+                } else if ($curso == '06') {
+                    $curso_mat = '06';
+                } else if ($curso == '07') {
+                    $curso_mat = '07';
+                } else if ($curso == '08') {
+                    $curso_mat = '08';
+                } else if ($curso == '09') {
+                    $curso_mat = '09';
+                } else if ($curso == '10') {
+                    $curso_mat = '10';
+                }
+
+                /********** REGISTRA NA TABELA MATRICULA_ALUNO ************* */
+                $ra = $ano_periodo_letivo_tratado . $aluno_id . $curso_mat; //VERIFICAR DEPOIS
+                $data_matricula['registro_academico'] = $ra;
+                $data_matricula['data_matricula'] = date('Y-m-d');
+                $data_matricula['situacao'] = '1';
+                $data_matricula['semestre_ano_ingresso'] = $semestre_periodo_letivo . $ano_periodo_letivo;
+                $data_matricula['forma_ingresso'] = $this->input->post('forma_ingresso'); //VERIFICAR
+                $data_matricula['tipo_escola'] = $this->input->post('tipo_escola'); //VERIFICAR
+                $data_matricula['cadastro_aluno_id'] = $aluno_id;
+                $data_matricula['curso_id'] = $this->input->post('curso');
+                $data_matricula['matriz_id'] = $matriz_id;
+                $data_matricula['periodo_atual'] = $periodo;
+                $this->db->insert('matricula_aluno', $data_matricula);
+                $matricula_aluno_id = mysql_insert_id();
+                
+                
+
+                /*                 * ******** REGISTRA NA TABELA MATRICULA_ALUNO_TURMA SALVANDO A TURMA DO ALUNO ************* */
+                $data_matriculat['data_turma'] = date('Y-m-d'); //VERIFICAR
+                $data_matriculat['matricula_aluno_id'] = $matricula_aluno_id;
+                $data_matriculat['turma_id'] = $this->input->post('turma');
+                $data_matriculat['situacao_aluno_turma'] = '1';
+                $data_matriculat['periodo_letivo_id'] = $periodo_letivo_id;
+                $this->db->insert('matricula_aluno_turma', $data_matriculat);
+                $matricula_aluno_turma_id = mysql_insert_id();
+
+
+                /*                 * ******** CONSULTA AS DISCIPLINA DO ALUNO REFERENTE AO PERÍODO E A MATRIZ DO CURSO
+                  E SALVA NA TABELA ALUNO_dISCIPLINA ************* */
+                $turma = $this->input->post('turma');
+                $curso = $this->input->post('curso');
+                $periodo_turma = $periodo;
+
+                $MatrizArray = $this->db->query("SELECT max(mat_tx_ano) as matriz, matriz_id FROM matriz WHERE cursos_id = $curso")->result_array();
+
+                foreach ($MatrizArray as $row) {
+                    $matriz = $row['matriz'];
+                    $matriz_id = $row['matriz_id'];
+                }
+
+                //CONSULTA O PERIODO LETIVO.
+                $DisciplinaArray = $this->db->query("SELECT * FROM matriz m
 inner join matriz_disciplina md on md.matriz_id = m.matriz_id
 inner join disciplina d on d.disciplina_id = md.disciplina_id
 where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz")->result_array();
-            foreach ($DisciplinaArray as $rowda) {
-                $matriz_disciplina_id = $rowda['matriz_disciplina_id'];
+                foreach ($DisciplinaArray as $rowda) {
+                    $matriz_disciplina_id = $rowda['matriz_disciplina_id'];
 
-                $data_matriculada['matriz_disciplina_id'] = $matriz_disciplina_id;
-                $data_matriculada['matricula_aluno_turma_id'] = $matricula_aluno_turma_id;
-                $this->db->insert('disciplina_aluno', $data_matriculada);
-                $aluno_disciplina_id = mysql_insert_id();
+                    $data_matriculada['matriz_disciplina_id'] = $matriz_disciplina_id;
+                    $data_matriculada['matricula_aluno_turma_id'] = $matricula_aluno_turma_id;
+                    $this->db->insert('disciplina_aluno', $data_matriculada);
+                    $aluno_disciplina_id = mysql_insert_id();
 
-                $data_nota['disciplina_aluno_id'] = $aluno_disciplina_id;
-                $this->db->insert('disciplina_aluno_nota', $data_nota);
-                $aluno_disciplina_nota_id = mysql_insert_id();
+                    $data_nota['disciplina_aluno_id'] = $aluno_disciplina_id;
+                    $this->db->insert('disciplina_aluno_nota', $data_nota);
+                    $aluno_disciplina_nota_id = mysql_insert_id();
+                }
+
+
+                /*                 * ******** CRIA UM USUÁRIO PARA O ALUNO ************* */
+                $usuarioArray = $this->db->query("SELECT * FROM matricula_aluno ma
+                inner join cadastro_aluno ca on ca.cadastro_aluno_id = ma.cadastro_aluno_id
+                inner join cursos cur on cur.cursos_id = ma.curso_id
+                left join dados_censo_aluno dca on dca.cadastro_aluno_id = ca.cadastro_aluno_id
+                where  ma.matricula_aluno_id = $matricula_aluno_id")->result_array();
+                foreach ($usuarioArray as $rowusu) {
+                    $nome = $rowusu['nome'];
+                    $ra = $rowusu['registro_academico'];
+                    $cpf = $rowusu['cpf'];
+                    $email = $rowusu['email'];
+
+                    $data_usuario['nome'] = $nome;
+                    $data_usuario['usu_tx_login'] = $ra;
+                    $data_usuario['usu_tx_senha'] = $cpf;
+                    $data_usuario['usu_tx_email'] = $email;
+                    $data_usuario['perfis_id'] = '12';
+                    $data_usuario['usu_nb_tipo'] = '0';
+                    $data_usuario['usu_nb_status'] = '0';
+                    $this->db->insert('usuarios', $data_usuario);
+                    $usuario_aluno_id = mysql_insert_id();
+                }
+
+                /*                 * ******** CRIA UM EVENTO ************* */
+                $data_eventos['descricao'] = 'Aluno Matriculado para o período letívo : ' . $ano_periodo_letivo . '/' . $semestre_periodo_letivo;
+                $data_eventos['data_registro'] = date('Y-m-d');
+                // $data_eventos['usuario_id'] = $this->ci->session->userdata('login');// $this->session->set_userdata('login');   /////////// $data['emp_nb_codigo'] = $this->session->userdata('empresa');
+                $data_eventos['codigo_evento'] = '1';
+                $data_eventos['matricula_aluno_id'] = $matricula_aluno_id;
+                $this->db->insert('eventos', $data_eventos);
+                $eventos_id = mysql_insert_id();
             }
-
             $this->session->set_flashdata('flash_message', get_phrase('aluno_cadastro_com_sucesso'));
-            redirect(base_url() . 'index.php?educacional/aluno/' . $aluno_id, 'refresh');
+            redirect(base_url() . 'index.php?educacional/situacao_aluno/' . $matricula_aluno_id, 'refresh');
         }
 
 
@@ -4078,190 +4355,258 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
         $page_data['page_title'] = get_phrase('Educacional->');
         $this->load->view('../views/educacional/index', $page_data);
     }
-
+    
     function matricula_vestibular($param1 = '', $param2 = '', $param3 = '') {
 
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
         if ($param1 == 'create') {
-            //DADOS PESSOAIS
-            $data['nome'] = $this->input->post('nome');
-            $data['data_nascimento'] = $this->input->post('data_nascimento');
-            $data['pais_origem'] = $this->input->post('pais_origem');
-            $data['uf_nascimento'] = $this->input->post('uf_nascimento');
-            $data['municipio_nascimento'] = $this->input->post('cidade_origem');
-            $data['sexo'] = $this->input->post('sexo');
-            $data['estado_civil'] = $this->input->post('estado_civil');
-            //DOCUMENTOS
-            $data['cpf'] = $this->input->post('cpf');
-            $data['rg'] = $this->input->post('rg');
-            $data['rg_uf'] = $this->input->post('rg_uf');
-            $data['rg_orgao_expeditor'] = $this->input->post('rg_orgao_expeditor');
-            $data['titulo'] = $this->input->post('titulo');
-            $data['uf_titulo'] = $this->input->post('uf_titulo');
-            $data['documento_estrangeiro'] = $this->input->post('documento_estrangeiro');
-            $data['cert_reservista'] = $this->input->post('certidao_reservista');
-            $data['uf_cert_reservista'] = $this->input->post('uf_certidao');
 
-            //SOCIOECONOMICO
-            $data['SE_txIrmaos'] = $this->input->post('SE_txIrmaos');
-            $data['SE_txFilhos'] = $this->input->post('SE_txFilhos');
-            $data['SE_txReside'] = $this->input->post('SE_txReside');
-            $data['SE_txRenda'] = $this->input->post('SE_txRenda');
-            $data['SE_txMembros'] = $this->input->post('SE_txMembros');
-            $data['SE_txTrabalho'] = $this->input->post('SE_txTrabalho');
-            $data['SE_txBolsa'] = $this->input->post('SE_txBolsa');
-            $data['SE_txCH'] = $this->input->post('SE_txCH');
-
-            //ENDEREÇO
-            $data['cep'] = $this->input->post('cep');
-            $data['endereco'] = $this->input->post('endereco');
-            $data['bairro'] = $this->input->post('bairro');
-            $data['uf'] = $this->input->post('uf');
-            $data['cidade'] = $this->input->post('cidade');
-            $data['complemento'] = $this->input->post('complemento');
-
-            //CONTATOS
-            $data['fone'] = $this->input->post('fone');
-            $data['celular'] = $this->input->post('celular');
-            $data['email'] = $this->input->post('email');
-
-            //INFORMAÇÕES
-            $data['nacionalidade'] = $this->input->post('nacionalidade');
-            $data['cor'] = $this->input->post('cor');
-            $data['mae'] = $this->input->post('mae');
-            $data['pai'] = $this->input->post('pai');
-            $data['conjuge'] = $this->input->post('conjuge');
-
-            //INFORMAÇÕES DO RESPONSÁVEL
-            $data['responsavel'] = $this->input->post('responsavel');
-            $data['fone_responsavel'] = $this->input->post('fone_responsavel');
-            $data['rg_responsavel'] = $this->input->post('rg_responsavel');
-            $data['cpf_responsavel'] = $this->input->post('cpf_responsavel');
-            $data['cel_responsavel'] = $this->input->post('celular_responsavel');
-
-            //OBSERVAÇÃO
-            $data['observacao'] = $this->input->post('obs_documento');
-
-
-            $this->db->insert('cadastro_aluno', $data);
-            $aluno_id = mysql_insert_id();
-
-
-            //DEFICIENCIA
-            $datad['aluno_deficiencia'] = $this->input->post('deficiencia');
-            $datad['ad_cegueira'] = $this->input->post('cegueira');
-            $datad['ad_baixa_visao'] = $this->input->post('baixa_visao');
-            $datad['ad_surdez'] = $this->input->post('surdez');
-            $datad['ad_auditiva'] = $this->input->post('auditiva');
-            $datad['ad_fisica'] = $this->input->post('fisica');
-            $datad['ad_surdocegueira'] = $this->input->post('surdocegueira');
-            $datad['ad_multipla'] = $this->input->post('multipla');
-            $datad['ad_intelectual'] = $this->input->post('intelectual');
-            $datad['ad_autismo'] = $this->input->post('autismo');
-            $datad['ad_asperger'] = $this->input->post('asperger');
-            $datad['ad_rett'] = $this->input->post('rett');
-            $datad['ad_transtorno'] = $this->input->post('transtorno_infancia');
-            $datad['ad_superdotacao'] = $this->input->post('superdotacao');
-            $datad['cadastro_aluno_id'] = $aluno_id;
-            $this->db->insert('dados_censo_aluno', $datad);
-            $doencas_id = mysql_insert_id();
-
-            //INSERE NA TABELA MATRICULA ALUNO
-
+            $cpf2 = preg_replace("/\D+/", "", $this->input->post('cpf')); // remove qualquer caracter não numérico
+            $cpf = $cpf2;
             $turma = $this->input->post('turma');
-            $curso = $this->input->post('curso');
             //CONSULTA O PERIODO LETIVO.
-            $PeriodoArray = $this->db->query("SELECT *, pl.ano as ano_pl, pl.semestre as semestre_pl FROM turma t
+            $PeriodoArray2 = $this->db->query("SELECT *, pl.ano as ano_pl, pl.semestre as semestre_pl FROM turma t
                 inner join periodo_letivo pl on pl.periodo_letivo_id = t.periodo_letivo_id
  WHERE turma_id = $turma")->result_array();
-            foreach ($PeriodoArray as $row) {
-                $ano_periodo_letivo = $row['ano_pl'];
-                $ano_periodo_letivo_tratado = substr($ano_periodo_letivo, -2);
-                $semestre_periodo_letivo = $row['semestre_pl'];
-                $periodo = $row['periodo_id'];
-                $matriz_id = $row['matriz_id'];
-                $periodo_letivo_id = $row['periodo_letivo_id'];
+            foreach ($PeriodoArray2 as $row222) {
+                $periodo_letivo_id = $row222['periodo_letivo_id'];
             }
 
-            if ($curso == '01') {
-                $curso_mat = '01';
-            } else if ($curso == '02') {
-                $curso_mat = '02';
-            } else if ($curso == '03') {
-                $curso_mat = '03';
-            } else if ($curso == '04') {
-                $curso_mat = '04';
-            } else if ($curso == '05') {
-                $curso_mat = '05';
-            } else if ($curso == '06') {
-                $curso_mat = '06';
-            } else if ($curso == '07') {
-                $curso_mat = '07';
-            } else if ($curso == '08') {
-                $curso_mat = '08';
-            } else if ($curso == '09') {
-                $curso_mat = '09';
-            } else if ($curso == '10') {
-                $curso_mat = '10';
+            $usuarioArray2 = $this->db->query("SELECT count(*) as cont FROM matricula_aluno ma
+                inner join cadastro_aluno ca on ca.cadastro_aluno_id = ma.cadastro_aluno_id
+                inner join cursos cur on cur.cursos_id = ma.curso_id
+                inner join matricula_aluno_turma mat on mat.matricula_aluno_id = ma.matricula_aluno_id
+                left join dados_censo_aluno dca on dca.cadastro_aluno_id = ca.cadastro_aluno_id
+                where  ca.cpf = $cpf and mat.periodo_letivo_id = $periodo_letivo_id")->result_array();
+            foreach ($usuarioArray2 as $rowusu2) {
+                $cont = $rowusu2['cont'];
             }
+            if ($cont >= 1) {
+                ?>
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                <script>
 
-            /*             * ******** REGISTRA NA TABELA MATRICULA_ALUNO ************* */
-            $ra = $ano_periodo_letivo_tratado . $aluno_id . $curso_mat; //VERIFICAR DEPOIS
-            $data_matricula['registro_academico'] = $ra;
-            $data_matricula['data_matricula'] = date('Y-m-d');
-            $data_matricula['situacao'] = '1';
-            $data_matricula['semestre_ano_ingresso'] = $semestre_periodo_letivo . $ano_periodo_letivo;
-            $data_matricula['forma_ingresso'] = $this->input->post('forma_ingresso'); //VERIFICAR
-            $data_matricula['tipo_escola'] = $this->input->post('tipo_escola'); //VERIFICAR
-            $data_matricula['cadastro_aluno_id'] = $aluno_id;
-            $data_matricula['curso_id'] = $this->input->post('curso');
-            $data_matricula['matriz_id'] = $matriz_id;
-            $this->db->insert('matricula_aluno', $data_matricula);
-            $matricula_aluno_id = mysql_insert_id();
+                    alert('Já Existe um registro para este CPF e para este período letívo - Matrícula Não Realizada!');
+                </script>
+                <?php
+            } else {
 
-            /*             * ******** REGISTRA NA TABELA MATRICULA_ALUNO_TURMA SALVANDO A TURMA DO ALUNO ************* */
-            $data_matriculat['data_turma'] = date('Y-m-d'); //VERIFICAR
-            $data_matriculat['matricula_aluno_id'] = $matricula_aluno_id;
-            $data_matriculat['turma_id'] = $this->input->post('turma');
-            $data_matriculat['periodo_letivo_id'] = $periodo_letivo_id;
-            $this->db->insert('matricula_aluno_turma', $data_matriculat);
-            $matricula_aluno_turma_id = mysql_insert_id();
+                //DADOS PESSOAIS
+                $data['nome'] = $this->input->post('nome');
+                $data['data_nascimento'] = $this->input->post('data_nascimento');
+                $data['pais_origem'] = $this->input->post('pais_origem');
+                $data['uf_nascimento'] = $this->input->post('uf_nascimento');
+                $data['municipio_nascimento'] = $this->input->post('cidade_origem');
+                $data['sexo'] = $this->input->post('sexo');
+                $data['estado_civil'] = $this->input->post('estado_civil');
+                //DOCUMENTOS
+                $data['cpf'] = $this->input->post('cpf');
+                $data['rg'] = $this->input->post('rg');
+                $data['rg_uf'] = $this->input->post('rg_uf');
+                $data['rg_orgao_expeditor'] = $this->input->post('rg_orgao_expeditor');
+                $data['titulo'] = $this->input->post('titulo');
+                $data['uf_titulo'] = $this->input->post('uf_titulo');
+                $data['documento_estrangeiro'] = $this->input->post('documento_estrangeiro');
+                $data['cert_reservista'] = $this->input->post('certidao_reservista');
+                $data['uf_cert_reservista'] = $this->input->post('uf_certidao');
+
+                //SOCIOECONOMICO
+                $data['SE_txIrmaos'] = $this->input->post('SE_txIrmaos');
+                $data['SE_txFilhos'] = $this->input->post('SE_txFilhos');
+                $data['SE_txReside'] = $this->input->post('SE_txReside');
+                $data['SE_txRenda'] = $this->input->post('SE_txRenda');
+                $data['SE_txMembros'] = $this->input->post('SE_txMembros');
+                $data['SE_txTrabalho'] = $this->input->post('SE_txTrabalho');
+                $data['SE_txBolsa'] = $this->input->post('SE_txBolsa');
+                $data['SE_txCH'] = $this->input->post('SE_txCH');
+
+                //ENDEREÇO
+                $data['cep'] = $this->input->post('cep');
+                $data['endereco'] = $this->input->post('endereco');
+                $data['bairro'] = $this->input->post('bairro');
+                $data['uf'] = $this->input->post('uf');
+                $data['cidade'] = $this->input->post('cidade');
+                $data['complemento'] = $this->input->post('complemento');
+
+                //CONTATOS
+                $data['fone'] = $this->input->post('fone');
+                $data['celular'] = $this->input->post('celular');
+                $data['email'] = $this->input->post('email');
+
+                //INFORMAÇÕES
+                $data['nacionalidade'] = $this->input->post('nacionalidade');
+                $data['cor'] = $this->input->post('cor');
+                $data['mae'] = $this->input->post('mae');
+                $data['pai'] = $this->input->post('pai');
+                $data['conjuge'] = $this->input->post('conjuge');
+
+                //INFORMAÇÕES DO RESPONSÁVEL
+                $data['responsavel'] = $this->input->post('responsavel');
+                $data['fone_responsavel'] = $this->input->post('fone_responsavel');
+                $data['rg_responsavel'] = $this->input->post('rg_responsavel');
+                $data['cpf_responsavel'] = $this->input->post('cpf_responsavel');
+                $data['cel_responsavel'] = $this->input->post('celular_responsavel');
+
+                //OBSERVAÇÃO
+                $data['observacao'] = $this->input->post('obs_documento');
+
+
+                $this->db->insert('cadastro_aluno', $data);
+                $aluno_id = mysql_insert_id();
+
+
+                //DEFICIENCIA
+                $datad['aluno_deficiencia'] = $this->input->post('deficiencia');
+                $datad['ad_cegueira'] = $this->input->post('cegueira');
+                $datad['ad_baixa_visao'] = $this->input->post('baixa_visao');
+                $datad['ad_surdez'] = $this->input->post('surdez');
+                $datad['ad_auditiva'] = $this->input->post('auditiva');
+                $datad['ad_fisica'] = $this->input->post('fisica');
+                $datad['ad_surdocegueira'] = $this->input->post('surdocegueira');
+                $datad['ad_multipla'] = $this->input->post('multipla');
+                $datad['ad_intelectual'] = $this->input->post('intelectual');
+                $datad['ad_autismo'] = $this->input->post('autismo');
+                $datad['ad_asperger'] = $this->input->post('asperger');
+                $datad['ad_rett'] = $this->input->post('rett');
+                $datad['ad_transtorno'] = $this->input->post('transtorno_infancia');
+                $datad['ad_superdotacao'] = $this->input->post('superdotacao');
+                $datad['cadastro_aluno_id'] = $aluno_id;
+                $this->db->insert('dados_censo_aluno', $datad);
+                $doencas_id = mysql_insert_id();
+
+                //INSERE NA TABELA MATRICULA ALUNO
+
+                $turma = $this->input->post('turma');
+                $curso = $this->input->post('curso');
+                //CONSULTA O PERIODO LETIVO.
+                $PeriodoArray = $this->db->query("SELECT *, pl.ano as ano_pl, pl.semestre as semestre_pl FROM turma t
+                inner join periodo_letivo pl on pl.periodo_letivo_id = t.periodo_letivo_id
+ WHERE turma_id = $turma")->result_array();
+                foreach ($PeriodoArray as $row) {
+                    $ano_periodo_letivo = $row['ano_pl'];
+                    $ano_periodo_letivo_tratado = substr($ano_periodo_letivo, -2);
+                    $semestre_periodo_letivo = $row['semestre_pl'];
+                    $periodo = $row['periodo_id'];
+                    $matriz_id = $row['matriz_id'];
+                    $periodo_letivo_id = $row['periodo_letivo_id'];
+                }
+
+                if ($curso == '01') {
+                    $curso_mat = '01';
+                } else if ($curso == '02') {
+                    $curso_mat = '02';
+                } else if ($curso == '03') {
+                    $curso_mat = '03';
+                } else if ($curso == '04') {
+                    $curso_mat = '04';
+                } else if ($curso == '05') {
+                    $curso_mat = '05';
+                } else if ($curso == '06') {
+                    $curso_mat = '06';
+                } else if ($curso == '07') {
+                    $curso_mat = '07';
+                } else if ($curso == '08') {
+                    $curso_mat = '08';
+                } else if ($curso == '09') {
+                    $curso_mat = '09';
+                } else if ($curso == '10') {
+                    $curso_mat = '10';
+                }
+
+                /*                 * ******** REGISTRA NA TABELA MATRICULA_ALUNO ************* */
+                $ra = $ano_periodo_letivo_tratado . $aluno_id . $curso_mat; //VERIFICAR DEPOIS
+                $data_matricula['registro_academico'] = $ra;
+                $data_matricula['data_matricula'] = date('Y-m-d');
+                $data_matricula['situacao'] = '1';
+                $data_matricula['semestre_ano_ingresso'] = $semestre_periodo_letivo . $ano_periodo_letivo;
+                $data_matricula['forma_ingresso'] = $this->input->post('forma_ingresso'); //VERIFICAR
+                $data_matricula['tipo_escola'] = $this->input->post('tipo_escola'); //VERIFICAR
+                $data_matricula['cadastro_aluno_id'] = $aluno_id;
+                $data_matricula['curso_id'] = $this->input->post('curso');
+                $data_matricula['matriz_id'] = $matriz_id;
+                $data_matricula['periodo_atual'] = '1';
+                $this->db->insert('matricula_aluno', $data_matricula);
+                $matricula_aluno_id = mysql_insert_id();
+                
+               
+
+                /*                 * ******** REGISTRA NA TABELA MATRICULA_ALUNO_TURMA SALVANDO A TURMA DO ALUNO ************* */
+                $data_matriculat['data_turma'] = date('Y-m-d'); //VERIFICAR
+                $data_matriculat['matricula_aluno_id'] = $matricula_aluno_id;
+                $data_matriculat['turma_id'] = $this->input->post('turma');
+                $data_matriculat['situacao_aluno_turma'] = '1';
+                $data_matriculat['periodo_letivo_id'] = $periodo_letivo_id;
+                $this->db->insert('matricula_aluno_turma', $data_matriculat);
+                $matricula_aluno_turma_id = mysql_insert_id();
 
 
 
-            /*             * ******** CONSULTA AS DISCIPLINA DO ALUNO REFERENTE AO PERÍODO E A MATRIZ DO CURSO, E SALVA NA TABELA ALUNO_dISCIPLINA ************* */
-            $turma = $this->input->post('turma');
-            $curso = $this->input->post('curso');
-            $periodo_turma = '5'; //$periodo_id;
+                /*                 * ******** CONSULTA AS DISCIPLINA DO ALUNO REFERENTE AO PERÍODO E A MATRIZ DO CURSO, E SALVA NA TABELA ALUNO_dISCIPLINA ************* */
+                $turma = $this->input->post('turma');
+                $curso = $this->input->post('curso');
+                $periodo_turma = $periodo;
 
-            $MatrizArray = $this->db->query("SELECT max(mat_tx_ano) as matriz, matriz_id FROM matriz WHERE cursos_id = $curso")->result_array();
+                $MatrizArray = $this->db->query("SELECT max(mat_tx_ano) as matriz, matriz_id FROM matriz WHERE cursos_id = $curso")->result_array();
 
-            foreach ($MatrizArray as $row) {
-                $matriz = $row['matriz'];
-                $matriz_id = $row['matriz_id'];
-            }
+                foreach ($MatrizArray as $row) {
+                    $matriz = $row['matriz'];
+                    $matriz_id = $row['matriz_id'];
+                }
 
-            //CONSULTA O PERIODO LETIVO.
-            $DisciplinaArray = $this->db->query("SELECT * FROM matriz m
+                //CONSULTA O PERIODO LETIVO.
+                $DisciplinaArray = $this->db->query("SELECT * FROM matriz m
 inner join matriz_disciplina md on md.matriz_id = m.matriz_id
 inner join disciplina d on d.disciplina_id = md.disciplina_id
 where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz")->result_array();
-            foreach ($DisciplinaArray as $rowda) {
-                $matriz_disciplina_id = $rowda['matriz_disciplina_id'];
+                foreach ($DisciplinaArray as $rowda) {
+                    $matriz_disciplina_id = $rowda['matriz_disciplina_id'];
 
-                $data_matriculada['matriz_disciplina_id'] = $matriz_disciplina_id;
-                $data_matriculada['matricula_aluno_turma_id'] = $matricula_aluno_turma_id;
-                $this->db->insert('disciplina_aluno', $data_matriculada);
-                $aluno_disciplina_id = mysql_insert_id();
+                    $data_matriculada['matriz_disciplina_id'] = $matriz_disciplina_id;
+                    $data_matriculada['matricula_aluno_turma_id'] = $matricula_aluno_turma_id;
+                    $this->db->insert('disciplina_aluno', $data_matriculada);
+                    $aluno_disciplina_id = mysql_insert_id();
 
-                $data_nota['disciplina_aluno_id'] = $aluno_disciplina_id;
-                $this->db->insert('disciplina_aluno_nota', $data_nota);
-                $aluno_disciplina_nota_id = mysql_insert_id();
+                    $data_nota['disciplina_aluno_id'] = $aluno_disciplina_id;
+                    $this->db->insert('disciplina_aluno_nota', $data_nota);
+                    $aluno_disciplina_nota_id = mysql_insert_id();
+                }
+
+                /*                 * ******** CRIA UM USUÁRIO PARA O ALUNO ************* */
+                $usuarioArray = $this->db->query("SELECT * FROM matricula_aluno ma
+                inner join cadastro_aluno ca on ca.cadastro_aluno_id = ma.cadastro_aluno_id
+                inner join cursos cur on cur.cursos_id = ma.curso_id
+                left join dados_censo_aluno dca on dca.cadastro_aluno_id = ca.cadastro_aluno_id
+                where  ma.matricula_aluno_id = $matricula_aluno_id")->result_array();
+                foreach ($usuarioArray as $rowusu) {
+                    $nome = $rowusu['nome'];
+                    $ra = $rowusu['registro_academico'];
+                    $cpf = $rowusu['cpf'];
+                    $email = $rowusu['email'];
+
+                    $data_usuario['nome'] = $nome;
+                    $data_usuario['usu_tx_login'] = $ra;
+                    $data_usuario['usu_tx_senha'] = $cpf;
+                    $data_usuario['usu_tx_email'] = $email;
+                    $data_usuario['perfis_id'] = '12';
+                    $data_usuario['usu_nb_tipo'] = '0';
+                    $data_usuario['usu_nb_status'] = '0';
+                    $this->db->insert('usuarios', $data_usuario);
+                    $usuario_aluno_id = mysql_insert_id();
+                }
+
+                /*                 * ******** CRIA UM EVENTO ************* */
+                $data_eventos['descricao'] = 'Aluno Matriculado para o período letívo : ' . $ano_periodo_letivo . '/' . $semestre_periodo_letivo;
+                $data_eventos['data_registro'] = date('Y-m-d');
+                // $data_eventos['usuario_id'] = $this->ci->session->userdata('login');// $this->session->set_userdata('login');
+                $data_eventos['codigo_evento'] = '1';
+                $data_eventos['matricula_aluno_id'] = $matricula_aluno_id;
+                $this->db->insert('eventos', $data_eventos);
+                $eventos_id = mysql_insert_id();
             }
 
             $this->session->set_flashdata('flash_message', get_phrase('aluno_cadastro_com_sucesso'));
-            redirect(base_url() . 'index.php?educacional/aluno/' . $aluno_id, 'refresh');
+            redirect(base_url() . 'index.php?educacional/situacao_aluno/' . $matricula_aluno_id, 'refresh');
         }
 
 
@@ -4292,20 +4637,21 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
             //DADOS PESSOAIS
 
 
-            /*             * ******** REGISTRA NA TABELA MATRICULA_ALUNO_TURMA SALVANDO A TURMA DO ALUNO ************* */
+            /********** REGISTRA NA TABELA MATRICULA_ALUNO_TURMA SALVANDO A TURMA DO ALUNO **************/
             $data_matriculat['data_turma'] = date('Y-m-d'); //VERIFICAR
-            $data_matriculat['matricula_aluno_id'] = $matricula_aluno_id;
-            $data_matriculat['turma_id'] = $this->input->post('turma');
-            $data_matriculat['periodo_letivo_id'] = $periodo_letivo_id;
+            $data_matriculat['matricula_aluno_id'] = $this->input->post('matricula_aluno_id');
+            $data_matriculat['turma_id'] = $this->input->post('turma_busca');
+            $data_matriculat['situacao_aluno_turma'] = '1';
+            $data_matriculat['periodo_letivo_id'] = $this->input->post('periodo_letivo_id');
             $this->db->insert('matricula_aluno_turma', $data_matriculat);
             $matricula_aluno_turma_id = mysql_insert_id();
 
 
 
-            /*             * ******** CONSULTA AS DISCIPLINA DO ALUNO REFERENTE AO PERÍODO E A MATRIZ DO CURSO, E SALVA NA TABELA ALUNO_dISCIPLINA ************* */
-            $turma = $this->input->post('turma');
+            /********** CONSULTA AS DISCIPLINA DO ALUNO REFERENTE AO PERÍODO E A MATRIZ DO CURSO, E SALVA NA TABELA ALUNO_dISCIPLINA ************* */
+            $turma = $this->input->post('turma_busca');
             $curso = $this->input->post('curso');
-            $periodo_turma = '5'; //$periodo_id;
+            $periodo_turma = $this->input->post('periodo');
 
             $MatrizArray = $this->db->query("SELECT max(mat_tx_ano) as matriz, matriz_id FROM matriz WHERE cursos_id = $curso")->result_array();
 
@@ -4331,9 +4677,24 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
                 $this->db->insert('disciplina_aluno_nota', $data_nota);
                 $aluno_disciplina_nota_id = mysql_insert_id();
             }
+            
+            $data['periodo_atual'] = $periodo_turma;
+            $this->db->where('matricula_aluno_id', $this->input->post('matricula_aluno_id'));
+            $this->db->update('matricula_aluno', $data);
+            
+            
+                /********** CRIA UM EVENTO ************* */
+                $data_eventos['descricao'] = 'Aluno Rematriculado para o período letívo : ' .$this->input->post('periodo_letivo');
+                $data_eventos['data_registro'] = date('Y-m-d');
+                // $data_eventos['usuario_id'] =  $this->session->set_userdata('login');
+                $data_eventos['codigo_evento'] = '2';
+                $data_eventos['matricula_aluno_id'] = $this->input->post('matricula_aluno_id');
+                $this->db->insert('eventos', $data_eventos);
+                $eventos_id = mysql_insert_id();
+            
 
-            $this->session->set_flashdata('flash_message', get_phrase('aluno_cadastro_com_sucesso'));
-            redirect(base_url() . 'index.php?educacional/matricula/' . $aluno_id, 'refresh');
+         $this->session->set_flashdata('flash_message', get_phrase('aluno_rematriculado_com_sucesso'));
+         redirect(base_url() . 'index.php?educacional/situacao_aluno/' . $this->input->post('matricula_aluno_id'), 'refresh');
         }
 
 

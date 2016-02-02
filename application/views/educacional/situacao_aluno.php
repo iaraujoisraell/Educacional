@@ -113,7 +113,10 @@
                                                 <tbody>
                                                     <?php
                                                     $sql = "SELECT mat.matricula_aluno_turma_id as matricula_aluno_turma_id, t.turma_id, t.ano as ano, t.semestre as semestre,
-                                                        mat.periodo as periodo_mat, t.periodo_letivo_id,tur_tx_descricao,tu.turno_id, tu.descricao as turno, p.periodo_id, p.periodo as periodo, pl.periodo_letivo as periodo_letivo
+                                                        mat.periodo as periodo_mat, t.periodo_letivo_id,tur_tx_descricao,tu.turno_id, 
+                                                        tu.descricao as turno, p.periodo_id, p.periodo as periodo, 
+                                                        pl.periodo_letivo as periodo_letivo,
+                                                        mat.situacao_aluno_turma as situacao_aluno_turma
                                                         FROM matricula_aluno_turma mat
                                                     inner join matricula_aluno m on m.matricula_aluno_id = mat.matricula_aluno_id
                                                     inner join cadastro_aluno ca on ca.cadastro_aluno_id = m.cadastro_aluno_id
@@ -122,7 +125,8 @@
                                                     inner join turno tu on tu.turno_id = t.turno_id
                                                     left join periodo p on p.periodo_id = t.periodo_id
                                                     left join periodo_letivo pl on pl.periodo_letivo_id = mat.periodo_letivo_id
-                                                    where  m.matricula_aluno_id = '$matricula' ";
+                                                    where  m.matricula_aluno_id = '$matricula' order by matricula_aluno_turma_id asc ";
+                                                    //echo  $sql;
                                                     $MatrizArray = $this->db->query($sql)->result_array();
                                                     $count = 1;
                                                     foreach ($MatrizArray as $row2):
@@ -138,6 +142,27 @@
                                                         } else {
                                                             $periodo = $row2['periodo_mat'];
                                                         }
+                                                        
+                                                        $situacao = $row2['situacao_aluno_turma'];
+                                                        if ($situacao == '1') {
+                                                            $situacao2 = 'Pré-Matriculado';
+                                                        } else if ($situacao == '2') {
+                                                            $situacao2 = 'Matriculado';
+                                                        }else if ($situacao == '3') {
+                                                            $situacao2 = 'Matricula Trancada';
+                                                        }else if ($situacao == '4') {
+                                                            $situacao2 = 'Desvinculado do curso';
+                                                        }else if ($situacao == '5') {
+                                                            $situacao2 = 'Transferido';
+                                                        }else if ($situacao == '6') {
+                                                            $situacao2 = 'Formado';
+                                                        }else if ($situacao == '0') {
+                                                            $situacao2 = 'período concluído';
+                                                        }else if ($situacao == '7') {
+                                                            $situacao2 = 'Falecido';
+                                                        }
+                                                        
+                                                        //$sql.=" order by nome asc ";
                                                         ?>
 
                                                         <tr >
@@ -146,7 +171,7 @@
                                                             <td align="left"><?php echo $periodo_letivo; ?></td>
                                                             <td align="left"><?php echo $periodo; ?></td>
                                                             <td align="left"><?php echo $row2['turno']; ?> </td>
-                                                            <td align="left"></td>
+                                                            <td align="left"><?php echo $situacao2; ?></td>
 
 
                                                             <td align="center">

@@ -90,7 +90,7 @@
                                                 <a data-toggle="modal" href="#modal-form" onclick="modal('editar_turma',<?php echo $row['turma_id']; ?>)"	class="btn btn-gray btn-small">
                                                     <i class="icon-wrench"></i> <?php echo get_phrase('editar'); ?>
                                                 </a>
-                                                <a data-toggle="modal" href="#modal-delete" onclick="modal_delete('<?php echo base_url(); ?>index.php?educacional/bolsas/delete/<?php echo $row['bolsas_id']; ?>')"
+                                                <a data-toggle="modal" href="#modal-delete" onclick="modal_delete('<?php echo base_url(); ?>index.php?educacional/turma/delete/<?php echo $row['turma_id']; ?>')"
                                                    class="btn btn-red btn-small">
                                                     <i class="icon-trash"></i> <?php echo get_phrase('deletar'); ?>
                                                 </a>
