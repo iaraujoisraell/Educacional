@@ -7,9 +7,11 @@
                 <a href="#list" data-toggle="tab"><i class="icon-align-justify"></i> 
                     <?php echo get_phrase('situação_aluno'); ?>
                 </a></li>
-            <a  href="index.php?educacional/aluno" 	class="btn btn-info btn-small">
-                <i class="icon-user"></i> <?php echo get_phrase('voltar_para_consulta_aluno'); ?>
+                <li >
+            <a  href="index.php?educacional/aluno" 	>
+                <i class="icon-backward"></i> <?php echo get_phrase('voltar_para_consulta_aluno'); ?>
             </a>
+                    </li>
         </ul>
         <!------CONTROL TABS END------->
 
@@ -17,65 +19,192 @@
     <div class="box-content padded">
         <div class="tab-content">
             <!----TABLE LISTING STARTS--->
-
-
-
             <?php
             foreach ($turma as $row):
-                $matricula = $row['matricula_aluno_id'];
+                 $matricula = $row['matricula_aluno_id'];
+                        $cadastro_aluno = $row['cadastro_aluno_id'];
+                        $matriz_id = $row['matriz_id'];
+                        $periodo_atual = $row['periodo_atual'];
+                        $desperiodizado = $row['desperiodizado'];
+                        $bolsista = $row['bolsista'];
+                        $forma_ingresso = $row['forma_ingresso'];
+
+                        if ($periodo_atual) {
+                            $periodo_atual2 = $periodo_atual;
+                        } else {
+                            $periodo_atual2 = 'Não Informado';
+                        }
+
+                        if ($desperiodizado == 1) {
+                            $desperiodizado2 = 'SIM';
+                            $periodo_atual2 = 'Desperiodizado';
+                        } else {
+                            $desperiodizado2 = 'NÃO';
+                        }
+
+                        if ($bolsista == 1) {
+                            $bolsista2 = 'SIM';
+                        } else {
+                            $bolsista2 = 'NÃO';
+                        }
+
+                        if ($forma_ingresso == 1) {
+                            $forma_ingresso2 = 'VESTIBULAR';
+                        } else if ($forma_ingresso == 2) {
+                            $forma_ingresso2 = 'ENEM';
+                        } else if ($forma_ingresso == 3) {
+                            $forma_ingresso2 = 'AVALIAÇÃO SERIADA';
+                        } else if ($forma_ingresso == 4) {
+                            $forma_ingresso2 = 'SELEÇÃO SIMPLIFICADA';
+                        } else if ($forma_ingresso == 5) {
+                            $forma_ingresso2 = 'TRANSFERÊNCIA';
+                        } else if ($forma_ingresso == 6) {
+                            $forma_ingresso2 = 'DECISÃO JUDICIAL';
+                        } else if ($forma_ingresso == 7) {
+                            $forma_ingresso2 = 'VAGAS REMANESCENTE';
+                        } else if ($forma_ingresso == 8) {
+                            $forma_ingresso2 = 'PROGRAMAS ESPECIAIS';
+                        } else {
+                            $forma_ingresso2 = 'NÃO INFORMADO';
+                        }
                 ?>
-                <table>
-                    <tr>
-                        <td width="40%">
-                            <div class="control-group">
-                                <label class="control-label"><?php echo get_phrase('Matrícula '); ?></label>
-                                <div class="controls">
-                                    <?php echo $row['registro_academico']; ?>  
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="control-group">
-                                <label class="control-label"><?php echo get_phrase('Curso'); ?></label>
-                                <div class="controls">
-                                    <?php echo $row['cur_tx_descricao']; ?>
-                                </div>
-                            </div>
-                        </td>
+                 <div  style="background-color: threedhighlight; " class="tab-content">
+                        <div style="margin-left: 15px;"  class="tab-pane fade in active">                            
+                       <table width="100%" >
+                            <tr>
+                                <td width="15%">
+                                    <div class="control-group">
+                                        <label style="font-weight: bold " class="control-label"><?php echo get_phrase('reg. Acadêmico '); ?></label>
+                                        <div class="controls">
+                                            <?php echo $row['registro_academico']; ?>  
+                                        </div>
+                                    </div>
+                                </td>
+                                <td  width="30%">
+                                    <div class="control-group">
+                                        <label style="font-weight: bold " class="control-label"><?php echo get_phrase('Nome'); ?></label>
+                                        <div class="controls">
+                                            <?php echo $row['nome']; ?>
 
-                    </tr>
-                </table>
-                <table>
-                    <tr>
-                        <td width="50%">
-                            <div class="control-group">
-                                <label class="control-label"><?php echo get_phrase('Nome'); ?></label>
-                                <div class="controls">
-                                    <?php echo $row['nome']; ?>
-
-                                </div>
-                            </div>
-                        </td>
+                                        </div>
+                                    </div>
+                                </td>
 
 
+                                <td width="40%">
+                                    <div class="control-group">
+                                        <label style="font-weight: bold " class="control-label"><?php echo get_phrase('Curso'); ?></label>
+                                        <div class="controls">
+                                            <?php echo $row['cur_tx_descricao']; ?>
+                                        </div>
+                                    </div>
 
-                    </tr>
+                                </td>
+                            </tr>
+                        </table>
+                       <table width="100%" >
+                            <?php
+                            $sql_mt2 = "SELECT min(matricula_aluno_turma_id) as id, mat.ano as ano,mat.semestre as semestre, mat.periodo_letivo_id as periodo_letivo_id
+                                    FROM matricula_aluno_turma mat
+                                    left join periodo_letivo pl on pl.periodo_letivo_id = mat.periodo_letivo_id
+                                    where matricula_aluno_id = $matricula ";
+                            $uf_mt2 = $this->db->query($sql_mt2)->result_array();
+                            foreach ($uf_mt2 as $row_mt2):
+                                $ano = $row_mt2['ano'];
+                                $semestre = $row_mt2['semestre'];
+                                $periodo_letivo_id = $row_mt2['periodo_letivo_id'];
 
-                </table>
+                                if ($periodo_letivo_id) {
+                                    $sql_mt21 = "SELECT * FROM periodo_letivo where periodo_letivo_id =  $periodo_letivo_id ";
+                                    $uf_mt21 = $this->db->query($sql_mt21)->result_array();
+                                    foreach ($uf_mt21 as $row_mt22):
+                                        $periodo_letivo = $row_mt22['periodo_letivo'];
+                                    endforeach;
+                                    $ano_igresso = $periodo_letivo;
+                                }else {
+                                    $ano_igresso = $ano . '/' . $semestre;
+                                }
+                            endforeach;
+                            ?>
+                            <tr>
+                                <td width="15%" >
+                                    <div class="control-group">
+                                        <label style="font-weight: bold " class="control-label"><?php echo get_phrase('Ano de Ingresso'); ?></label>
+                                        <div class="controls">
+                                            <?php echo $ano_igresso; ?>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <?php
+                                $sql_mt = "SELECT * FROM matriz where matriz_id = $matriz_id ";
+                                $uf_mt = $this->db->query($sql_mt)->result_array();
+                                foreach ($uf_mt as $row_mt):
+                                    $mt_ano = $row_mt['mat_tx_ano'];
+                                    $mt_semestre = $row_mt['mat_tx_semestre'];
+                                endforeach;
+                                ?>
+                                <td width="20%">
+                                    <div class="control-group">
+                                        <label style="font-weight: bold " class="control-label"><?php echo get_phrase('Forma_ingresso'); ?></label>
+                                        <div class="controls">
+                                            <?php echo $forma_ingresso2; ?>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td width="20%">
+                                    <div class="control-group">
+                                        <label style="font-weight: bold " class="control-label"><?php echo get_phrase('Matriz_atual'); ?></label>
+                                        <div class="controls">
+                                            <?php echo $mt_ano; ?>/<?php echo $mt_semestre; ?>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td width="20%">
+                                    <div class="control-group">
+                                        <label style="font-weight: bold " class="control-label"><?php echo get_phrase('periodo_atual'); ?></label>
+                                        <div class="controls">
+                                            <?php echo $periodo_atual2; ?>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td width="20%">
+                                    <div class="control-group">
+                                        <label style="font-weight: bold " class="control-label"><?php echo get_phrase('Desperiodizado?'); ?></label>
+                                        <div class="controls">
+                                          <?php echo $desperiodizado2; ?>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td width="20%">
+                                    <div class="control-group">
+                                        <label style="font-weight: bold " class="control-label"><?php echo get_phrase('Bolsista?'); ?></label>
+                                        <div class="controls">
+                                           
+                                            <?php echo $bolsista2; ?>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>    
+                        </div>
+                    </div>
 
                 <br>
                 <table>
                     <tr>
                         <td align="center">
-                            <a  href="index.php?educacional/ficha_aluno/<?php echo $matricula; ?>"  class="btn btn-green btn-small" >
+                            <a  href="index.php?educacional/ficha_aluno/<?php echo $matricula; ?>"  class="btn btn-info btn-small" >
                                 <i class="icon-wrench"></i> <?php echo get_phrase('Ficha_aluno'); ?>
                             </a>
                             <a data-toggle="modal" href="#modal-form" onclick="modal('ficha_aluno',<?php echo $row2['bolsas_id']; ?>)"	class="btn btn-info btn-small">
                                 <i class="icon-align-justify"></i> <?php echo get_phrase('Histórico_Aluno'); ?>
                             </a>
 
-                            <a  href="index.php?educacional/situacao_aluno/<?php echo $row2['matricula_aluno_id']; ?>" 	class="btn btn-brown btn-small">
-                                <i class="icon-wrench"></i> <?php echo get_phrase('situação_financeira'); ?>
+                            <a  href="#" 	class="btn btn-info btn-small">
+                                <i class="icon-money"></i> <?php echo get_phrase('situação_financeira'); ?>
                             </a>
                         </td>
                     </tr>
@@ -86,7 +215,6 @@
 
                 <div class="box-content padded">
                     <div class="tab-content">
-
                         <div class="tab-pane  active" id="list">
                             <div class="action-nav-normal">
                                 <div class="box">
@@ -108,7 +236,7 @@
                                                 <tbody>
                                                     <?php
                                                     $sql = "SELECT mat.matricula_aluno_turma_id as matricula_aluno_turma_id, t.turma_id, t.ano as ano, t.semestre as semestre,
-                                                        mat.periodo as periodo_mat, t.periodo_letivo_id,tur_tx_descricao,tu.turno_id, 
+                                                        mat.periodo as periodo_mat, t.periodo_letivo_id,tur_tx_descricao,tu.turno_id, mat.dependencia as dependencia,
                                                         tu.descricao as turno, p.periodo_id, p.periodo as periodo, 
                                                         pl.periodo_letivo as periodo_letivo,
                                                         mat.situacao_aluno_turma as situacao_aluno_turma
@@ -120,7 +248,7 @@
                                                     inner join turno tu on tu.turno_id = t.turno_id
                                                     left join periodo p on p.periodo_id = t.periodo_id
                                                     left join periodo_letivo pl on pl.periodo_letivo_id = mat.periodo_letivo_id
-                                                    where  m.matricula_aluno_id = '$matricula' order by matricula_aluno_turma_id asc ";
+                                                    where  m.matricula_aluno_id = '$matricula' and (mat.status != '11' or mat.status is null) order by matricula_aluno_turma_id desc ";
                                                     //echo  $sql;
                                                     $MatrizArray = $this->db->query($sql)->result_array();
                                                     $count = 1;
@@ -137,7 +265,7 @@
                                                         } else {
                                                             $periodo = $row2['periodo_mat'];
                                                         }
-                                                        
+                                                        $matricula_aluno_turma_id = $row2['matricula_aluno_turma_id'];
                                                         if($periodo2 == 1){
                                                             $periodo = 'I';
                                                         }else if($periodo2 == 2){
@@ -178,7 +306,12 @@
                                                         }else if ($situacao == '7') {
                                                             $situacao2 = 'Falecido';
                                                         }
-                                                        
+                                                        $dependencia = $row2['dependencia'];
+                                                        if($dependencia == 1){
+                                                            $dependencia_tx = '( Dependência )';
+                                                        }else if(($dependencia == null)||($dependencia == "")){
+                                                            $dependencia_tx = '';
+                                                        }
                                                         //$sql.=" order by nome asc ";
                                                         ?>
 
@@ -188,17 +321,18 @@
                                                             <td align="left"><?php echo $periodo_letivo; ?></td>
                                                             <td align="left"><?php echo $periodo; ?></td>
                                                             <td align="left"><?php echo $row2['turno']; ?> </td>
-                                                            <td align="left"><?php echo $situacao2; ?></td>
-
-
+                                                            <td align="left"><?php echo $situacao2; ?><font style="font-size: 9px; color: #DD1144;"><?php echo $dependencia_tx; ?></font></td>
                                                             <td align="center">
-
-
+                                                                
                                                                 <a  data-toggle="modal" href="#modal-form" onclick="modal('demonstrativo_nota', '<?php echo $row2['matricula_aluno_turma_id']; ?>')" 	class="btn btn-gray btn-small">
-                                                                    <i class="icon-wrench"></i> <?php echo get_phrase('demonstrativo_notas_faltas'); ?>
+                                                                    <i class="icon-barcode"></i> <?php echo get_phrase('notas_faltas'); ?>
                                                                 </a>
+                                                                  <a data-toggle="modal" href="#modal-delete" onclick="modal_delete('<?php echo base_url(); ?>index.php?educacional/situacao_aluno/delete/<?php echo $matricula_aluno_turma_id; ?>/<?php echo $matricula; ?>')"
+                                                                       class="btn btn-red btn-small">
+                                                                        <i class="icon-trash"></i> <?php echo get_phrase('deletar'); ?>
+                                                                  </a>
+                                                               
                                                             </td>
-
                                                         </tr>
                                                         <?php
                                                     endforeach;

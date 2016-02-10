@@ -55,20 +55,45 @@
         </tr>
 
         <?php
-        $candidato = $this->crud_model->get_demonstrativo_nota($current_matricula_aluno_turma_id);
+       // $candidato = $this->crud_model->get_demonstrativo_nota($current_matricula_aluno_turma_id);
          $cont2 = 1;
-        
+        $sql_candidato = "SELECT d.disc_tx_descricao as disciplina, dan_fl_nota_1bim as 1bim, dan_fl_nota_2bim as 2bim,dan_fl_nota_3bim as 3bim, dan_fl_media_final as media,dan_nb_total_falta as falta, dan_nb_situacao_final as situacao FROM disciplina_aluno da
+left join disciplina_aluno_nota dan on dan.disciplina_aluno_id = da.disciplina_aluno_id
+inner join disciplina d on d.disciplina_id = da.disciplina_id
+where matricula_aluno_turma_id = $current_matricula_aluno_turma_id
+
+union
+
+SELECT d.disc_tx_descricao as disciplina, dan_fl_nota_1bim as 1bim, dan_fl_nota_2bim as 2bim,dan_fl_nota_3bim as 3bim, dan_fl_media_final as media,dan_nb_total_falta as falta, dan_nb_situacao_final as situacao FROM disciplina_aluno da
+left join disciplina_aluno_nota dan on dan.disciplina_aluno_id = da.disciplina_aluno_id
+inner join matriz_disciplina md on md.matriz_disciplina_id = da.matriz_disciplina_id
+inner join disciplina d on d.disciplina_id = md.disciplina_id
+where matricula_aluno_turma_id = $current_matricula_aluno_turma_id ";
+        $candidato = $this->db->query($sql_candidato)->result_array();
         foreach ($candidato as $row_candidato):
+            $situacao = $row_candidato['situacao'];
+        
+             if( $situacao == '1'){
+                 $situacao2 = 'AP';
+            }else if( $situacao == '2'){
+                 $situacao2 = 'RN';
+            }else if( $situacao == '3'){
+                 $situacao2 = 'RF';
+            }else if( $situacao == '4'){
+                 $situacao2 = 'RNF';
+            }else if( $situacao == '0'){
+                 $situacao2 = '';
+            }
               ?>
             <tr>
                 <td><?php echo $cont2++; ?></td>
-                <td><?php echo $row_candidato['disc_tx_descricao']; ?></td>
-                <td><?php echo $row_candidato['dan_fl_nota_1bim']; ?></td>               
-                <td><?php echo $row_candidato['dan_fl_nota_2bim']; ?></td>
-                <td><?php echo $row_candidato['dan_fl_nota_3bim']; ?></td>
-                 <td><?php echo $row_candidato['dan_fl_media_final']; ?></td>
-                  <td><?php echo $row_candidato['dan_nb_total_falta']; ?></td>
-                  <td><?php echo $row_candidato['dan_nb_situacao_final']; ?></td>
+                <td><?php echo $row_candidato['disciplina']; ?></td>
+                <td><?php echo $row_candidato['1bim']; ?></td>               
+                <td><?php echo $row_candidato['2bim']; ?></td>
+                <td><?php echo $row_candidato['3bim']; ?></td>
+                 <td><?php echo $row_candidato['media']; ?></td>
+                  <td><?php echo $row_candidato['falta']; ?></td>
+                  <td><?php echo $situacao2; ?></td>
             </tr>
                  <?php
         endforeach;

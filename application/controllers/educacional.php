@@ -2919,11 +2919,14 @@ where  ca.cadastro_aluno_id != '' ";
 
         
         if ($param1 == 'delete') {
-            $this->db->where('periodo_letivo_id', $param2);
-            $this->db->delete('periodo_letivo');
+            
+            $data['status'] = '11';
+            $this->db->where('matricula_aluno_turma_id', $param2);
+            $this->db->update('matricula_aluno_turma', $data);
 
-            $this->session->set_flashdata('flash_message', get_phrase('turma_deletado_com_sucesso'));
-            redirect(base_url() . 'index.php?educacional/periodo/', 'refresh');
+
+            $this->session->set_flashdata('flash_message', get_phrase('deletado_com_sucesso'));
+           redirect(base_url() . 'index.php?educacional/situacao_aluno/' . $param3, 'refresh');
         }
 
 
@@ -3091,7 +3094,6 @@ where  ca.cadastro_aluno_id != '' ";
         $this->carregaModulos();
         $this->load->view('../views/educacional/index', $page_data);
     }
-
     function carrega_ficha_aluno($param1 = '', $param2 = '', $param3 = '') {
 
 
@@ -4176,19 +4178,16 @@ where  ca.cadastro_aluno_id != '' ";
             <?php
         endforeach;
     }
-
     function aluno_turma($param1 = '', $param2 = '', $param3 = '') {
 
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
 
         if ($param1 == 'create') {
-
             $data['situacao_aluno_turma'] = "1"; //VERIFICAR DEPOIS ESSE CAMPO
             $data['data_matricula_aluno_turma'] = "";
             $data['matricula_aluno_id'] = $this->input->post('matricula_id');
             $data['turma_id'] = $this->input->post('turma');
-
 
             $this->db->insert('matricula_aluno_turma', $data);
             $matricula_aluno_turma = mysql_insert_id();
@@ -4254,7 +4253,6 @@ where  ca.cadastro_aluno_id != '' ";
 
         $this->load->view('../views/educacional/index', $page_data);
     }
-
     function matricula($param1 = '', $param2 = '', $param3 = '') {
 
         if ($this->session->userdata('admin_login') != 1)
@@ -4498,7 +4496,8 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
                 }
 
                 /*                 * ******** CRIA UM EVENTO ************* */
-                $data_eventos['descricao'] = 'Aluno Matriculado para o período letívo : ' . $ano_periodo_letivo . '/' . $semestre_periodo_letivo;
+                $data_eventos['descricao'] = 'Matricula do Aluno ';
+                $data_eventos['periodo_letivo_id'] =   $ano_periodo_letivo . '/' . $semestre_periodo_letivo;
                 $data_eventos['data_registro'] = date('Y-m-d');
                 // $data_eventos['usuario_id'] = $this->ci->session->userdata('login');// $this->session->set_userdata('login');   /////////// $data['emp_nb_codigo'] = $this->session->userdata('empresa');
                 $data_eventos['codigo_evento'] = '1';
@@ -4528,7 +4527,6 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
         $page_data['page_title'] = get_phrase('Educacional->');
         $this->load->view('../views/educacional/index', $page_data);
     }
-
     function matricula_vestibular($param1 = '', $param2 = '', $param3 = '') {
 
         if ($this->session->userdata('admin_login') != 1)
@@ -4769,7 +4767,8 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
                 }
 
                 /*                 * ******** CRIA UM EVENTO ************* */
-                $data_eventos['descricao'] = 'Aluno Matriculado para o período letívo : ' . $ano_periodo_letivo . '/' . $semestre_periodo_letivo;
+                $data_eventos['descricao'] = 'Matricula do Aluno';
+                $data_eventos['periodo_letivo_id'] =   $ano_periodo_letivo . '/' . $semestre_periodo_letivo;
                 $data_eventos['data_registro'] = date('Y-m-d');
                 // $data_eventos['usuario_id'] = $this->ci->session->userdata('login');// $this->session->set_userdata('login');
                 $data_eventos['codigo_evento'] = '1';
@@ -4801,7 +4800,6 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
         $page_data['page_title'] = get_phrase('Educacional->');
         $this->load->view('../views/educacional/index', $page_data);
     }
-
     function rematricula($param1 = '', $param2 = '', $param3 = '') {
 
         if ($this->session->userdata('admin_login') != 1)
@@ -4863,7 +4861,8 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
 
 
             /*             * ******** CRIA UM EVENTO ************* */
-            $data_eventos['descricao'] = 'Aluno Rematriculado para o período letívo : ' . $this->input->post('periodo_letivo');
+            $data_eventos['descricao'] = 'Rematricula do Aluno : ';
+            $data_eventos['periodo_letivo_id'] =  $this->input->post('periodo_letivo');
             $data_eventos['data_registro'] = date('Y-m-d');
             // $data_eventos['usuario_id'] =  $this->session->set_userdata('login');
             $data_eventos['codigo_evento'] = '2';
@@ -4894,7 +4893,94 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
         $page_data['page_title'] = get_phrase('Educacional->');
         $this->load->view('../views/educacional/index', $page_data);
     }
+    function matricula_dependencia($param1 = '', $param2 = '', $param3 = '') {
 
+        if ($this->session->userdata('admin_login') != 1)
+            redirect(base_url(), 'refresh');
+        if ($param1 == 'create') {
+            //Cadastrando as turmas
+            $matricula_aluno_id = $this->input->post('matricula_aluno_id');
+            $disciplinaArray = $this->db->query("SELECT * FROM disciplina_desperiodizado
+                                                where matricula_aluno_id = $matricula_aluno_id group by turma_id")->result_array();
+            foreach ($disciplinaArray as $rowdd) {
+                $periodo_id = $rowdd['periodo_id'];
+                $periodo_letivo_id = $rowdd['periodo_letivo_id'];
+                $turma_id = $rowdd['turma_id'];
+            
+
+            /********** REGISTRA NA TABELA MATRICULA_ALUNO_TURMA SALVANDO A TURMA DO ALUNO ************* */
+            $data_matriculat['data_turma'] = date('Y-m-d'); //VERIFICAR
+            $data_matriculat['matricula_aluno_id'] = $matricula_aluno_id ;
+            $data_matriculat['turma_id'] = $turma_id;
+            $data_matriculat['situacao_aluno_turma'] = '1';
+            $data_matriculat['periodo_letivo_id'] = $periodo_letivo_id;
+            $data_matriculat['dependencia'] = '1';
+            $this->db->insert('matricula_aluno_turma', $data_matriculat);
+            $matricula_aluno_turma_id = mysql_insert_id();
+            
+            
+            /********** CONSULTA AS DISCIPLINA DO ALUNO REFERENTE AO PERÍODO E A MATRIZ DO CURSO, E SALVA NA TABELA ALUNO_dISCIPLINA ************* */
+           
+
+            //CONSULTA O PERIODO LETIVO.
+            $DisciplinaArray = $this->db->query("SELECT * FROM disciplina_desperiodizado
+                                                where matricula_aluno_id = $matricula_aluno_id and turma_id= $turma_id")->result_array();
+            foreach ($DisciplinaArray as $rowda) {
+                
+                $matriz_disciplina_id = $rowda['matriz_disciplina_id'];
+               
+                $data_matriculada['matriz_disciplina_id'] = $matriz_disciplina_id;
+                $data_matriculada['matricula_aluno_turma_id'] = $matricula_aluno_turma_id;
+                $data_matriculada['tipo'] = '2';
+                $this->db->insert('disciplina_aluno', $data_matriculada);
+                $aluno_disciplina_id = mysql_insert_id();
+
+                $data_nota['disciplina_aluno_id'] = $aluno_disciplina_id;
+                $this->db->insert('disciplina_aluno_nota', $data_nota);
+                $aluno_disciplina_nota_id = mysql_insert_id();
+            }
+}
+           // $data['periodo_atual'] = '0';
+           // $this->db->where('matricula_aluno_id', $this->input->post('matricula_aluno_id'));
+           // $this->db->update('matricula_aluno', $data);
+
+
+            /********** CRIA UM EVENTO **************/
+            $data_eventos['descricao'] = 'Matricula de dependencia';
+            $data_eventos['data_registro'] = date('Y-m-d');
+            $data_eventos['periodo_letivo_id'] = $periodo_letivo_id;
+            $data_eventos['usuario_id'] =  $this->session->userdata('login');
+            $data_eventos['codigo_evento'] = '3';
+            $data_eventos['matricula_aluno_id'] = $matricula_aluno_id;
+            $this->db->insert('eventos', $data_eventos);
+            $eventos_id = mysql_insert_id();
+
+            /***********************APAGA OS REGISTROS DO ALUNO DA TABELA DISCIPLINA_DEPERIODIZADO*********************************/
+            $this->db->where('matricula_aluno_id', $matricula_aluno_id);
+            $this->db->delete('disciplina_desperiodizado');
+            
+            $this->session->set_flashdata('flash_message', get_phrase('aluno_matriculado_com_sucesso'));
+            redirect(base_url() . 'index.php?educacional/situacao_aluno/' . $matricula_aluno_id, 'refresh');
+        }
+
+
+        $page_data['turma'] = $this->db->select("*");
+        $page_data['turma'] = $this->db->join('matriz', 'matriz.matriz_id = turma.matriz_id');
+        $page_data['turma'] = $this->db->join('cursos', 'cursos.cursos_id = matriz.cursos_id');
+        $page_data['turma'] = $this->db->get_where('turma')->result_array();
+
+
+        $page_data['aluno'] = $this->db->get('candidato')->result_array();
+        //SELECT ABAIXO PARA MONTAR O MENU ACESSO, DEVE SER INCLUIDO EM TODOS OS MENUS
+        $page_data['acesso'] = $this->db->get('acessos')->result_array();
+        $page_data['cursos'] = $this->db->get('cursos')->result_array();
+        $page_data['matriz'] = $this->db->get('matriz')->result_array();
+        $page_data['pais'] = $this->db->get('pais')->result_array();
+        $page_data['uf'] = $this->db->get('uf')->result_array();
+        $page_data['page_name'] = 'matricula_dependencia';
+        $page_data['page_title'] = get_phrase('Educacional->');
+        $this->load->view('../views/educacional/index', $page_data);
+    }
     function matricula_desperiodizado($param1 = '', $param2 = '', $param3 = '') {
 
         if ($this->session->userdata('admin_login') != 1)
@@ -4946,7 +5032,8 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
 
 
             /********** CRIA UM EVENTO **************/
-            $data_eventos['descricao'] = 'Matricula de aluno desperiodizado para o período letívo : ' . $periodo_letivo_id;
+            $data_eventos['descricao'] = 'Matricula de aluno desperiodizado';
+            $data_eventos['periodo_letivo_id'] = $periodo_letivo_id;
             $data_eventos['data_registro'] = date('Y-m-d');
             // $data_eventos['usuario_id'] =  $this->session->set_userdata('login');
             $data_eventos['codigo_evento'] = '3';
@@ -4980,7 +5067,103 @@ where m.cursos_id = $curso and periodo = $periodo_turma and mat_tx_ano = $matriz
         $page_data['page_title'] = get_phrase('Educacional->');
         $this->load->view('../views/educacional/index', $page_data);
     }
+    function carrega_table_paginacao_dependencia($param1 = '', $param2 = '', $param3 = '') {
 
+
+        //   $this->db->from('cadastro_aluno');
+        //   $this->db->where('cadastro_aluno_id', $param1);
+        //   $numrows = $this->db->count_all_results();
+
+        $sql = "SELECT distinct (registro_academico), m.matricula_aluno_id as matricula, nome, cpf, rg, data_nascimento,cur_tx_abreviatura, desperiodizado  
+            FROM matricula_aluno_turma mat
+inner join matricula_aluno m on m.matricula_aluno_id = mat.matricula_aluno_id
+inner join cadastro_aluno ca on ca.cadastro_aluno_id = m.cadastro_aluno_id
+inner join turma t on t.turma_id = mat.turma_id
+inner join cursos c on c.cursos_id = m.curso_id
+where  ca.cadastro_aluno_id != '' ";
+        if ($param1 != 0) {
+            $sql.=" and c.cursos_id = '$param1' ";
+        }
+        if ($param2 != 0) {
+            $sql.=" and t.turma_id = '$param2' ";
+        }
+        if ($param3) {
+            $param3 = explode("%20", $param3); // separando pelo espaço
+            $param3 = implode(" ", $param3); // unindo os valores pelo |
+
+            $sql.=" and ca.nome LIKE '%$param3%' ";
+        }
+
+        $sql.=" order by nome asc ";
+       // echo $sql;
+        $MatrizArray = $this->db->query($sql)->result_array(); //WHERE ca.cadastro_aluno_id = $param1
+        //   if ($numrows >= 1) {
+        $count = 1;
+        ?>
+        <div class="tab-content">
+
+            <div class="tab-pane  active" id="list">
+                <div class="action-nav-normal">
+                    <div class="box">
+                        <div class="box-content">
+                            <div id="dataTables">
+                                <table class="table table-hover" width="100%" style="border: 5px;" cellpadding="0" cellspacing="0" border="0" >
+                                    <thead >
+                                        <tr>
+                                            <td><div>ID</div></td>
+                                            <td><div><?php echo get_phrase('Mat.'); ?></div></td>
+                                            <td align="left"><div><?php echo get_phrase('Curso'); ?></div></td>
+                                            <td align="left"><div><?php echo get_phrase('nome'); ?></div></td>
+                                            <td align="left"><div><?php echo get_phrase('CPF'); ?></div></td>
+                                            <td align="left"><div><?php echo get_phrase('RG'); ?></div></td>
+                                            <td align="left"><div><?php echo get_phrase('dt nasc'); ?></div></td>
+                                            <td><div><?php echo get_phrase('opções'); ?></div></td>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($MatrizArray as $row):
+                                            //$periodo = $row['periodo_id'];
+                                            ?>
+
+                                            <tr >
+                                                <td><?php echo $count++; ?></td>
+                                                <td><?php echo $row['registro_academico']; ?></td>
+                                                <td align="left"><?php echo $row['cur_tx_abreviatura']; ?></td>
+                                                <td align="left"><?php echo $row['nome']; ?></td>
+                                                <td align="left"><?php echo $row['cpf']; ?></td>
+                                                <td align="left"><?php echo $row['rg']; ?> </td>
+                                                <td align="left"><?php echo $row['data_nascimento']; ?></td>
+
+                                                <td align="center">
+                                                    <a  href="#" onclick="buscar_ficha_dependencia(<?php
+                                                    echo $row['matricula'];
+                                                    ;
+                                                    ?>);" class="btn btn-green btn-small" >
+                                                        <?php echo get_phrase('Matrícular dependêcia'); ?>
+                                                    </a>
+
+                                                </td>
+
+
+
+                                            </tr>
+                                            <?php
+                                        endforeach;
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <?php
+        //  }
+    }
     function carrega_table_paginacao_desperiodizado($param1 = '', $param2 = '', $param3 = '') {
 
 
@@ -5078,7 +5261,318 @@ where  ca.cadastro_aluno_id != '' and desperiodizado = 1";
         <?php
         //  }
     }
+    function carrega_ficha_dependencia($param1 = '', $param2 = '', $param3 = '') {
 
+        $sql = "SELECT *
+                FROM matricula_aluno ma
+                inner join cadastro_aluno ca on ca.cadastro_aluno_id = ma.cadastro_aluno_id
+                inner join cursos cur on cur.cursos_id = ma.curso_id
+                left join dados_censo_aluno dca on dca.cadastro_aluno_id = ca.cadastro_aluno_id
+                where  ma.matricula_aluno_id = $param1  ";
+        //echo $sql;
+        $MatrizArray = $this->db->query($sql)->result_array();
+        $count = 1;
+
+        foreach ($MatrizArray as $row):
+            $matricula_aluno_id = $row['matricula_aluno_id'];
+        $registro_academico = $row['registro_academico'];
+            $curso_id = $row['curso_id'];
+            $curso = $row['cur_tx_descricao'];
+
+
+            $sql_curso = "SELECT * FROM cursos "
+                    . "where cursos_id not in (select cursos_id from cursos where cursos_id = $curso_id)"
+                    . "order by cur_tx_descricao asc  ";
+            //echo $sql;
+            $Matriz_curso = $this->db->query($sql_curso)->result_array();
+            ?>
+
+
+            <div class="tab-pane box" id="add" style="padding: 5px">
+                <div class="box-content">
+                    <?php echo form_open('educacional/matricula_dependencia/create', array('class' => 'form-vertical validatable', 'target' => '_top', 'enctype' => 'multipart/form-data')); ?>
+                    <input type="hidden" readonly="true" readonly="true" class="validate[required]" minlength="8" onkeypress="this.value.toUpperCase();" value="<?php echo $matricula_aluno_id; ?>" name="matricula_aluno_id" id="matricula_aluno_id"/>
+                    <input type="hidden" readonly="true" readonly="true" class="validate[required]" minlength="8" onkeypress="this.value.toUpperCase();" value="<?php echo $curso_id; ?>" name="curso"/>
+
+                    <div class="padded">
+                        <div style="width: 600px; margin: auto;">
+
+                            <b><font style="color: #000000; font-size: 20px;">MATRÍCULA DE DEPENDENCIA DE ALUNO</font></b>
+                            <hr/>
+                        </div>
+                        <?php
+                        $query_pl = "SELECT * FROM periodo_letivo where atual = 1";
+                        $Matrizpl = $this->db->query($query_pl)->result_array();
+                        foreach ($Matrizpl as $row_pl):
+                            $periodo_letivo = $row_pl['periodo_letivo'];
+                            $periodo_descricao = $row_pl['periodo_letivo_descricao'];
+                        endforeach;
+                        ?>
+                      <table width="100%" class="responsive">
+                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="control-group">
+                                                        <div class="controls">
+                                                            <input type="hidden" value="<?php echo $periodo_letivo; ?>" name="periodo_letivo_desperiodizado" id="periodo_letivo_desperiodizado"/>
+                                                            <label class="control-label"><font style="font-weight: bold;"><?php echo get_phrase('Período_letivo_atual :'); ?> </font><font style="font-size: 14px;  color: #0044cc;"> <?php echo $periodo_letivo; ?> - <?php echo $periodo_descricao; ?> </font></label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td >
+                                                    <div class="control-group">
+
+                                                        <div class="controls">
+                                                            <label class="control-label"><font style="font-weight: bold;"><?php echo get_phrase('Aluno(a) :'); ?></font> <font style="font-size: 14px;  color: #000000;"><?php echo $registro_academico; ?> - <?php echo $row['nome']; ?></font></label>    
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td >
+                                                    <div class="control-group">
+
+                                                        <div class="controls">
+                                                            <label class="control-label"><font style="font-weight: bold;"><?php echo get_phrase('Curso :'); ?></font> <font style="font-size: 14px;  color: #000000;"><?php echo $curso; ?></font></label>    
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                              </tbody>
+                        </table>
+                        <br><br>
+                        <b><font style="color: #0044cc">1°. SELECIONE O CURSO E TURMA PARA VISUALIZAR AS DISCIPLINAS </font><font style="color: #495b4a">(Obs: só é possível matricular o aluno em 1 disciplina por vez) </font></b>
+                        <br>
+                        <table style="margin-top: 20px;">
+                            <tr>
+                                 <td >
+                                        <div class="control-group">
+                                            <label class="control-label"><?php echo get_phrase('Curso'); ?></label>
+                                            <div class="controls">
+                                                <select style="width: 350px;" name="curso_busca" id="curso_busca_periodizado" onchange="buscar_turma_matricula_desperiodizado()">
+                                                    <option value="<?php echo $curso_id; ?>"><?php echo $curso; ?></option>
+                                                    <?php
+                                                    foreach ($Matriz_curso as $row_curso):
+                                                        ?>
+                                                        <option value="<?php echo $row_curso['cursos_id']; ?>"><?php echo $row_curso['cur_tx_descricao']; ?></option>
+                                                        <?php
+                                                    endforeach;
+                                                    ?>                                                
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>                               
+                            </tr>
+                            <tr>
+                                 <td>
+                                    <?php
+                                    $sql_periodo = "SELECT  MAX(x.MAIOR_PERIODO) AS MAIOR_PERIODO, x.periodo_letivo as periodo_letivo FROM
+                                            (SELECT MAX(mat.periodo) AS MAIOR_PERIODO, MAX(CONCAT(t.ano,'/',t.semestre)) AS periodo_letivo
+                                            FROM matricula_aluno_turma mat
+                                            inner join turma t on t.turma_id = mat.turma_id
+                                            inner join matricula_aluno m on m.matricula_aluno_id = mat.matricula_aluno_id
+                                            where  m.matricula_aluno_id = '$param1'
+                                            UNION
+                                            SELECT MAX(p.periodo) AS MAIOR_PERIODO, periodo_letivo AS periodo_letivo
+                                            FROM matricula_aluno_turma mat
+                                            inner join matricula_aluno m on m.matricula_aluno_id = mat.matricula_aluno_id
+                                            inner join turma t on t.turma_id = mat.turma_id
+                                            left join periodo p on p.periodo_id = t.periodo_id
+                                            left join periodo_letivo pl on pl.periodo_letivo_id = mat.periodo_letivo_id
+                                            where  m.matricula_aluno_id = '$param1') as x";
+                                    //echo $sql;
+                                    $Matrizperiodo = $this->db->query($sql_periodo)->result_array();
+                                    foreach ($Matrizperiodo as $row_periodo):
+                                        $maior_periodo_letivo = $row_periodo['periodo_letivo'];
+                                        $maior_periodo = $row_periodo['MAIOR_PERIODO'];
+
+                                        if ($maior_periodo == 'I') {
+                                            $maior_periodo2 = 1;
+                                        } else if ($maior_periodo == 'II') {
+                                            $maior_periodo2 = 2;
+                                        } else if ($maior_periodo == 'III') {
+                                            $maior_periodo2 = 3;
+                                        } else if ($maior_periodo == 'IV') {
+                                            $maior_periodo2 = 4;
+                                        } else if ($maior_periodo == 'V') {
+                                            $maior_periodo2 = 5;
+                                        } else if ($maior_periodo == 'VI') {
+                                            $maior_periodo2 = 6;
+                                        } else if ($maior_periodo == 'VII') {
+                                            $maior_periodo2 = 7;
+                                        } else if ($maior_periodo == 'VIII') {
+                                            $maior_periodo2 = 8;
+                                        } else if ($maior_periodo == 'IX') {
+                                            $maior_periodo2 = 9;
+                                        } else if ($maior_periodo == 'X') {
+                                            $maior_periodo2 = 10;
+                                        }
+                                    endforeach;
+
+                                    $query = "SELECT x.turma_id as turma_id, x.tur_tx_descricao as turma,x.periodo_id as periodo, x.turno as turno,  x.periodo_letivo,x.periodo_letivo_id as periodo_letivo_id, x.periodo_letivo_turma,x.status
+                                                    from(select curso_id, turma_id,tur_tx_descricao, periodo_id, tu.descricao as turno, pl.periodo_letivo as periodo_letivo, pl.periodo_letivo_id as periodo_letivo_id,
+                                                    CONCAT(t.ano,'/',t.semestre) AS periodo_letivo_turma, t.status as status
+                                                    FROM turma t
+                                                    inner join turno tu on tu.turno_id = t.turno_id
+                                                    left join periodo_letivo pl on pl.periodo_letivo_id = t.periodo_letivo_id)  X
+                                                    WHERE x.curso_id = '$curso_id' and (x.periodo_letivo_turma > '$maior_periodo_letivo' or x.periodo_letivo > '$maior_periodo_letivo') and x.status = 1 ORDER BY X.PERIODO_ID ASC";
+                                    //echo $query;
+                                    $MatrizArrayt = $this->db->query($query)->result_array();
+                                    ?>          
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <label class="control-label"><?php echo get_phrase('Turmas Disponíveis'); ?></label>
+                                            <div id="load_turma_desperiodizado">
+                                            <select style="width: 350px;" name='turma_busca' id='turma_busca_periodizado' onchange="buscar_disciplina_desperiodizado()">
+                                                <option value="0"> SELECIONE UMA TURMA</option>
+                                                <?php
+                                                foreach ($MatrizArrayt as $row_turma):
+                                                    $id_turma = $row_turma['turma_id'];
+                                                    $turma = $row_turma['turma'];
+                                                    $turno = $row_turma['turno'];
+                                                    $periodo2 = $row_turma['periodo'];
+                                                    $periodo_letivo = $row_turma['periodo_letivo'];
+                                                    $periodo_letivo_id = $row_turma['periodo_letivo_id'];
+
+                                                    if ($periodo2 == 1) {
+                                                        $periodo = 'I';
+                                                    } else if ($periodo2 == 2) {
+                                                        $periodo = 'II';
+                                                    } else if ($periodo2 == 3) {
+                                                        $periodo = 'III';
+                                                    } else if ($periodo2 == 4) {
+                                                        $periodo = 'IV';
+                                                    } else if ($periodo2 == 5) {
+                                                        $periodo = 'V';
+                                                    } else if ($periodo2 == 6) {
+                                                        $periodo = 'VI';
+                                                    } else if ($periodo2 == 7) {
+                                                        $periodo = 'VII';
+                                                    } else if ($periodo2 == 8) {
+                                                        $periodo = 'VIII';
+                                                    } else if ($periodo2 == 9) {
+                                                        $periodo = 'IX';
+                                                    } else if ($periodo2 == 10) {
+                                                        $periodo = 'X';
+                                                    }
+                                                    ?>
+                                                    <option value='<?php echo $id_turma; ?>' > <?php echo $row_turma['turma'] . '/' . $turno . ' / '; ?>  <?php echo $periodo . '  Per. '; ?>(<?php echo $periodo_letivo; ?>)</option>
+
+
+                                                    <?php
+                                                endforeach;
+                                                ?>
+                                            </select>
+                                            </div>
+                                        </div>
+                                    </div>         
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <label class="control-label"><?php echo get_phrase('Disciplinas Disponíveis'); ?></label>                                         
+                                                        <div id="load_disciplina_desperiodizado">
+                                                            <select style="width: 350px;" name='turma_busca' id='turma_busca' onchange="buscar_disciplina_desperiodizado()">
+                                                <option value="0"> SELECIONE UMA TURMA</option>
+                                                </select>
+                                                        </div>
+                                             </div>
+                                    </div>  
+                                </td>
+                            </tr>
+                        </table>
+                        <div id="load_dependencia_tabela">
+                            <?php
+                             $query2 = "SELECT * FROM disciplina_desperiodizado dd
+                                    inner join matriz_disciplina md on md.matriz_disciplina_id = dd.matriz_disciplina_id
+                                    inner join turma t on t.turma_id = dd.turma_id
+                                    inner join disciplina d on d.disciplina_id = md.disciplina_id
+                                    WHERE  matricula_aluno_id = $param1 order by dd.turma_id asc";
+                           // ECHO  $query2;
+                            $MatrizArrayt2 = $this->db->query($query2)->result_array();
+                            ?>
+                       
+                                      <b><font style="color: #0044cc; font-size: 18px;">Disciplina(s) cadastrada(s) para o aluno(a)</font></b>
+                                         
+                                         <table class="table table-hover" >
+                                             <thead>
+                                                <tr>
+                                                <td>Turma </td>
+                                                <td >Disciplina(s) </d>
+                                                <td >Opções </td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $cont_d = 0;
+                                                foreach ($MatrizArrayt2 as $row_turma2):
+                                                    $periodo2 = $row_turma2['periodo_id'];
+                                                    $disciplina = $row_turma2['disc_tx_descricao'];
+                                                    $disciplina_desperiodizada_id = $row_turma2['disciplina_desperiodizado_id'];
+                                                    $turma = $row_turma2['tur_tx_descricao'];
+                                                    if ($periodo2 == 1) {
+                                                        $periodo = 'I';
+                                                    } else if ($periodo2 == 2) {
+                                                        $periodo = 'II';
+                                                    } else if ($periodo2 == 3) {
+                                                        $periodo = 'III';
+                                                    } else if ($periodo2 == 4) {
+                                                        $periodo = 'IV';
+                                                    } else if ($periodo2 == 5) {
+                                                        $periodo = 'V';
+                                                    } else if ($periodo2 == 6) {
+                                                        $periodo = 'VI';
+                                                    } else if ($periodo2 == 7) {
+                                                        $periodo = 'VII';
+                                                    } else if ($periodo2 == 8) {
+                                                        $periodo = 'VIII';
+                                                    } else if ($periodo2 == 9) {
+                                                        $periodo = 'IX';
+                                                    } else if ($periodo2 == 10) {
+                                                        $periodo = 'X';
+                                                    }
+                                                    ?>
+                                                    
+                                                    <tr>
+                                                        <td><?php echo $turma; ?></td>
+                                                        <td><?php echo $disciplina; ?></td>
+                                                        <td>     <a  href="#" onclick="apagar_disciplina_desperiodizado(<?php echo $disciplina_desperiodizada_id; ?>);" class="btn btn-red btn-small" >
+                                                            <?php echo get_phrase('Apagar'); ?>
+                                                                  </a>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                    $cont_d++;
+                                                endforeach;
+                                                ?>
+                                                </tbody>
+                                        </table>
+                         </div>
+                    </div>
+
+                    <div  class="form-actions">
+                       
+                        <?php   if ($cont_d > 0) { ?>
+                                    <button type="submit" class="btn btn-gray"><?php echo get_phrase('Confirmar Matricula'); ?></button>
+                        <?php }else{ ?>
+                                    <button type="button" class="btn btn-gray"><?php echo get_phrase('Para efetuar a matrícula do aluno, deve ter pelo menos 1 disciplina adicionada.'); ?></button>
+                        <?php } ?>
+                        
+                    </div>
+                    </form>                
+                </div>                
+            </div>
+
+
+            <?php
+        endforeach;
+    }
     function carrega_ficha_desperiodizado($param1 = '', $param2 = '', $param3 = '') {
 
         $sql = "SELECT *
@@ -5532,7 +6026,7 @@ where  ca.cadastro_aluno_id != '' and desperiodizado = 1";
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <div id="load_add_disciplina_desperiodizado"></div>
+                                                        <div id="load_add_disciplina_dependencia"></div>
                                                     </td>
                                                 </tr>
                                             </thead>

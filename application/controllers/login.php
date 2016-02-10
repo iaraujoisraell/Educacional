@@ -71,7 +71,7 @@ class Login extends CI_Controller {
             $row = $query->row();
             $this->session->set_userdata('admin_login', '1');
             $this->session->set_userdata('login', $row->usuarios_id);
-            $this->session->set_userdata('nome', $row->nome);
+            $this->session->set_userdata('nome', $row->nome);   
             $this->session->set_userdata('perfis_id', $row->perfis_id);
             $this->session->set_userdata('login_type', 'admin');
 
