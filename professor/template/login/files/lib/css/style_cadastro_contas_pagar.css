@@ -1,0 +1,56 @@
+/* 
+    Document   : style_cadastro_contas_pagar
+    Created on : 20/05/2014, 14:41:04
+    Author     : user
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+#cadastro_contas_pagar{
+    width: 660px;
+    height: 400px;
+    margin-top: 10px;
+    margin: auto;
+
+
+}
+
+#cadastro_fornecedor{
+    width: 650px;
+    height: 450px;
+    margin-top: 10px;
+    margin-left: 50px;
+
+    float: left;
+}
+
+#botoes_contas_receber {
+
+    margin-top: 0px;
+    margin-left: 240px;
+}
+
+#botoes_fornecedor {
+    width: 220px;
+    height: 20px;
+    margin-top: 0px;
+    margin-left: 405px;
+}
+
+#historico {
+    margin-top: 0px;
+    margin-left: 0px;
+    width: 270px;
+    height: 70px;
+}
+
+#categoria {
+    margin-top: 0px;
+    margin-left: 0px;
+    width: 270px;
+    height: 30px;
+}

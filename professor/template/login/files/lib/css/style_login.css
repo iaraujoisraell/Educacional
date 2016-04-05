@@ -1,0 +1,235 @@
+
+*{    
+    margin: 0px;
+    padding: 0px;
+    font-family: Fineness Regular;
+}
+
+
+
+a:link { text-decoration: none; color: #000; }
+a:visited { text-decoration: none; color: #000; }
+a:hover { text-decoration: none; color: #000; }
+a:active { text-decoration: none; color: #000; }
+
+
+
+
+
+html,body{
+
+    height: 100%
+
+}
+
+
+html{
+
+    behavior: url(ie-css3.htc); /* Avisa ao IE para mudar o
+    comportamento desta classe e ela passa a entender o CSS3 */
+}
+
+@font-face {
+    font-family: Comfortaa-Regular;
+    src: url(../font/BEBAS___.ttf);
+}
+
+
+
+a, a img{
+    border:0px; 
+    text-decoration:none;
+
+}
+
+body{
+    z-index: 3;
+    height: 100%;
+    width: 100%;
+    margin-top: 0px;
+
+    background-image:url(../../imagens/login/background.png);
+    background-repeat:no-repeat;
+    background-size:100% 100%;
+    -webkit-background-size: 100% 100%;
+    -o-background-size: 100% 100%;
+    -khtml-background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+}
+
+
+
+#imagem_topo{
+     width: 100%;
+    height: 180px;
+    margin: auto;      
+
+    background-image:url(../../imagens/login/SISGEFI31.png);
+    background-repeat:no-repeat;
+    background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    -o-background-size: 100% 100%;
+    -khtml-background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    /* color: #FFF; */
+}
+
+#esqueceusenha{
+    width: 192px;
+    height: 35px;
+    background-image:url(../../imagens/login/cadeado.png);
+    background-repeat:no-repeat;
+}
+
+#rodapelogin{
+    width: 1100px;
+    height: 35px;
+    margin: auto;
+    margin-top: 140px;
+    font-size: 19px;
+    color: #FEFEFE;
+
+}
+
+
+#logowebfi{
+    width: 152px;
+    height: 35px;
+    background-image:url(../../imagens/login/webfi.png);
+    background-repeat:no-repeat;
+    margin: auto;
+    right: 0;
+    bottom: 0;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    position: fixed;
+    font-size: 19px;
+    color: #FEFEFE;
+
+}
+
+#form_login{
+
+    width: 300px;
+    height: 110px;
+    margin: auto;
+    margin-top: 100px;
+   
+
+}
+
+#login_home{
+    margin: auto;
+    background-image:url(../../imagens/home/imagem_login_.png);
+    margin-top: 70px;
+    width: 80px;
+    height: 40px;
+    background-repeat:no-repeat;
+}
+
+#recuperar_senha{
+
+    width: 435px;
+    font-size: 14px;
+    height: 100px;
+    line-height: 30px;
+    margin-top: 0px;
+    margin-left: 1px;
+    float: left;
+    color: #000;
+}
+
+#login_barra_topo2{
+
+    height: 6px;
+    background-image:url(../../imagens/home/barra_horizontal_.-08.png);    
+    background-repeat:repeat;
+}
+
+
+
+#submenu{
+    width: 960px;
+    height: 40px;
+    /*    background-color: red;*/
+}
+
+
+
+
+
+#input_administrativo{
+    width: 435px;
+    font-size: 11px;
+    height: 170px;
+    line-height: 30px;
+    margin-top: 100px;
+    margin-left: 80px;
+    float: left;
+    color: #000;
+
+}
+
+#entrar_login{
+    font-size: 18px;
+    text-align: center;
+    color: #000;
+    margin-left: 0px;
+}
+
+
+
+#rodape_login{
+    width: 100%;
+    height: 80px;
+    margin:0;
+    padding:0;
+    position:fixed;
+    bottom:0;
+    /* background-image:url(../../imagens/home/barra_topo-05.png);*/
+    background-color: #000;
+}
+
+#titulo_texto_rodape{
+    font-size: 14px;
+    text-align: left;
+    color: #fff;
+    margin-left: 200px;
+    margin-top: 10px;
+    height: 10px;
+}
+
+#titulo_texto_rodape2{
+    margin-left: 200px;
+    margin-top: 0px;
+    height: 10px;
+}
+
+#texto_rodape{
+    font-size: 12px;
+    text-align: left;
+    color: #fff;
+    margin-left: 200px;
+    margin-top: 10px;
+
+    height: 80px;
+}
+
+
+#texto_rodape2{
+    font-size: 14px;
+    text-align: center;
+
+}
+
+
+
+.divStatusUsuario{
+    width: 300px;
+    height: 15px;
+    margin-top: 13px;
+    margin-left: 55px;
+    color: #840D22; 
+    font-weight: bold;
+    float: left;
+}

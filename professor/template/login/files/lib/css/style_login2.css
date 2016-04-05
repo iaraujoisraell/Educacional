@@ -1,0 +1,156 @@
+/* 
+    Document   : style
+    Created on : 07/05/2014, 17:03:08
+    Author     : WEB 02
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+
+#safetop{
+    width: 960px;
+    height: 124px;
+    margin: auto;
+    background-image:url(../../imagens/home/barra_topo-05.png);
+    background-repeat:no-repeat;
+}
+
+#login_total{
+
+    width: 535px;
+    height: 270px;
+    margin: auto;
+ 
+}
+#login_barra_esquerda{
+
+    width: 6px;
+    height: 270px;
+    background-image:url(../../imagens/home/barra_vertical-09.png);    
+    background-repeat:repeat;
+}
+
+#barra_direita{
+
+    width: 6px;
+    height: 270px;
+    background-image:url(../../imagens/home/barra_vertical-09.png); 
+    margin-left: 535px;    
+}
+
+#login_home{
+
+    width: 80px;
+    height: 40px;
+    margin: auto;
+    background-image:url(../../imagens/home/imagem_login_.png);
+    margin-top: 30px;
+    background-repeat:no-repeat;
+}
+
+
+#login_barra_topo{
+    width: 541px;
+    height: 6px;
+    background-image:url(../../imagens/home/barra_horizontal_.-08.png);    
+    margin-left: 0px;
+}
+
+#login_barra_topo2{
+    width: 541px;
+    height: 6px;
+    background-image:url(../../imagens/home/barra_horizontal_.-08.png);    
+    margin-left: 0px; 
+}
+
+
+
+#submenu{
+
+    width: 600px;
+    float: left;
+    height: 40px;
+     
+    /*    background-color: red;*/
+}
+
+
+
+#menu_setores{
+
+    width: 200px;
+    height: 250px;
+    margin-left: 50px;
+    margin-top: 35px;
+    background-repeat:no-repeat;
+    float: left;
+}
+
+#form_login{
+
+    width: 135px;
+    font-size: 11px;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 100px;
+    margin-left: 40px;
+    float: left;
+    color: #939597;
+}
+
+.input{
+    color:#444;
+    font-size: 12px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    padding:2px;
+    margin-top: 2px;
+    border: #78a4d1 solid 1px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border-radius:5px;
+}
+
+#entrar_login{
+    font-size: 18px;
+    text-align: center;
+    color: #555;
+    margin-left: 25px;
+}
+
+
+
+#comunicacao_login{
+    width: 200px;
+    height: 40px;
+    background-image:url(../../imagens/home/menu_comunicao_visual-10.png); 
+    background-repeat:no-repeat;
+}
+
+#midia_login{
+    width: 200px;
+    height: 40px;
+    background-image:url(../../imagens/home/menu_midia-12.png); 
+    background-repeat:no-repeat;
+}
+
+#marketing_login{
+    width: 200px;
+    height: 40px;
+    background-image:url(../../imagens/home/menu_marketing-11.png); 
+    background-repeat:no-repeat;
+}
+
+#administacao_login{
+    width: 200px;
+    height: 40px;
+    background-image:url(../../imagens/home/menu_administrativo-13.png); 
+    background-repeat:no-repeat;
+}
+
+#diretoria_login{
+    width: 200px;
+    height: 40px;
+    background-image:url(../../imagens/home/menu_diretoria-14.png); 
+    background-repeat:no-repeat;
+}

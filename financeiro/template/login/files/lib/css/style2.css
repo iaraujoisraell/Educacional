@@ -1,0 +1,738 @@
+/* 
+    Document   : style
+    Created on : 07/05/2014, 17:03:08
+    Author     : WEB 02
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: Fineness Regular;
+}
+a:link { text-decoration:none; color:#000; }
+a:visited { text-decoration:none; color:#000; }
+a:hover { text-decoration:none; color:#000; }
+a:active { text-decoration:none; color:#000; }
+
+
+html{
+
+    behavior: url(ie-css3.htc); /* Avisa ao IE para mudar o
+    comportamento desta classe e ela passa a entender o CSS3 */
+}
+
+.input{
+    color:#444;
+    font-size: 12px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    padding:2px;
+    margin-top: 2px;
+    border: #78a4d1 solid 1px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border-radius:5px;
+}
+
+@font-face {
+
+    font-family: MyriadPro-Bold;
+    src: url(../font/MyriadPro-Bold.ttf);
+}
+
+
+a, a img{
+    border:0px; 
+    text-decoration:none;
+}
+
+body{
+    background-color: #E0E0E0;
+    background-repeat:repeat;
+}
+
+#logotopo{
+    width: 150px;
+    height: 50px;
+    background-image:url(../../imagens/topo/Topo.png);
+    background-repeat:no-repeat;  
+    float: left;
+}
+
+#topbarrasuperior{
+    width: 100%;
+    height: 65px;
+
+    background-color: #3D3E40;
+    float: left;
+}
+
+
+
+#topbarrainferior{
+    width: 100%;
+    height: 165px;
+    background-color:#0d2f3e;
+
+}
+
+#logo_modulos{
+    width: 100%;
+    height: 100px;
+}
+
+#logo_home{
+    width: 80px;
+    height: 100px;
+    background-image:url(../../imagens/modulos/Home.png);
+    background-repeat:no-repeat;
+    margin-top: 0px;
+    margin-left: 60px;
+    float: left;
+}
+
+#logo_comunicacao_visual{
+    width: 80px;
+    height: 100px;
+    background-image:url(../../imagens/menus/comunicacaocisual-06.png);
+    background-repeat:no-repeat;
+    margin-top: 0px;
+    margin-left: 70px;
+    margin-right: 0px;
+    float: left;
+}
+
+#logo_marketing{
+    width: 80px;
+    height: 90px;
+    background-image:url(../../imagens/menus/marketing-06.png);
+    background-repeat:no-repeat;
+    margin-top: 9px;
+    margin-left: 30px;
+    float: left;
+}
+
+#logo_midia{
+    width: 60px;
+    height: 90px;
+    background-image:url(../../imagens/menus/midia-06.png);
+    background-repeat:no-repeat;
+    margin-top: 10px;
+    margin-left: 30px;
+    float: left;
+}
+#logo_administrativo{
+    width: 90px;
+    height: 90px;
+    background-image:url(../../imagens/menus/administrativo-06.png);
+    background-repeat:no-repeat;
+    margin-top: 12px;
+    margin-left: 50px;
+    float: left;
+}
+
+#logo_diretoria{
+    width: 80px;
+    height: 90px;
+    background-image:url(../../imagens/menus/diretoria-06.png);
+    background-repeat:no-repeat;
+    margin-top: 10px;
+    margin-left: 30px;
+    float: left;
+}
+#logo_configuracao{
+    width: 80px;
+    height: 90px;
+    background-image:url(../../imagens/menus/configuracoes-06.png);
+    background-repeat:no-repeat;
+    margin-top: 10px;
+    margin-left: 20px;
+    float: left;
+}
+
+
+
+#logo_empresa{
+    width: 120px;
+    height: 40px;
+    margin-top: 10px;
+    margin-left: 10px;
+    background-image:url(../../imagens/home/logo_topo-07.png);
+    background-repeat:no-repeat;
+    float: left;
+}
+
+#logo_usuario{
+    width: 20px;
+    height: 40px;
+    margin-top: 10px;
+
+    background-image:url(../../imagens/home/icone_usuario-06.png);
+    background-repeat:no-repeat;
+    margin-left: 10px;
+    margin-top: 27px;
+    float: left;
+}
+
+#nome_usuario{
+    width: 190px;
+    height: 40px;
+    margin-top: 27px;
+    margin-left: 10px;
+    color: #fff; 
+
+    float: left;
+}
+
+#sair{
+    width: 40px;
+    height: 40px;
+    margin-top: 27px;
+    margin-left: 10px;
+    color: #fff; 
+    float: left;
+
+}
+
+#contents{
+    /* width: 960px; */
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    float: left;
+
+}
+
+#contents_um{
+    /* width: 960px; */
+    width: 960px;
+    height: 1100px;
+    margin: auto;
+    float: left;
+
+}
+
+#dvPaginacao{
+    /* width: 960px; */
+    width: 100%;
+    height: 400px;
+    margin: auto;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+}
+
+#dvPaginacaohomeEstoque{
+    /* width: 960px; */
+    width: 860px;
+    height: 60%;
+    margin: auto;
+    margin-top: 50px;
+    margin-left: 50px;
+   ;
+}
+
+#menuesquedo_estoque{
+    width: 230px; 
+    height: 80%;
+    float: left;
+    padding:0;
+    position:fixed;
+}
+
+#titulo_menu_financeiro{
+    width: 100%;
+    height: 32px;
+    margin-top: 0px;
+    background-image:url(../../imagens/botoes/ADM/Financeiro.png);
+    background-repeat:no-repeat;
+}
+
+
+#menu_cadastro{
+    width: 135px;;
+    height: 35px;
+    margin-top: 0px;
+    background-image:url(../../imagens/botoes/ADM/Cadastro.png);
+    background-repeat:no-repeat;
+    float: left;
+}
+
+
+#sm_contas_pagar_on{
+    width: 135px;
+    height: 30px;
+    margin-top: 0px;
+    margin-left: 0px;
+    background-image:url(../../imagens/botoes/ADM/Contas-a-pagar_on.png);
+    background-repeat:no-repeat;
+}
+
+#sm_contas_pagar_off{
+    width: 135px;
+    height: 30px;
+    margin-top: 0px;
+    margin-left: 0px;
+    background-image:url(../../imagens/botoes/ADM/Contas-a-pagar_off.png);
+    background-repeat:no-repeat;
+}
+
+#sm_contas_receber_on{
+    width: 135px;
+    height: 30px;
+    margin-top: 0px;
+    margin-left: 0px;
+    background-image:url(../../imagens/botoes/ADM/Contas-a-receber_on.png);
+    background-repeat:no-repeat;
+
+}
+
+#sm_contas_receber_off{
+    width: 135px;
+    height: 30px;
+    margin-top: 0px;
+    margin-left: 0px;
+    background-image:url(../../imagens/botoes/ADM/Contas-a-receber_off.png);
+    background-repeat:no-repeat;
+
+}
+
+#sm_balanco_on{
+    width: 135px;
+    height: 30px;
+    margin-top: 0px;
+    margin-left: 0px;
+    background-image:url(../../imagens/botoes/ADM/Balanco-Geral_on.png);
+    background-repeat:no-repeat;
+    float: left;
+}
+
+#sm_balanco_off{
+    width: 135px;
+    height: 30px;
+    margin-top: 0px;
+    margin-left: 0px;
+    background-image:url(../../imagens/botoes/ADM/Balanco-Geral_off.png);
+    background-repeat:no-repeat;
+    float: left;
+}
+
+#sm_cadastro_fornecedor_on{
+    width: 140px;
+    height: 35px;
+    margin-top: 0px;
+    margin-left: 0px;
+    background-image:url(../../imagens/botoes/ADM/Fornecedor_on.png);
+    background-repeat:no-repeat;
+    float: left;
+}
+
+#sm_cadastro_fornecedor_off{
+    width: 140px;
+    height: 35px;
+    margin-top: 0px;
+    margin-left: 0px;
+    background-image:url(../../imagens/botoes/ADM/Fornecedor_off.png);
+    background-repeat:no-repeat;
+    float: left;
+}
+
+#sm_cadastro_categoria_on{
+    width: 140px;
+    height: 35px;
+    margin-top: 0px;
+    margin-left: 0px;
+    background-image:url(../../imagens/botoes/ADM/Categoria_on.png);
+    background-repeat:no-repeat;
+    float: left;
+}
+
+#sm_cadastro_categoria_off{
+    width: 140px;
+    height: 35px;
+    margin-top: 0px;
+    margin-left: 0px;
+    background-image:url(../../imagens/botoes/ADM/Categoria_off.png);
+    background-repeat:no-repeat;
+    float: left;
+}
+
+#webfi_topo{
+    width: 200px;
+    height: 45px;
+    background-image:url(../../imagens/login/webfi.png);
+    background-repeat:no-repeat;
+    margin: auto;
+    margin-top: 10px;
+    right: 0;
+    position: fixed;
+}
+
+#conteudo_home{
+    width: 100%;
+    height: 1000px;
+
+    background-color: #EFEFEF;
+    background-repeat:repeat;
+    padding:0;
+    position:fixed;
+    float: left;
+
+}
+
+#conteudo_home_estoque{
+    width: 80%;
+    height: 520px;
+    margin: auto;
+    margin-left: 250px;
+    background-color: #EFEFEF;
+    background-repeat:repeat;
+  
+}
+
+#pesquisa_form_home_estoque{
+    width: 1060px;
+    height: 140px;
+    margin: auto;
+    margin-top: 50px;
+    margin-left: 0px;
+}
+
+#pesquisa_form_home_estoque_MP{
+    width: 900px;
+    height: 140px;
+    margin: auto;
+    margin-top: 50px;
+    margin-left: 0px;
+}
+
+#pesquisa_form_home_grupo{
+    width: 660px;
+    height: 140px;
+    margin: auto;
+    margin-top: 50px;
+    margin-left: 0px;
+}
+
+#conteudo{
+     width: 70%;
+    height: 700px;
+    margin:auto;  
+}
+
+#conteudo_um{
+    width: 1090px;
+    height: 900px;
+    margin-left: 225px;
+    background-color: #EFEFEF;
+    background-repeat:repeat;
+
+}
+
+#texto_rodape3{
+    width: 300px;
+    height: 30px;
+    font-size: 14px;
+    text-align: center;
+    color: #000;
+    margin: auto;
+    margin-top: 10px;
+}
+
+#rodape{
+    width: 100%;
+    height: 30px;
+    margin:0;
+    padding:0;
+    position:fixed;
+    bottom:0;
+    /* background-image:url(../../imagens/home/barra_topo-05.png);*/
+    background-color: #E0E0E0;
+}
+
+
+
+#filtro_vencimento{
+    width: 90px;
+    height: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
+    color: #474747; 
+    background-repeat:no-repeat;
+    right:  0pt;
+    position: fixed;
+    margin-right: 650px;
+    float: left;
+}
+
+#filtro_de{
+    width: 60px;
+    height: 25px;
+    margin-top: 10px;
+
+    background-image:url(../../imagens/home/imagem_data_DE-06.png);
+    background-repeat:no-repeat;
+    right:  0pt;
+    position: fixed;
+    margin-right: 600px;
+    float: left;
+}
+
+#filtro_input_de{
+    width: 60px;
+    height: 20px;
+    margin-top: 13px;
+    right:  0pt;
+    position: fixed;
+    margin-right: 576px;
+    float: left;
+}
+
+#filtro_ate{
+    width: 60px;
+    height: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
+    background-image:url(../../imagens/home/imagem_data_ATE-06.png);
+    background-repeat:no-repeat;
+    right:  0pt;
+    position: fixed;
+    margin-right: 490px;
+    float: left;
+}
+
+#filtro_input_ate{
+    width: 60px;
+    height: 20px;
+    margin-top: 13px;
+    right:  0pt;
+    position: fixed;
+    margin-right: 468px;
+    float: left;
+}
+
+
+
+
+#filtro_pesquisa_fornecedor{
+    width: 60px;
+    height: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
+    background-image:url(../../imagens/home/imagem_pesquisa-06.png);
+    background-repeat:no-repeat;
+    right:  0pt;
+    position: fixed;
+    margin-right: 330px;
+    float: left;
+}
+
+#filtro_mes{
+    width: 1060px;
+    height: 60px;
+    margin-top: 20px;
+    margin-left: 100px;
+    float: left;
+    color: #000; 
+}
+
+#titulo{
+    width: 300px;
+    height: 50px;
+    margin-top: 10px;
+    margin-left: 50px;
+    float: left;
+    position: fixed;
+}
+
+#titulo_tabela{
+    width: 1060px;
+    height: 300px;
+    margin-top: 130px;
+    margin-left: 50px;
+    float: left;
+    position: fixed;
+}
+
+#titulo_tabela_fornecedor{
+    width: 1060px;
+    height: 400px;
+    margin-top: 80px;
+    margin-left: 50px;
+    float: left;
+    position: fixed;
+}
+
+#titulo_tabela_categoria{
+    width: 800px;
+    height: 400px;
+    margin-top: 80px;
+    margin-left: 50px;
+    float: left;
+    position: fixed;
+}
+
+#legenda_negativo{
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
+    background-image:url(../../imagens/home/icone_situacao_negativo-06.png);
+    background-repeat:no-repeat;
+    float: left;
+}
+
+#legenda_negativo_nome{
+    width: 80px;
+    height: 20px;
+    font-size: 12px;
+    margin-top: 10px;
+    margin-left: 0px;
+    float: left;
+}
+
+#legenda_hoje{
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
+    background-image:url(../../imagens/home/icone_situacao_vecto_hoje-06.png);
+    background-repeat:no-repeat;
+    float: left;
+}
+
+#legenda_hoje_nome{
+    width: 100px;
+    height: 20px;
+    font-size: 12px;
+    margin-top: 10px;
+    margin-left: 0px;
+    float: left;
+}
+
+#legenda_parcial{
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+    margin-left: 30px;
+    background-image:url(../../imagens/home/icone_situacao_parcial-06.png);
+    background-repeat:no-repeat;
+    float: left;
+}
+
+#legenda_parcial_nome{
+    width: 60px;
+    height: 20px;
+    font-size: 12px;
+    margin-top: 10px;
+    margin-left: 0px;
+    float: left;
+}
+
+#legenda_aberto{
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+    margin-left: 20px;
+    background-image:url(../../imagens/home/icone_situacao_aberto-06.png);
+    background-repeat:no-repeat;
+    float: left;
+}
+
+#legenda_aberto_nome{
+    width: 80px;
+    height: 20px;
+    font-size: 12px;
+    margin-top: 11px;
+    margin-left: 0px;
+    float: left;
+}
+
+
+#legenda_saldo{
+    width: 200px;
+    height: 20px;
+    margin-top: 10px;
+    right:  0pt;
+    position: fixed;
+    margin-right: 50px;
+    float: left;
+}
+
+#estoque_conteudo{
+    width: 200px;
+    height: 250px;
+    background-color: #B5B5B5;
+    margin-top: 70px;
+    margin-left: 90px;
+    float: left;
+    border-radius: 5px 5px 5px 5px;    
+}
+
+#financeiro_conteudo{
+    width: 200px;
+    height: 250px;
+    background-color: #B5B5B5;
+    margin-top: 70px;
+    margin-left: 90px;
+    float: left;
+    border-radius: 5px 5px 5px 5px;
+}
+
+#comercial_conteudo{
+    width: 200px;
+    height: 250px;
+    background-color: #B5B5B5;
+    margin-top: 70px;
+    margin-left: 90px;
+    float: left;
+    border-radius: 5px 5px 5px 5px;
+}
+
+#producao_conteudo{
+    width: 200px;
+    height: 250px;
+    background-color: #B5B5B5;
+    margin-top: 70px;
+    margin-left: 90px;
+    float: left;
+    border-radius: 5px 5px 5px 5px;
+}
+
+/* 
+
+COR PAGINACAO
+
+*/
+
+tbody td
+{
+    padding:.0em;
+    font-size: 14px;
+}
+thead
+{
+    background:#C1CDCD;
+    font-weight:bold;
+    color: #283a50;
+}
+.tbody1 {background:#FFFFFF; color: #283a50;}
+.tbody2 {background:#B5B5B5; color: #283a50;}
+.tbody1 tr:hover{background:#F0F8FF;}
+.tbody2 tr:hover{background:#F0F8FF;}
+.tbody1:hover{background:#F0F8FF;}
+.tbody2:hover{background:#F0F8FF;}
+
+tbody_boletim td
+{
+    padding:.0em;
+    font-size: 14px;
+}
+tbody_boletim1 {background:#ebebeb; color: #283a50;}
+.tbody_boletim2 {background:#cccccc; color: #283a50;}
+.tbody_boletim1 tr:hover{background:#F0F8FF;}
+.tbody_boletim2 tr:hover{background:#F0F8FF;}
+.tbody_boletim1:hover{background:#F0F8FF;}
+.tbody_boletim2:hover{background:#F0F8FF;}

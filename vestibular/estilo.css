@@ -1,0 +1,140 @@
+* {margin: 0;
+   padding: 0;
+}
+
+a, a img {
+    text-decoration: none;
+}
+a img {border: 0;}
+
+html{
+    width:  100%;
+    height: 100%;
+}
+body {   
+    width: 100%;
+    height: 100%;
+    // background-image:url(imagens/background.jpg); 
+    background-color: #C0C0C0;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+#logo_geral{
+    width: 350px;
+    height: 100px;  
+    background-image:url(imagens/logo.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    margin: auto;
+    margin-top: 70px;
+}
+
+#logo_inscricao{
+    width: 350px;
+    height: 100px;  
+    background-image:url(imagens/logo.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin: auto;
+    margin-top: 30px;
+}
+
+#faixa_topo{
+    width: 100%;
+    height: 50px;
+    margin: auto;
+    margin-top: 20px;
+    background-color: #1874CD;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#faixa_rodape{
+    width: 100%;
+    height: 50px;
+    margin: auto;
+    margin-top: 150px;
+    background-color: #1874CD;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#faixa_rodape_ficha{
+    width: 100%;
+    height: 50px;
+    margin: auto;
+    margin-top: 10px;
+    background-color: #1874CD;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#meio{
+    width: 850px;
+    height: 200px;
+    margin: auto;
+    margin-top: 50px;
+    background-color: #ffffff;
+    border-radius:10px;
+}
+
+#meio_ficha{
+    width: 600px;
+    height: 500px;
+    margin: auto;
+    margin-top: 50px;
+    background-color: #ffffff;
+    border-radius:10px;
+}
+
+#inscricao{
+    width: 220px;
+    height: 100px;
+    background-color: cornflowerblue;
+    float: left;
+    margin-left: 45px;
+    margin-top: 45px;
+    border: #78a4d1 solid 1px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border-radius:10px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+#ficha_inscricao{
+    width: 220px;
+    height: 100px;
+    background-color: cornflowerblue;
+    float: left;
+    margin-left: 50px;
+    margin-top: 45px;
+    border: #78a4d1 solid 1px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border-radius:10px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+#resultado{
+    width: 220px;
+    height: 100px;
+    background-color: cornflowerblue;
+    float: left;
+    margin-left: 50px;
+    margin-top: 45px;
+    border: #78a4d1 solid 1px;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    border-radius:10px;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 24px;
+}

@@ -1,0 +1,130 @@
+/* 
+    Document   : style_cadastro_contas_pagar
+    Created on : 20/05/2014, 14:41:04
+    Author     : user
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+
+
+#input_usuario {
+    background-image:url(../../imagens/botoes/btn_salvar.png);
+    background-repeat:no-repeat;
+    border:none;
+}
+
+/******************************************************************************/
+#cadastro_usuario_corpo {
+    width: 990px; /*270px;*/
+    height: 490px;
+    /*background-color: #696969;*/
+    margin-top: 20px;
+    margin-left: 50px;    
+}
+
+#titulo_corpo {
+    width: 990px; /*270px;*/
+    height: 50px;
+    /*background-color: #3CB371;*/
+    margin-top: 0px;
+}
+
+#titulo_novo_grupo {
+    width: 300px; /*270px;*/
+    height: 50px;
+    /*background-color: #2E8B57;*/
+    margin: auto;
+    margin-top: 0px;
+}
+
+.novo_grupo {
+    color: #696969;
+    padding-top: 8px;
+    text-align: center;
+}
+
+
+#form_novo_grupo {
+    width: 520px; /*270px;*/
+    height: 400px;
+    /*background-color: #2E8B57;*/
+    margin: auto;
+    margin-top: 0px;
+}
+
+#novo {
+    width: 990px; /*270px;*/
+    height: 50px;
+    margin-top: 0px;
+    margin-left: 0px;
+
+}
+
+#novo_titulo {
+    width: 300px; /*270px;*/
+    height: 50px;
+    margin: auto;
+
+}
+
+.novo_fornecedor {
+    color: #696969;
+    padding-top: 8px;
+    text-align: center;
+
+}
+
+
+
+#form_novo {
+    width: 740px; /*270px;*/
+    height: 420px;
+   
+    margin: auto;
+
+}
+
+#cadastroproduto {
+    width: 800px;  
+    height: 550px;
+    margin-top: 20px;
+    margin-left: 200px;
+
+}
+
+#linha_cadastro_produto{
+    width: 800px; /*520px;*/
+    height: 60px;
+    /*background-color: #323232;*/
+}
+
+#descricao_produto{
+    width: 452px; /*270px;*/
+    height: 40px;
+    float: left;
+}
+#referencia_produto{
+    width: 68px; /*270px;*/
+    height: 40px;
+    float: left;
+}
+
+
+#usuario_titulo {
+    width: 300px;
+    height: 30px;
+    margin-left: 400px;
+    margin-top: 20px;
+    /*background-color: #323232;*/
+
+}
+
+#ep_titulo {
+    width:400px;
+    height: 30px;
+    margin: auto;
+    margin-top: 20px;
+    /*background-color: #323232;*/
+
+}

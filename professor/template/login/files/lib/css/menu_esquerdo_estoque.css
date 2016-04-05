@@ -1,0 +1,306 @@
+/* 
+    Document   : estoque
+    Created on : 30/06/2014, 11:15:53
+    Author     : user
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+#movimento_estoque{
+    width: 204px;
+    height: 48px;
+    margin-left: 0px;
+    background-image:url(../../imagens/estoque/Movimentacao.png);
+    background-repeat:no-repeat;
+    
+}
+
+#consulta_estoque{
+    width: 204px;
+    height: 48px;
+    margin-left: 0px;
+    background-image:url(../../imagens/estoque/Consulta.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_estoque_sm{
+    width: 204px;
+    height: 48px;
+    margin-left: 0px;
+    background-image:url(../../imagens/estoque/Cadastro.png);
+    background-repeat:no-repeat;
+
+}
+
+#relatorio_estoque{
+    width: 204px;
+    height: 48px;
+    margin-left: 0px;
+    background-image:url(../../imagens/estoque/Relatorios.png);
+    background-repeat:no-repeat;
+
+}
+
+#saldo_inicial{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/saldo-inicial.png);
+    background-repeat:no-repeat;
+
+}
+
+#saldo_inicial:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/saldo-inicial2.png);
+    background-repeat:no-repeat;
+
+}
+
+
+#inventario{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/inventários.png);
+    background-repeat:no-repeat;
+
+}
+
+#inventario:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/inventários2.png);
+    background-repeat:no-repeat;
+
+}
+
+#requisicao{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/requisicao2.png);
+    background-repeat:no-repeat;
+
+}
+
+#requisicao:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/requisicao.png);
+    background-repeat:no-repeat;
+
+}
+
+#entrada_produto{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/Entradadeprodutos1.png);
+    background-repeat:no-repeat;
+
+}
+
+#entrada_produto:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/Entradadeprodutos.png);
+    background-repeat:no-repeat;
+
+}
+
+#saldo_estoque{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/Saldo.png);
+    background-repeat:no-repeat;
+
+}
+
+#saldo_estoque:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/saldo2.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_produto{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/materia_prima2.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_produto:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/materia_prima.png);
+    background-repeat:no-repeat;
+
+}
+
+
+#cadastro_produto_final{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/produto_final1.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_produto_final:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/produto_final.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_fornecedor_estoque{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/Fornecedor1.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_fornecedor_estoque:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/Fornecedor.png);
+    background-repeat:no-repeat;
+
+}
+
+
+#cadastro_centro_custo{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/Centro-de-custo.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_centro_custo:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/Centro-de-custo-2.png);
+    background-repeat:no-repeat;
+
+}
+
+
+#cadastro_unidade_medida{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/UnidadeMedida1.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_unidade_medida:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/UnidadeMedida2.png);
+    background-repeat:no-repeat;
+
+}
+
+
+#cadastro_grupo{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/Grupodeprodutos.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_grupo:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/Grupodeprodutos2.png);
+    background-repeat:no-repeat;
+
+}
+
+
+#cadastro_estoque{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/Estoque1.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_estoque:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/Estoque.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_transportadora{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/Transportadora1.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_transportadora:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/Transportadora2.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_mov_interna{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/MovimentacaoInterna.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_mov_interna:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/MovimentacaoInterna2.png);
+    background-repeat:no-repeat;
+
+}
+
+
+#cadastro_ces{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/CES1.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_ces:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/CES2.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_icms{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/ICMS.png);
+    background-repeat:no-repeat;
+
+}
+
+#cadastro_icms:hover{
+    width: 100%;
+    height: 48px;
+    background-image:url(../../imagens/estoque/ICMS2.png);
+    background-repeat:no-repeat;
+
+}
